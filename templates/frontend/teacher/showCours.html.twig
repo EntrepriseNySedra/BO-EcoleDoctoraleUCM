@@ -1,0 +1,75 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Ajout cours</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace enseignant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Ajout cours</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Cours</p>
+                    <h2 class="title-bloc">{{ cours.matiere.nom }}</h2>
+                </div>
+                <!-- content ajout cours -->
+                <section class="content content-list content-addCours">
+                    <div class="form-bloc form-inline">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3>{{ cours.libelle }}</h3>
+                                <p>{{ cours.description|raw }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

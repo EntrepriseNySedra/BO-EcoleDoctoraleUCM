@@ -1,0 +1,74 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .invalid-feedback {
+        color: red;
+    }
+    .form-error-icon {
+        background-color: red;
+    }
+</style>
+
+{% set action = path('admin_examen_new') %}
+{% if examen.id %}
+    {% set action = path('admin_examen_edit', { id: examen.id }) %}
+{% endif %}
+<section class="content">
+    <form id="batiment-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data"
+          role="form" action="{{ action }}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            {% if examen.id %}
+                                <h4>Modification examen</h4>
+                            {% else %}
+                                <h4>Ajout examen</h4>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(form) }}
+                            {{ form_row(form._token) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.libelle, 'Titre *') }}
+                            {{ form_widget(form.libelle, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.deliberation, 'Deliberation *') }}
+                            {{ form_widget(form.deliberation, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.starDate, 'Date de début *') }}
+                            {{ form_widget(form.starDate, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.endDate, 'Date de fin *') }}
+                            {{ form_widget(form.endDate, {'attr':{'required':'required'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if examen.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <a href="{{ path('admin_examen_index') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+</section>

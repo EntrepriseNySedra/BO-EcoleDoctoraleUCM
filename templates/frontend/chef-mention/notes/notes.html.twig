@@ -1,0 +1,131 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Notes</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Notes</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/chef-mention/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <section class="Concours-content content richText">
+                    <!-- content -->
+                    <div class="title-group">
+                        <h2 class="title-bloc">Notes</h2>
+                    </div>
+                    <!-- filter block -->
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="filter-form" autocomplete="off">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-xl-4">Enseignants :</label>
+                                                <div class="form-field select-field col-xl-8">
+                                                    <select class="form-control" name="teacher" id="teacher">
+                                                        <option value="">--- Sélectionner ---</option>
+                                                        {% for teacher in teachers %}
+                                                            <option value="{{ teacher.id }}" {% if teacherId is defined and teacher.id == teacherId %}selected{% endif %}>{{ teacher.first_name ~ ' ' ~ teacher.last_name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> <!-- /filter block -->
+                </section>
+                <section class="notes-content richText">
+                    {% if matieres is defined %}
+                        <div class="list-group">
+                            {% for key, value in matieres %}
+                                <div class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h3 class="mb-1"><strong>{{ key }}</strong></h3>
+                                    </div>
+                                    {% set initParcours = "" %}
+                                    {% set initNiveau = "" %}
+                                    {% set initUe = "" %}
+                                    {% set initSemestre = "" %}
+                                    {% for item in value %}
+                                        {% if item.niveauLibelle != initNiveau %}
+                                            <p class="mb-2 p-2 bg-primary text-white"><strong>{{ item.niveauLibelle }}</strong></p>
+                                        {% endif %}
+                                        {% if item.parcoursNom != initParcours %}
+                                            <p class="mb-2 p-2 bg-primary">{{ item.parcoursNom }}</p>
+                                        {% endif %}
+                                        {% if item.semestre != initSemestre %}
+                                            <p class="mb-1 pl-2">Semestre : <strong>{{ item.semestre }}</strong></p>
+                                        {% endif %}
+                                        {% if item.ueLibelle != initUe %}
+                                            <div>Unité d'enseignement : <strong>{{ item.ueLibelle }}</strong></div>
+                                        {% endif %}
+                                        <div class="item" style="padding: 5px 0 5px 30px;">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-8">{{ item.matiereNom }}</div>
+                                                <div class="col-md-4 text-right">
+                                                    <a href="{{ path(noteEdit, {teacher_id: teacherId, matiere_id: item.matiereId })}}" class="m-2" title="Modifier"><span class="fa fa-edit text-danger"></span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% set initUe = item.ueLibelle %}
+                                        {% set initNiveau = item.niveauLibelle %}
+                                        {% set initSemestre = item.semestre %}
+                                        {% set initParcours = item.parcoursNom %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('#teacher').change((e) => {
+                    const teacherId = e.target.value;
+
+                    window.location.href = "{{ path(noteIndex) }}/" + teacherId
+                });
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% block title %}Success stories::Modification{% endblock %}
+
+{% set menuBatiment = true %}
+{% set menuBatimentAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Success
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/Success/_form.html.twig') }}
+     <a href="{{ path('Success_index') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

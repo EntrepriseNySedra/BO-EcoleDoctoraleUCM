@@ -1,0 +1,221 @@
+{% extends layout_frontend %}
+{% block title %}Première inscription{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Dossier etudiant - première inscription</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="{{ path('front_student_emploi_du_temps') }}" title="Formation">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Dossier etudiant - première inscription</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container profil-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            {% if inscriptionStatus == constant('App\\Entity\\Inscription::STATUS_VALIDATED') %}
+            <aside class="asideLeft asideSticky">
+                {% if app.request.get('_route') == 'front_assistant_demande_doc_edit' %}
+                    {{ include('frontend/assistant/_menu.html.twig') }}
+                {% else %}
+                    {{ include('frontend/etudiant/_menu.html.twig') }}
+                {% endif %}
+            </aside>
+            {% endif %}
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Espace étudiant</p>
+                    <h2 class="title-bloc">Fiche de renseignements</h2>
+                </div>
+
+                <!-- demande de document -->
+                <section class="content ficheRenseignement-content">
+                    <div class="form-bloc">
+                        <div class="card">
+                            <!-- <form id="ficheRenseignement-form" method="POST" role="form"> -->
+                                <div class="card-body">
+                                    {{ form_start(registrationForm, {'attr': {'class': 'row'}}) }}
+                                    {{ form_row(registrationForm._token) }}
+                                        <div class="row align-items-center">
+
+
+
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-xl-5" for="niveau">Montant <span class="required">*</span>:</label>
+                                                    <div class="col-xl-7">
+                                                        {{ form_widget(registrationForm.montant) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-xl-5" for="niveau">Mode de paiement:</label>
+                                                    <div class="col-xl-7">
+                                                        {{ form_widget(registrationForm.mode_paiement) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-xl-5" for="inscription_form_payementRef">Référence de paiement<span class="required">*</span> :</label>
+                                                    <div class="col-xl-7">
+                                                        {{ form_widget(registrationForm.payementRef) }}
+                                                        <span class="error">{{ form_errors(registrationForm.payementRef) }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-xl-5" for="inscription_form_payementRefDate">Date <span class="required">*</span> :</label>
+                                                    <div class="col-xl-7">
+                                                        {{ form_widget(registrationForm.payementRefDate) }}
+                                                        <span class="error">{{ form_errors(registrationForm.payementRefDate) }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-xl-5" for="inscription_form_payementRefPath">Scan versement <span class="required">*</span> :</label>
+                                                    <div class="col-xl-7">
+                                                        {{ form_widget(registrationForm.payementRefPath) }}
+                                                        <span class="error">{{ form_errors(registrationForm.payementRefPath) }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-xl-5" for="inscription_form_anneeUniversitaire">Année universitaire<span class="required">*</span> :</label>
+                                                    <div class="form-field select-field col-xl-7">
+                                                        {#{ form_widget(registrationForm.anneeUniversitaire) }#}
+                                                        <select id="inscription_form_anneeUniversitaire" name="inscription_form[anneeUniversitaire]" class="form-control">
+                                                            {% for au in anneeUniversitaires %}
+                                                                <option value="{{au.id}}">{{ au.libelle }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-xl-3" for="inscription_form_mention">Mention<span class="required">*</span> :</label>
+                                                    <div class="col-xl-9">
+                                                        {{ form_widget(registrationForm.mention) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-xl-4" for="niveau">Niveau<span class="required">*</span> :</label>
+                                                    <div class="col-xl-8">
+                                                        {{ form_widget(registrationForm.niveau) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-xl-4" for="niveau">Parcours :</label>
+                                                    <div class="col-xl-8">
+                                                        {#{ form_widget(registrationForm.parcours) }#}
+                                                        <select id="inscription_parcours" name="inscription[parcours]" class="form-control">
+                                                            <option value="">-- Parcours --</option>
+                                                            <option value="3">Droit public  L3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="groups-btn justify-content-end mt-0">
+                                            <button type="submit" class="btn btn-primary btn-connexion" type="button" name="Enregsitrer">Enregistrer</button>
+                                        </div>
+                                        
+                                    {{ form_end(registrationForm, {'render_rest': false}) }}
+                                </div>
+                            <!-- </form> -->
+                        </div>
+                    </div>
+                </section>
+            </article>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        window.onload = function() {
+
+            MaskedInput({
+                elm: document.getElementById('inscription_form_payementRefDate'), // select only by id
+                format: '__/__/____',
+                separator: ''
+            });
+
+        };
+
+        // masked_input_1.4-min.js
+        (function(a){a.MaskedInput=function(f){if(!f||!f.elm||!f.format){return null}if(!(this instanceof a.MaskedInput)){return new a.MaskedInput(f)}var o=this,d=f.elm,s=f.format,i=f.allowed||"0123456789",h=f.allowedfx||function(){return true},p=f.separator||"/:-",n=f.typeon||"_YMDhms",c=f.onbadkey||function(){},q=f.onfilled||function(){},w=f.badkeywait||0,A=f.hasOwnProperty("preserve")?!!f.preserve:true,l=true,y=false,t=s,j=(function(){if(window.addEventListener){return function(E,C,D,B){E.addEventListener(C,D,(B===undefined)?false:B)}}if(window.attachEvent){return function(D,B,C){D.attachEvent("on"+B,C)}}return function(D,B,C){D["on"+B]=C}}()),u=function(){for(var B=d.value.length-1;B>=0;B--){for(var D=0,C=n.length;D<C;D++){if(d.value[B]===n[D]){return false}}}return true},x=function(C){try{C.focus();if(C.selectionStart>=0){return C.selectionStart}if(document.selection){var B=document.selection.createRange();return -B.moveStart("character",-C.value.length)}return -1}catch(D){return -1}},b=function(C,E){try{if(C.selectionStart){C.focus();C.setSelectionRange(E,E)}else{if(C.createTextRange){var B=C.createTextRange();B.move("character",E);B.select()}}}catch(D){return false}return true},m=function(D){D=D||window.event;var C="",E=D.which,B=D.type;if(E===undefined||E===null){E=D.keyCode}if(E===undefined||E===null){return""}switch(E){case 8:C="bksp";break;case 46:C=(B==="keydown")?"del":".";break;case 16:C="shift";break;case 0:case 9:case 13:C="etc";break;case 37:case 38:case 39:case 40:C=(!D.shiftKey&&(D.charCode!==39&&D.charCode!==undefined))?"etc":String.fromCharCode(E);break;default:C=String.fromCharCode(E);break}return C},v=function(B,C){if(B.preventDefault){B.preventDefault()}B.returnValue=C||false},k=function(B){var D=x(d),F=d.value,E="",C=true;switch(C){case (i.indexOf(B)!==-1):D=D+1;if(D>s.length){return false}while(p.indexOf(F.charAt(D-1))!==-1&&D<=s.length){D=D+1}if(!h(B,D)){c(B);return false}E=F.substr(0,D-1)+B+F.substr(D);if(i.indexOf(F.charAt(D))===-1&&n.indexOf(F.charAt(D))===-1){D=D+1}break;case (B==="bksp"):D=D-1;if(D<0){return false}while(i.indexOf(F.charAt(D))===-1&&n.indexOf(F.charAt(D))===-1&&D>1){D=D-1}E=F.substr(0,D)+s.substr(D,1)+F.substr(D+1);break;case (B==="del"):if(D>=F.length){return false}while(p.indexOf(F.charAt(D))!==-1&&F.charAt(D)!==""){D=D+1}E=F.substr(0,D)+s.substr(D,1)+F.substr(D+1);D=D+1;break;case (B==="etc"):return true;default:return false}d.value="";d.value=E;b(d,D);return false},g=function(B){if(i.indexOf(B)===-1&&B!=="bksp"&&B!=="del"&&B!=="etc"){var C=x(d);y=true;c(B);setTimeout(function(){y=false;b(d,C)},w);return false}return true},z=function(C){if(!l){return true}C=C||event;if(y){v(C);return false}var B=m(C);if((C.metaKey||C.ctrlKey)&&(B==="X"||B==="V")){v(C);return false}if(C.metaKey||C.ctrlKey){return true}if(d.value===""){d.value=s;b(d,0)}if(B==="bksp"||B==="del"){k(B);v(C);return false}return true},e=function(C){if(!l){return true}C=C||event;if(y){v(C);return false}var B=m(C);if(B==="etc"||C.metaKey||C.ctrlKey||C.altKey){return true}if(B!=="bksp"&&B!=="del"&&B!=="shift"){if(!g(B)){v(C);return false}if(k(B)){if(u()){q()}v(C,true);return true}if(u()){q()}v(C);return false}return false},r=function(){if(!d.tagName||(d.tagName.toUpperCase()!=="INPUT"&&d.tagName.toUpperCase()!=="TEXTAREA")){return null}if(!A||d.value===""){d.value=s}j(d,"keydown",function(B){z(B)});j(d,"keypress",function(B){e(B)});j(d,"focus",function(){t=d.value});j(d,"blur",function(){if(d.value!==t&&d.onchange){d.onchange()}});return o};o.resetField=function(){d.value=s};o.setAllowed=function(B){i=B;o.resetField()};o.setFormat=function(B){s=B;o.resetField()};o.setSeparator=function(B){p=B;o.resetField()};o.setTypeon=function(B){n=B;o.resetField()};o.setEnabled=function(B){l=B};return r()}}(window));
+    
+        // required form
+        var inscription_form = $("form[name='inscription_form']").find("input,select,textarea").filter('[required]:visible');
+        $("button[name='Enregsitrer']").on("click",function(){
+            inscription_form.each(function(){
+                if($(this).val() == "" || $(this).val() == "__/__/____" )
+                    $(this).css('border-color','#BD0B1D');
+                else
+                    $(this).removeAttr("style");
+            });
+        });
+        $('#inscription_form_niveau').on('change', function () {
+         
+            const mentionId = $("#inscription_form_mention").val(),
+            niveauId = $(this).val();
+                
+            $("#inscription_parcours").html('');
+            $.ajax({
+                method: "GET",
+                url:    "{{ path('front_etudiant_parcours_options') }}",
+                data:   {
+                    m:  mentionId,
+                    n: niveauId
+                }
+            }).done(
+                function (html) {
+                    $('#inscription_parcours').html(html);
+                }
+            )
+        });
+    </script>
+   
+{% endblock %}

@@ -1,0 +1,13 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    exception_controller: null
+    form_themes: ['bootstrap_4_layout.html.twig']
+    globals:
+        layout_backend: 'backend/layout/base.html.twig'
+        layout_frontend: 'frontend/layout/base.html.twig'
+        layout_inscription: 'frontend/layout/inscription-base.html.twig'
+        layout_teacher: 'frontend/layout/teacher.html.twig'
+        gv_impot: "%impot%"
+        gv_taux_surveillant: "%taux_surveillant%"

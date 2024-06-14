@@ -1,0 +1,4 @@
+<option value=""> -- Matière -- </option>
+{% for matiere in matieres %}
+    <option value="{{ matiere.id }}">{{ matiere.libelle }} </option>
+{% endfor %}

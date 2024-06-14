@@ -1,0 +1,120 @@
+{% extends layout_frontend %}
+{% block title %}Gestion absences{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Gestion absence</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace RVN</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace rvn</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Gestion absences</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/rvn/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">RVN</p>
+                    <h2 class="title-bloc">Absences</h2>
+                    <p class="text-lg">{{ matiere.uniteEnseignements.mention.nom }} {{ matiere.uniteEnseignements.niveau.libelle }} : {{ matiere }}</p>
+                </div>
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="tab-pane fade show" id="validated" role="tabpanel" aria-labelledby="validated-tab">
+                        <div class="dt-custom-title hidden">
+                            Liste absences: {{matiere.nom}} 
+                        </div>
+                        <div class="table-responsive table-wrapper">
+                            {% if absences is defined and absences | length > 0 %}
+                                <table class="table table-bordered table-hover list-data table-advance" id="list-validated">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Etudiant</th>
+                                            <th class="text-center">Absences</th>
+                                            <th class="text-center">Absence Justifiée</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in absences %}
+                                            <tr class="middle-align">
+                                                <td class="w-15">{{ item.last_name }} {{ item.first_name }}</td>
+                                                <td class="w-25">{{ item.nbr_absence }}</td>
+                                                <td class="w-10 text-center">{{ item.nbrAbsenceJustifie }}</td>
+                                                <td class="w-5 text-center">
+                                                    <a href="{{ path('front_rvn_absence_etudiant_details', {id: item.etudiant_id, matiere_id: item.matiere_id}) }}"><i class="far fa-edit fa-2x text-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { 
+                var oTable = $('#list-validated').dataTable({
+                "aLengthMenu":    [[100, 250, 500, -1], [100, 250, 500, "Tout"]],
+                    "iDisplayLength": 1000,
+                    "aoColumnDefs":   [{
+                        "bSortable": false,
+                        "aTargets":  [4]
+                    }],
+                    "paging":         false,
+                    "ordering":       false,
+                    "searching":      false,
+                    "info":           false
+                });
+
+                $('#semestre, #niveau, #mention, #parcours').bind('change', function(){
+                    _parcousId  = $('#parcours').val();
+                    _niveauId   = $('#niveau').val();
+                    _mentionId  = $('#mention').val();
+                    location.href = '{{ path('front_rvn_absence_index')}}' + "?m=" + _mentionId + "&p=" + _parcousId + "&n=" + _niveauId;
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}

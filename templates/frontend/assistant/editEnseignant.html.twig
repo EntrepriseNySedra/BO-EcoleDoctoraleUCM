@@ -1,0 +1,222 @@
+{% extends layout_teacher %}
+{% block title %}Espace assistant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Modifier enseignant</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Modifier enseignant</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <!-- content modifier enseignant -->
+                <section class="modif-enseignant-2-content content">
+                    <div class="title-group">
+                        <p class="sup-title">Modification enseignant</p>
+                        <h2 class="title-bloc">Etape 1</h2>
+                    </div>
+                    <div class="form-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+                                    <div class="row">
+                                        <div class="col-md-2" style="width:13%;">
+                                            <div class="form-group row">
+                                                {{ form_label(form.immatricule, 'Matricule :') }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-group row">
+                                                {{ form_widget(form.immatricule) }}
+                                            </div>
+                                        </div>                                        
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">
+                                                    {{ form_label(form.firstName, 'Nom * :') }}
+                                                </div>
+                                                <div class="col-xl-9">
+                                                    {{ form_widget(form.firstName) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">
+                                                    {{ form_label(form.lastName, 'Prénom * :') }}
+                                                </div>
+                                                <div class="col-xl-9">
+                                                    {{ form_widget(form.lastName) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">
+                                                    {{ form_label(form.email, 'Email * :') }}
+                                                </div>
+                                                <div class="col-xl-9">
+                                                    {{ form_widget(form.email) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">
+                                                    {{ form_label(form.address, 'Adresse * :') }}
+                                                </div>
+                                                <div class="col-xl-9">
+                                                    {{ form_widget(form.address) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">
+                                                    {{ form_label(form.phone, 'Téléphone * :') }}
+                                                </div>
+                                                <div class="col-xl-9">
+                                                    {{ form_widget(form.phone) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">
+                                                    {{ form_label(form.civility, 'Civilité :') }}
+                                                </div>
+                                                <div class="col-xl-9">
+                                                    {{ form_widget(form.civility) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <div class="col-md-1" style="width:12.5%;">
+                                                    {{ form_label(form.bank_name, 'Banque :') }}
+                                                </div>
+                                                <div class="col-md-11" style="width:87.5%;">
+                                                    {{ form_widget(form.bank_name) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <div class="col-md-1" style="width:12.5%;">
+                                                    {{ form_label(form.bank_num, 'RIB :') }}
+                                                </div>
+                                                <div class="col-md-11" style="width:87.5%;">
+                                                    {{ form_widget(form.bank_num) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <div class="col-md-1" style="width:12.5%;">
+                                                    {{ form_label(form.tiers_count, 'Compte tiers :') }}
+                                                </div>
+                                                <div class="col-md-11" style="width:87.5%;">
+                                                    {{ form_widget(form.tiers_count) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">
+                                                    {{ form_label(form.pathCv, 'CV :') }}
+                                                </div>
+                                                <div class="col-xl-9">
+                                                    {{ form_widget(form.pathCv) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">
+                                                    {{ form_label(form.pathDiploma, 'Diplôme :') }}
+                                                </div>
+                                                <div class="col-xl-9">
+                                                    {{ form_widget(form.pathDiploma) }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="enseignant_email">Niveaux * :</label>
+                                                {% if(niveaux | length > 0) %}
+                                                <div class="form-field select-field">
+                                                    <select name="niveau[]" required="required" class="form-control" multiple style="min-height: 100px">
+                                                        {% for niveau in niveaux %}
+                                                        <option 
+                                                        {% if niveau.id in tCollectEnsNiveauId %}
+                                                        selected 
+                                                        {% endif %}
+                                                        value="{{ niveau.id }}">{{ niveau.libelle }} </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            {{ form_errors(form) }}
+                                            {{ form_row(form._token) }}
+                                        </div>
+                                        <div class="groups-btn justify-content-end mt-0">
+                                            <button type="button" class="btn btn-secondary" id="btn-cancel">Annuler</button>
+                                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Valider</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article><!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

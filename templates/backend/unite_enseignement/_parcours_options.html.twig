@@ -1,0 +1,4 @@
+<option value=""> -- Selectionnez -- </option>
+{% for parcr in parcours %}
+    <option value="{{ parcr.id }}">{{ parcr.nom }}</option>
+{% endfor %}

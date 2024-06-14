@@ -1,0 +1,34 @@
+<section class="widget lastActu-widget">
+    <h2>les dernières actualités</h2>
+    <div class="list-actus">
+        {% if(derniereActus | length > 0) %}
+            {% for actualite in derniereActus %}
+                <div class="item-actu">
+                    {%  set param = null %}
+                    {% if actualite.slug is not empty %}
+                        {%  set param = path('details_actualite', { slug: actualite.slug })  %}
+                    {% endif %}
+                    <a href="{{ param }}" title="{{ actualite.title }}">
+                        <figure>
+                            <img src="{{ asset('/uploads/actualite/') }}{{ actualite.uuid }}/105-{{ actualite.path }}" alt="{{ actualite.path }}">
+                        </figure>
+                        <div class="desc-actus">
+                            <h3 class="m-0">{{ actualite.title }}</h3>
+                            <div class="text">
+                                {% autoescape %}
+                                    <p>{{ actualite.detail|striptags|u.truncate(100, '...')|raw }}</p>
+                                {% endautoescape %}
+                            </div>
+                            <p class="wrap-linkInfos"><span href="" class="moreInfoslink">Lire la suite</span></p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <p class="wrap-linkShowAll">
+            <a href="{{ path('list_actualite') }}" class="showAll" title="Afficher tout">Afficher tout <i class="iconucm-chevron-right"></i>
+            </a>
+        </p>
+    </div>
+</section>

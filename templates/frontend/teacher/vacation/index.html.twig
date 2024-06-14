@@ -1,0 +1,147 @@
+{% extends layout_frontend %}
+{% block title %}Vacation{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Vacation</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>            
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace enseignant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Vacation</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Enseignant</p>
+                    <h2 class="title-bloc">Vacation</h2>
+                </div>
+                <div class="form-bloc filter-bloc">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="filter-form" autocomplete="off">                
+                                <div class="form-group row">
+                                    <label class="col-lg-2">Calendrier :</label>
+                                    <div class="form-field select-field col-lg-3">
+                                        <select class="form-control" name="calendrier-paiement" id="calendrier_paiement">
+                                            <option value="">--- Sélectionner ---</option>
+                                            {% for cal in calPaiements %}
+                                                <option value="{{ cal.id }}" 
+                                                    {% if  cal.id == c %}selected{% endif %}>{{ cal.libelle }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="groups-btn col-lg-4 mt-0">
+                                        <a href="{{ path('front_teacher_fiche_paie') }}?c={{ c }}" target="_blank" class="btn btn-primary">Fiche de paie</a>
+                                    </div>
+                                </div>                                
+                            </form>
+                        </div>
+                    </div>
+                </div> <!-- /filter block -->
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="table-wrapper">
+                        {% if fPresenceEnseignants is defined and fPresenceEnseignants | length > 0 %}
+                            <table class="table table-bordered table-hover list-data">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Cours</th>
+                                        <th class="text-center">Date</th>
+                                        <th class="text-center">Heure</th>
+                                        <th class="text-center">Salle</th>
+                                        <th class="text-center">Tronc commun</th>
+                                        <th class="text-center">Heures effectuées</th>
+                                        <th class="text-center">Montant</th>
+                                        <th class="text-center">Impot</th>
+                                        <th class="text-center">NET</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set totalHT = 0 %}
+                                    {% set totalImpot = 0 %}
+                                    {% set totalNET = 0 %}
+                                    {% for presence in fPresenceEnseignants %}
+                                        {% set montantTTC = presence.montantHT / 0.98 %}
+                                        {% set montantImpot = montantTTC * 0.02 %}
+                                        <tr class="middle-align">
+                                            <td class="text-center w-20">
+                                                {{ presence.mCode }} - {{ presence.matiere }}<br>
+                                                {{ presence.classList | raw }}
+                                            </td>
+                                            <td class="text-center w-5">{{ presence.date_schedule | date('d/m/Y') }}</td>
+                                            <td class="text-center w-10">{{ presence.start_time | date('H:i') }} - {{ presence.end_time | date('H:i') }}</td>
+                                            <td class="text-center w-5">{{ presence.salle }}</td>
+                                            <td class="text-center w-10">{{ presence.troncCommun }}</td>
+                                            <td class="text-center w-5">{{ presence.heure }}</td>
+                                            <td class="text-center w-10">{{ montantTTC | number_format(2, '.', ' ') }}</td>
+                                            <td class="text-center w-10">{{ montantImpot | number_format(2, '.', ' ') }}</td>
+                                            <td class="text-center w-10">{{ presence.montantHT | number_format(2, '.', ' ') }}</td>
+                                        </tr>
+
+                                        {% set totalHT = totalHT +  montantTTC %}
+                                        {% set totalImpot = totalImpot + montantImpot %}
+                                        {% set totalNET = totalNET + presence.montantHT %}
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="6" align="center">Total</td>
+                                        <td align="center">{{ totalHT | number_format(2, '.', ' ') }}</td>
+                                        <td align="center">{{ totalImpot | number_format(2, '.', ' ') }}</td>
+                                        <td align="center">{{ totalNET | number_format(2, '.', ' ') }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </div>                 
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { 
+                $(document).ready(function () { 
+                    $("#calendrier_paiement").bind('change', function(){
+                        window.location.href = "{{ path('front_teacher_vacation') }}?c=" + $(this).val();
+                    });
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

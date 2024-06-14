@@ -1,0 +1,46 @@
+@import '_variables.scss';
+
+@mixin browserCss($prop, $value) {
+    -moz-#{$prop}: $value;
+    -ms-#{$prop}: $value;
+    -o-#{$prop}: $value;
+    -webkit-#{$prop}: $value;
+    #{$prop}: $value;
+}
+
+@mixin max($value) {
+    @media (max-width: $value) {
+        @content;
+    }
+}
+@mixin min($value) {
+    @media (min-width: $value) {
+        @content;
+    }
+}
+@mixin minMax($valueMin, $valueMax) {
+    @media (min-width: $valueMin) and (max-width: $valueMax) {
+        @content;
+    }
+}
+
+@mixin maxH($value) {
+  @media (max-height: $value) {
+    @content;
+  }
+}
+@mixin minH($value) {
+  @media (min-height: $value) {
+    @content;
+  }
+}
+@mixin minMaxH($valueMin, $valueMax) {
+  @media (min-height: $valueMin) and (max-height: $valueMax) {
+    @content;
+  }
+}
+
+@mixin v-center() {
+    top: 50%;
+    transform: translateY(-50%);
+}

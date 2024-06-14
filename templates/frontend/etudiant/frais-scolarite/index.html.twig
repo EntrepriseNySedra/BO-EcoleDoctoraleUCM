@@ -1,0 +1,160 @@
+{% extends layout_frontend %}
+{% block title %}Ecolage étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Frais de scolarité</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="{{ path('front_student_emploi_du_temps') }}" title="Formation">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Frais de scolarité</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container">
+        <div class="container container_row">
+           <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/etudiant/_menu.html.twig') }}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <!-- content emploi du temps -->
+                <section class="emploiTemps-content">
+                    <!-- filter block -->
+                    <h2>Classe : {{ student.niveau.libelle }} {{ student.mention.nom }}</h2>
+                    {% set totalE = 0 %}
+                    {% set totalR = 0 %}
+                    <div class="table-responsive table-wrapper">
+                        {% if ecolageList is defined and ecolageList | length > 0 %}
+                            <table class="table table-bordered table-hover list-data">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Semestra</th>
+                                        <th class="text-center">Montant</th>
+                                        <th class="text-center">Date limite de paiement</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in ecolageList %}
+                                        <tr class="middle-align">
+                                            <td class="text-center w-25">{{ item.semestre.libelle }}</td>
+                                            <td class="text-center w-25">{{ item.montant }}</td>
+                                            <td class="text-center w-25">{{ item.limitDate | date('d/m/Y') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr class="middle-align">
+                                        <td align="center">Total</td>
+                                        <td class="text-center w-25">{{ totalClassEcolage }}</td>
+                                        <td align="center">Payé : {{ totalPaidEcolage }} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </div>
+
+
+
+                    <div class="form-bloc filter-bloc">
+                        <div class="groups-btn justify-content-start my-1">
+                            <a href="{{ path('front_student_frais_new') }}" class="btn btn-primary" id="btn-submit-edt-form">AJOUTER</a>
+                        </div>
+                    </div> <!-- /filter block -->
+
+
+
+                    <div class="table-responsive table-wrapper">
+                        {% if list is defined and list | length > 0 %}
+                        <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" role="form" >
+                            <table class="table table-bordered table-hover list-data">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Date de déclaration</th>
+                                        <th class="text-center">Date de paiement</th>
+                                        <th class="text-center">Semestre</th>
+                                        <th class="text-center">Référence</th>
+                                        <th class="text-center">remetant</th>
+                                        <th class="text-center">Montant</th>
+                                        <th class="text-center">Reste</th>
+                                        <th class="action_col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set total = 0 %}
+                                    {% set reste = 0 %}
+                                    {% for key, fraisScol in list %}
+                                        <tr class="middle-align">
+                                            <td class="text-center w-25">{{ fraisScol.createdAt | date('d/m/Y') }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.datePaiement | date('d/m/Y') }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.semestre.libelle }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.reference }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.remitter }}</td>                                           
+                                            <td class="text-center w-25">{{ fraisScol.montant }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.reste }}</td>
+                                            <td class="action_col w-5">
+                                                <div class="wrap-btn">
+                                                    <a href="{{ path('front_student_frais_edit', { id: fraisScol.id}) }}" class="btn btn-secondary" title="Modifier">
+                                                        {% if fraisScol.status == constant('\\App\\Entity\\FraisScolarite::STATUS_CREATED') %}
+                                                            <i class="far fa-edit"></i>
+                                                        {% else %}
+                                                            <i class="far fa-eye"></i>
+                                                        {% endif %}
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% set total = total + fraisScol.montant %}
+                                        {% if key == 0 %}
+                                            {% set reste = fraisScol.reste %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="5" align="center">Total</td>
+                                        <td align="center">{{ total }}</td>
+                                        <td colspan="2" align="center">{{ reste }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                        {% endif %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

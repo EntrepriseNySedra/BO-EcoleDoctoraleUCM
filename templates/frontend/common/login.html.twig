@@ -1,0 +1,116 @@
+{% extends layout_frontend %}
+{% block title %}Identification {{ entity }}{% endblock %}
+{% block content %}
+<div class="main-container"></div>
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Identifiez-vous</h1>
+
+    <!-- big slider banner authentification espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Authentification</h2>
+                    <p class="sub-title">{{ espacename }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Espace Enseignant</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage authentication-container">
+        <div class="container">
+            <div class="row no-gutters m-auto">
+                <div class="col-md-8 offset-md-2">
+                    <article class="mainBloc mainBloc-authentication" id="mainBloc">
+                        <h2>identifiez-vous</h2>
+                        <div class="intro-text">
+                            <p>Les informations ci-dessous sont obligatoire pour pouvoir accéder à votre espace {{ entity }}.</p>
+                        </div>
+                        <div class="form-bloc">
+                            <form id="form-login" method="post" autocomplete="off" action="{{ path('app_login') }}">
+                                <input id="token" type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                <div class="form-group">
+                                    <label class="control-label" for="user-email">Identifiant ou adresse email<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="iconucm-user"></i></span>
+                                        </div>
+                                        <input type="text" autocomplete="new password" class="form-control" id="email" name="email" placeholder="Votre identifiant" autofocus required>
+                                    </div>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="user-password">Mot de passe<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="iconucm-lock"></i></span>
+                                        </div>
+                                        <input type="password" autocomplete="new password" class="form-control" id="password" name="password" placeholder="Votre mot de passe" autofocus required>
+                                    </div>
+                                </div>
+                                <p class="mdp-oublie"><a href="{{ path('app_reset_password_index') }}" title="Mot de passe oublié ?">Mot de passe oublié ?</a></p>
+                                <div class="groups-btn">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="rememberMe">
+                                        <label class="custom-control-label" for="rememberMe">Se souvenir de moi </label>
+                                    </div>
+                                    <button class="btn btn-connexion" type="submit" name="Se connecter">Se connecter</button>
+                                </div>
+                                <p class="helpLink"><a href="" title="Vous avez besoin d'aide ?">Vous avez besoin d'aide ?</a></p>
+                            </form>
+                        </div>
+                    </article> <!-- /main Bloc -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                $('.form-group').removeClass('error');
+                $('#form-login').submit(function (e) {
+                    e.preventDefault();
+
+                    // let data = JSON.stringify({email: email, password: password, _csrf_token:token});
+                    $.ajax({
+                        type:    'POST',
+                        url:     '{{ path("app_login") }}',
+                        data:    $('form#form-login').serialize(),
+                        success: function (data) {
+                            if (data.redirectUrl !== undefined) {
+                                window.location.href = data.redirectUrl;
+                            } else if(data.message) {
+                                $('.form-group').addClass('error');
+                                $('.invalid-feedback').html(data.message);
+                            }
+                        }
+                    });
+                });
+            });
+
+        } )( jQuery );
+    </script>
+{% endblock %}
+

@@ -1,0 +1,45 @@
+<div class="alert alert-info" role="alert">
+    Total des efféctifs des étudiants pour ce niveau : <a href="#" class="alert-link"> {{ effectifs }} </a>
+    <br>
+    Vous avez <a href="#" class="alert-link"> {{ salles|length }} </a> salles disponibles
+    {% if (salles | length) < 1 %}
+        <br> Enseignant ou salle occupé
+    {% endif %}
+</div>
+
+<div class="table-responsive table-wrapper">
+    <table class="table table-bordered table-hover list-data">
+        <thead>
+            <tr>
+                <th class="text-center w-5">Numéro</th>
+                <th class="text-center w-10">Batiment</th>
+                <th class="text-center w-10">Salles</th>
+                <th class="text-center w-10">Capacité</th>
+                <th class="action_col w-10">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for salle in salles %}
+                <tr>
+                    <td>{{ salle.id }}</td>
+                    <td>{{ salle.batimentNom }}</td>
+                    <td>{{ salle.libelle }}</td>
+                    <td>{{ salle.capacite }} </td>
+                    <td class="action_col">
+                        <input id="input-1" type="radio" id="emploi_du_temps_salle" name="emploi_du_temps[salles]" value="{{salle.id}}" />
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% block scripts %}
+<script>
+    (function ($) {
+        $(document).find(".emploi_du_temps_salle_ue").find("input[name='emploi_du_temps[salles]']").on('click', function(){
+            $("#btn-submit-edt-form").removeClass("disabled");
+            $(".action-validate").show();
+        });
+    })(jQuery);
+</script>
+{% endblock %}

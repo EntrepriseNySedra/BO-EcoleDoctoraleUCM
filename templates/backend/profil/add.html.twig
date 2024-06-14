@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% block title %}Profil::Ajout{% endblock %}
+
+{% set menuSetting = true %}
+{% set menuSettingProfilAdd = true %}
+
+{% block pageicon %}
+    pe-7s-switch
+{% endblock %}
+{% block pagetitle %}
+    Nouveau profil
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/profil/_form.html.twig') }}
+    <a href="{{ path('admin_profil_list') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% block title %}Enseignant::Ajout{% endblock %}
+
+{% set menuEnseignant = true %}
+{% set menuEnseignantAdd = true %}
+
+{% block pageicon %}
+    pe-7s-switch
+{% endblock %}
+{% block pagetitle %}
+    Nouveau enseignant
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/enseignant/_form.html.twig') }}
+    <a href="{{ path('admin_enseignant_list') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

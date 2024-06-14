@@ -1,0 +1,180 @@
+{% extends layout_frontend %}
+{% block title %}Surveillance{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Surveillance</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace {{ workspaceTitle }}</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace {{ workspaceTitle }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Surveillance</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/chef-mention/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">{{ workspaceTitle }}</p>
+                    <h2 class="title-bloc">Surveillance</h2>
+                </div>
+                <div class="form-bloc filter-bloc">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="filter-form" autocomplete="off">
+                                <div class="row">                                   
+                                    <div class="form-group row">
+                                        <label class="col-lg-2">Calendrier :</label>
+                                        <div class="form-field select-field col-lg-4">
+                                            <select class="form-control" name="calendrier-paiement" id="calendrier_paiement">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for cal in calPaiements %}
+                                                    <option value="{{ cal.id }}" 
+                                                        {% if  cal.id == c %}selected{% endif %}>{{ cal.libelle }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <label class="col-lg-2">Mention :</label>
+                                        <div class="form-field select-field col-lg-4">
+                                            <select class="form-control" name="mention" id="mention">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for men in mentions %}
+                                                    <option value="{{ men.id }}" 
+                                                        {% if  men.id == m %}selected{% endif %}>{{ men.nom }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div> <!-- /filter block -->
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="btn-wrap form-group text-right">
+                        <a href="{{ path('front_examen_calendar_new') }}" class="btn btn-primary" id="btn-submit-product-form" >Ajouter</a>
+                    </div>
+                    <div class="table-responsive table-wrapper">
+                        {% if list is defined and list | length > 0 %}
+                            <table class="table table-bordered table-hover list-data">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Surveillant</th>
+                                    <th class="text-center">Nombre d'examen</th>
+                                    <th class="text-center">Heures effectuées</th>
+                                    <th class="text-center">Montant</th>
+                                    <th class="text-center">Impot</th>
+                                    <th class="text-center">NET</th>
+
+                                    <th class="text-center">Etat</th>
+                                    <th class="text-center">Statut</th>
+
+                                    <th class="action_col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for surveillant in list %}
+                                    {% set count_validatable_item = 0 %}
+                                    {% set count_waiting_validatable_item = 0 %}
+                                    <tr class="middle-align">
+                                        {% set montant = surveillant.totalHeure * gv_taux_surveillant %}
+                                        {% set montantImpot = montant * gv_impot %}
+                                        {% for statut in surveillant.status_1|split(',')|filter((t) => t < profilListStatut) %}
+                                            {% set count_waiting_validatable_item = count_validatable_item + 1 %}
+                                        {% endfor %}
+                                        {% for statut in surveillant.status_1|split(',')|filter((t) => t == profilListStatut) %}
+                                            {% set count_validatable_item = count_validatable_item + 1 %}
+                                        {% endfor %}
+                                        <td class="w-20">{{ surveillant.surveillantName }}</td>
+                                        <td class="text-center w-5">{{ surveillant.nbrExamen }}</td>
+                                        <td class="text-center w-5">{{ surveillant.totalHeure }}</td>
+                                        <td class="text-center w-5">{{ montant * (1 + gv_impot) }}</td>
+                                        <td class="text-center w-10">{{ montantImpot }}</td>
+                                        <td class="text-center w-10">{{ montant }}</td>
+
+                                        <td class="text-center w-10">
+                                            {% if count_validatable_item > 0 %}
+                                                En cours
+                                            {% else %}
+                                                {% if count_waiting_validatable_item > 0 %}
+                                                    En attente
+                                                {% else %}
+                                                    Validé
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center w-10">
+                                            {% if count_validatable_item > 0 %}
+                                                {{ count_validatable_item }} examen à valider
+                                            {% endif %}
+                                        </td>
+
+                                        <td class="action_col w-5">
+                                            <div class="wrap-btn">
+                                                <a class="btn" href="{{ path(surveyDetailsPath, { id: surveillant.surveillantId}) }}?c={{c}}&m={{m}}" title="Modifier">
+                                                        <i class="far fa-edit"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { 
+                mentionId = $("#mention").val();
+                calId = $("#calendrier_paiement").val();
+                $("#calendrier_paiement").bind('change', function(){
+                    window.location.href = "{{ path(surveyIndexPath) }}?c=" + $(this).val() + "&m=" + mentionId;
+                });
+                $("#mention").bind('change', function(){
+                    window.location.href = "{{ path(surveyIndexPath) }}?m=" + $(this).val() + "&c=" + calId;
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

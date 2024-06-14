@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% block title %}Secteur::Ajout{% endblock %}
+
+{% set menuFormation = true %}
+{% set menuFormationSecteurAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Secteur
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/secteur/_form.html.twig') }}
+     <a href="{{ path('admin_rf_secteur_liste') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

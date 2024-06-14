@@ -1,0 +1,88 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+    <style>
+        .bg-red {
+            background: #E5343D !important;
+        }
+    </style>
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Cours</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace enseignant">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace enseignant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Cours</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Enseignant > etudiant documents</p>
+                    <h2>{{ cours.libelle }}</h2>
+                </div>
+                
+                <!-- content cours -->
+                <section class="cours-content richText">
+                    <div class="list-group">
+                        {% for item in etdDocuments %}
+                            <div class="col-12 p-2 d-flex">
+                                <div class="col-10">
+                                    {{ item.libelle }} <a href="{{ path('front_teacher_cours_etudiant_doc', {id: item.id}) }}">{{item.etudiantDocuments | length }} documents</a><br>
+                                    {{ item.description | raw }}
+                                    
+                                            <a href="{{ path('teacher_download_classes', { id: media.id }) }}">
+                                                
+                                                    <span class="fa fa-file text-danger"></span>
+                                            </a>
+                                    
+                                    
+                                </div>
+                                <a href="{{ path('front_teacher_show_cours', {id: item.id })}}" class="btn btn-sm bg-dark text-white align-self-start" title="Afficher"><span class="fa fa-eye"></span></a>
+                                &nbsp;<a href="{{ path('front_teacher_edit_cours', {matiere_id: matiere.id, cours_id: item.id })}}" class="btn btn-sm bg-dark text-white align-self-start" title="Modifier"><span class="fa fa-edit"></span></a>
+                                &nbsp;
+                            </div>
+
+                        {% endfor %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

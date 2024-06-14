@@ -1,0 +1,283 @@
+{% extends layout_teacher %}
+{% block title %}Espace scolarité{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Frais de scolarité</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Frais de scolarité</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+           <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <h2 class="title-bloc">Frais de scolarité</h2>
+                </div>
+                <!-- content ajouter emploi du temps -->
+                <section class="ajout-edt-content content">
+                    <div class="form-bloc form-inline">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="frais_scolarite_new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.semestre, 'Semestre *:') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.semestre) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.mention, 'Mention *:') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.mention) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.niveau, 'Niveau *:') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.niveau) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.parcours, 'Parcours *:') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.parcours) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <div class="col-xl-2 label-content">
+                                                    {{ form_label(form.etudiant, 'Etudiant *:') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.etudiant) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <div class="col-xl-2 label-content">
+                                                    {{ form_label(form.montant, 'Montant (en Ar) *:') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.montant) }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.date_paiement, 'Date de versement *:') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.date_paiement) }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <div class="col-xl-2 label-content">
+                                                    Mode de paiement
+                                                </div>
+                                                <div class="col-xl-8" id="frais_scolarite_mode_paiement">
+                                                    <div class="form-check form-check-inline">        
+                                                        <input type="radio" id="frais_scolarite_mode_paiement_0" name="frais_scolarite[mode_paiement]" class="form-check-input" 
+                                                        {% if fraisScolarite.modePaiement == constant('\\App\\Entity\\FraisScolarite::MODE_PAIEMENT_VIREMENT') %}
+                                                            checked = checked 
+                                                        {% endif %}
+                                                        value="{{ constant('\\App\\Entity\\FraisScolarite::MODE_PAIEMENT_VIREMENT') }}">
+                                                        <label class="form-check-label" for="frais_scolarite_mode_paiement_0">Virement</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">        
+                                                        <input type="radio" id="frais_scolarite_mode_paiement_1" name="frais_scolarite[mode_paiement]" class="form-check-input" 
+                                                        {% if fraisScolarite.modePaiement == constant('\\App\\Entity\\FraisScolarite::MODE_PAIEMENT_AGENCE') %}
+                                                            checked = checked 
+                                                        {% endif %}
+                                                        value="{{ constant('\\App\\Entity\\FraisScolarite::MODE_PAIEMENT_AGENCE') }}">
+                                                        <label class="form-check-label" for="frais_scolarite_mode_paiement_1">Chèque</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">        
+                                                        <input type="radio" id="frais_scolarite_mode_paiement_2" name="frais_scolarite[mode_paiement]" class="form-check-input" 
+                                                        {% if fraisScolarite.modePaiement == constant('\\App\\Entity\\FraisScolarite::MODE_PAIEMENT_CAISSE') %}
+                                                            checked = checked 
+                                                        {% endif %}
+                                                        value="{{ constant('\\App\\Entity\\FraisScolarite::MODE_PAIEMENT_CAISSE') }}">
+                                                        <label class="form-check-label" for="frais_scolarite_mode_paiement_2">Espèces</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <div class="col-xl-2 label-content">
+                                                    {{ form_label(form.remitter, 'Remettant :') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.remitter) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <div class="col-xl-2 label-content">
+                                                    {{ form_label(form.reference, 'Référence de paiement :') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.reference) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <div class="col-xl-2 label-content">
+                                                    {{ form_label(form.comment, 'Commentaire :') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.comment) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {{ form_errors(form) }}
+                                    {{ form_row(form._token) }}
+
+                                    <div class="action-validate">
+                                        <div class="groups-btn justify-content-end mt-0">
+                                            {% if fraisScolarite.status != constant('\\App\\Entity\\FraisScolarite::STATUS_SRS_REFUSED') %}
+                                                <button type="button" class="btn btn-primary" id="btn-submit-delete-form" onclick="cancelEcolage()">ANNULER</button>
+                                            {% endif %}
+                                            <button type="button" class="btn btn-primary" id="btn-submit-edt-form" onclick="validateEcolage()">Valider</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        function cancelEcolage() {
+            $('#frais_scolarite_new').attr('action', "{{ path('front_scolarite_frais_cancel', {id: fraisScolarite.id}) }}");
+            $('#frais_scolarite_new').submit();
+        }
+        function validateEcolage() {
+            $('#frais_scolarite_new').attr('action', "{{ path('front_scolarite_frais_show', {id: fraisScolarite.id}) }}");
+            $('#frais_scolarite_new').submit();
+        }
+        (function ($) {
+            $(document).ready(function () { 
+                $('#frais_scolarite_mention, #frais_scolarite_niveau').bind('change', function(){
+                    mentionId = $('#frais_scolarite_mention').val();
+                    niveauId = $('#frais_scolarite_niveau').val();
+                    parcoursId = $('#frais_scolarite_parcours').val();
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('front_scolarite_concours_edt_ajax_parcours') }}",
+                        data: {
+                            mentionId : mentionId,
+                            niveauId  : niveauId
+                        }
+                    }).done(
+                        function(html){
+                            $('#frais_scolarite_parcours').html(html);
+                        }
+                    );  
+
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('front_scolarite_fs_etudiant_list') }}",
+                        data: {
+                            mention_id  : mentionId,
+                            niveau_id   : niveauId,
+                            parcours_id : parcoursId,
+                            display_type: 'SELECT-BOX'
+                        }
+                    }).done(
+                        function(html){
+                            $('#frais_scolarite_etudiant').html(html);
+                        }
+                    );                    
+                });   
+
+                $('#frais_scolarite_parcours').bind('change', function(){
+                    mentionId = $('#frais_scolarite_mention').val();
+                    niveauId = $('#frais_scolarite_niveau').val();
+                    parcoursId = $('#frais_scolarite_parcours').val();
+                    
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('front_scolarite_fs_etudiant_list') }}",
+                        data: {
+                            mention_id  : mentionId,
+                            niveau_id   : niveauId,
+                            parcours_id : parcoursId,
+                            display_type: 'SELECT-BOX'
+                        }
+                    }).done(
+                        function(html){
+                            $('#frais_scolarite_etudiant').html(html);
+                        }
+                    );                    
+                });             
+
+            });
+        } )( jQuery );
+        
+    </script>
+{% endblock %}

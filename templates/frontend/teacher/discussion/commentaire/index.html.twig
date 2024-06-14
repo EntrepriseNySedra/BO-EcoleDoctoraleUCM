@@ -1,0 +1,120 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Espace enseignant</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Espace enseignant</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+                <!-- content enseignant -->
+                <section class="enseignant-content">      
+                    <div class="card my-1">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 bg-primary text-light py-2">{{ discussion.titre }}</div>
+                                <div class="col-12">{{ discussion.description }}</div>
+                                <div class="col-12 text-small text-right">Auteur: {{ discussion.auteur.firstName }} {{ discussion.auteur.lastName }}
+                                </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    {% if data | length > 0 %}
+                        {% for comment in data %}
+                           <div class="card my-1">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">{{ comment.message }}</div>
+                                        <div class="col-12 text-small text-right">{{ comment.auteur.firstName }} {{ comment.auteur.lastName }}<br>
+                                            le {{ comment.createdAt | date('d/m/Y H:i:') }}
+                                        </div>
+                                    </div>
+                                </div>                       
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-12">
+                            <p class="alert alert-secondary text-center m-0" role="alert"><strong>Aucune information</strong></p>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="container mt-1">
+                        <div class="form-bloc">                            
+                            <form id="discussion-new" method="POST" class="page-form-edit-new form-validation" role="form">
+                                <!-- input hidden -->
+                                {{ form_errors(form) }}
+                                {{ form_row(form._token) }}
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group row">
+                                            <div class="col-12">{{ form_widget(form.message) }}</div>
+                                        </div>
+                                        <div class="groups-btn justify-content-end text-right">
+                                            <button type="submit" class="btn btn-secondry btn-small" id="btn-submit-product-form">Sauver</button>
+                                        </div>
+                                    </div>
+                                </div>                                   
+                            </form>                            
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row mt-1">
+                            <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                <div class="text-center">
+                                <div class="pagination">
+                                    {{ knp_pagination_render(data) }}
+                                </div> </br>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}

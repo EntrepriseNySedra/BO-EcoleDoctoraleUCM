@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% set menuConcours = true %}
+{% set menuConcoursMatiereAdd = true %}
+{% block pageicon %}
+    pe-7s-notebook
+{% endblock %}
+{% block title %}{{ parent() }}
+    Création d'une matière
+{% endblock %}
+{% block pagetitle %}
+    Création d'une matière
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/concoursmatiere/_form.html.twig') }}
+    <a href="{{ path('admin_concours_matiere_list') }}">Retour vers la liste</a>
+{% endblock %}

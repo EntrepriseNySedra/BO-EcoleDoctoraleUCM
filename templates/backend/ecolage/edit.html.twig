@@ -1,0 +1,63 @@
+{% extends layout_backend %}
+{% block title %}Ecolage::Modification{% endblock %}
+
+{% set menuEcolage = true %}
+{% set menuEcolageList = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Ecolage
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/ecolage/_form.html.twig') }}
+     <a href="{{ path('admin_ecolage_index') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                _defaultOption = "<option> --Séléctionner-- </option>";
+                $('#ecolage_mention').bind('change', function(){
+                    niveauId = $("#ecolage_niveau").val();
+                    mentionId = $(this).val();
+                    $('#ecolage_parcours').html(_defaultOption);
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('admin_ecolage_parcours') }}",
+                        data: {
+                            niveau_id    : niveauId,
+                            mention_id   : mentionId
+                        }
+                    }).done(
+                        function(html){
+                            $('#ecolage_parcours').html(html);
+                        }
+                    )
+                });
+                $('#ecolage_niveau').bind('change', function(){
+                    mentionId = $("#ecolage_mention").val();
+                    niveauId = $(this).val();
+                    $('#ecolage_parcours').html(_defaultOption);
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('admin_ecolage_parcours') }}",
+                        data: {
+                            niveau_id    : niveauId,
+                            mention_id   : mentionId
+                        }
+                    }).done(
+                        function(html){
+                            $('#ecolage_parcours').html(html);
+                        }
+                    )
+                });
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

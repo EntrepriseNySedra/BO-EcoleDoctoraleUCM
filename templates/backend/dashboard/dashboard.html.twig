@@ -1,0 +1,38 @@
+{% extends layout_backend %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block pageicon %}
+    pe-7s-world
+{% endblock %}
+{% block pagetitle %}
+    Tableau de bord  
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-bd">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Tableau de bord</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p>Bienvenue sur back Office </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        /*client.subscribe('/messages', function (message) {
+         toastr.success(message.text);
+         });*/
+    </script>
+{% endblock %}

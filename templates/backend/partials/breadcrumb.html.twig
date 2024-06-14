@@ -1,0 +1,21 @@
+<section class="content-header">
+    <div class="header-icon">
+        <i class="{{ pageIcon }}"></i>
+    </div>
+    <div class="header-title">
+        <h1>{{ pageTitle }}</h1>
+        <small>{{ pageTitleSmall|raw }}</small>
+        <ol class="breadcrumb">
+            <li><a href="{{ path('admin_dashboard') }}"><i class="pe-7s-home"></i> Accueil</a></li>
+            {% if breadcrumbs is defined %}
+                {% for item in breadcrumbs %}
+                    {% if loop.last %}
+                        <li class="active">{{ item.label }}</li>
+                    {% else %}
+                        <li><a href="{{ item.href }}">{{ item.label }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </ol>
+    </div>
+</section>

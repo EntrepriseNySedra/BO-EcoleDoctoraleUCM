@@ -1,0 +1,28 @@
+{% extends layout_backend %}
+{% block title %}Compte bancaire::Ajout{% endblock %}
+
+{% set menuBankCompte = true %}
+{% set menuBankCompteAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Compte bancaire
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/bank-compte/_form.html.twig') }}
+     <a href="{{ path('admin_bank_compte_index') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/jquery.mask.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
+{% endblock %}

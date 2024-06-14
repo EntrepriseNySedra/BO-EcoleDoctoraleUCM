@@ -1,0 +1,130 @@
+{% extends layout_frontend %}
+{% block title %}Préstation{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Préstation</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Préstation</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Assistant</p>
+                    <h2 class="title-bloc">Préstation</h2>
+                </div>
+                <div class="btn-wrap form-group">
+                    <a href="{{ path('front_assistant_prestation_new') }}" class="btn btn-primary" id="btn-submit-product-form" >Ajouter</a>
+                    <a href="{{ path('front_assistant_me_prestation_index') }}" class="btn btn-primary" id="btn-submit-product-form" >Valider</a>
+                </div>
+                <div class="form-bloc filter-bloc">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="filter-form" autocomplete="off">
+                                <div class="row">                                   
+                                    <div class="form-group row">
+                                        <label class="col-lg-2">Calendrier :</label>
+                                        <div class="form-field select-field col-lg-4">
+                                            <select class="form-control" name="calendrier-paiement" id="calendrier_paiement">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for cal in calPaiements %}
+                                                    <option value="{{ cal.id }}" 
+                                                        {% if  cal.id == c %}selected{% endif %}>{{ cal.libelle }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div> <!-- /filter block -->
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="table-responsive table-wrapper">
+                        {% if list is defined and list | length > 0 %}
+                        <table class="table table-bordered table-hover list-data">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Désignation</th>
+                                    <th class="text-center">Bénéficiaires</th>
+                                    <th class="text-center">Quantité</th>
+                                    <th class="text-center">Statut</th>
+                                    <th class="action_col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for prestation in list %}
+                                <tr class="middle-align">
+                                    <td class="text-center w-25">{{ prestation.date | date('d/m/Y') }}</td>
+                                    <td class="text-center w-25">{{ prestation.designation }}</td>
+                                    <td class="text-center w-25">{{ prestation.beneficiaire }}</td>
+                                    <td class="text-center w-25">{{ prestation.quantite }}</td>
+                                    <td class="text-center w-25">{{ prestation.statut }}</td>
+                                    <td class="action_col w-25">
+                                        <div class="wrap-btn">
+                                            <a class="btn" href="{{ path('front_assistant_prestation_edit', { id: prestation.prestationId}) }}?c={{ c }}" title="Modifier">
+                                                    <i class="fa fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { 
+                $("#calendrier_paiement").bind('change', function(){
+                    window.location.href = "{{ path('front_assistant_prestation_index') }}?c=" + $(this).val();
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

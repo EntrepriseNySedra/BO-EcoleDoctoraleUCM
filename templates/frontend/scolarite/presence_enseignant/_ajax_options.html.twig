@@ -1,0 +1,33 @@
+<!-- mention -->
+{% if mentions is defined and mentions | length > 0 %}
+    <option value="" selected="selected">-- Séléctionnez --</option>
+    {% for mention in mentions %}
+        <option value="{{ mention.id }}">{{ mention.nom }} </option>
+    {% endfor %}
+{% endif %}
+
+<!-- parcours -->
+{% if parcours is defined and parcours | length > 0 %}
+    <option value="" selected="selected">-- Séléctionnez --</option>
+    {% for parc in parcours %}
+        <option value="{{ parc.id }}">{{ parc.nom }} </option>
+    {% endfor %}
+{% endif %}
+
+<!-- ue -->
+{% if uniteEnseignements is defined and uniteEnseignements | length > 0 %}
+    <option value="" selected="selected">-- Séléctionnez --</option>
+    {% for ue in uniteEnseignements %}
+        <option value="{{ ue.id }}">{{ ue.libelle }} </option>
+    {% endfor %}
+{% endif %}
+
+<!-- matiere -->
+{% if matieres is defined and matieres | length > 0 %}
+    <option value="" selected="selected">-- Séléctionnez --</option>
+    {% for mat in matieres %}
+        <option value="{{ mat.id }}">{{ mat.nom }} </option>
+    {% endfor %}
+{% endif %}
+
+

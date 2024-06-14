@@ -1,0 +1,170 @@
+<!-- Chercher les classes actives -->
+{% set menuPresenceEnseignantActive = app.request.get('_route') == 'front_chefmention_presence_enseignant_index' or app.request.get('_route') == 'front_doyen_presence_enseignant_index' or app.request.get('_route') == 'front_chefmention_presence_enseignant_matiere_fiche' or app.request.get('_route') == 'front_doyen_presence_enseignant_matiere_fiche' or app.request.get('_route') == 'front_chefmention_presence_enseignant_edit' or app.request.get('_route') == 'front_doyen_presence_enseignant_edit' or app.request.get('_route') == 'front_recteur_presence_enseignant_matiere_fiche' or app.request.get('_route') == 'front_recteur_presence_enseignant_index' or app.request.get('_route') == 'front_recteur_presence_enseignant_edit' or app.request.get('_route') == 'front_sg_presence_enseignant_matiere_fiche' or app.request.get('_route') == 'front_sg_presence_enseignant_index' or app.request.get('_route') == 'front_sg_presence_enseignant_edit' ? "active" : "" %}
+
+{% set menuDemandeDocActive         = (app.request.get('_route') == 'front_chefmention_demande_doc_list' or app.request.get('_route') == 'front_chefmention_demande_doc_edit') ? "active" : "" %}
+
+{% set menuEdtActive                = (app.request.get('_route') == 'front_chefmention_gestion_emploi_du_temps' or app.request.get('_route') == 'front_chefmention_gestion_emploi_du_temps_add' or app.request.get('_route') == 'front_chefmention_gestion_emploi_du_temps_edit' or app.request.get('_route') == 'front_doyen_gestion_emploi_du_temps' or app.request.get('_route') == 'front_recteur_gestion_emploi_du_temps' or app.request.get('_route') == 'front_sg_gestion_emploi_du_temps') ? "active" : "" %}
+
+{% set menuCalendarActive           = (app.request.get('_route') == 'front_cm_thesis_calendar_list' or app.request.get('_route') == 'front_cm_thesis_calendar_edit' or app.request.get('_route') == 'front_doyen_thesis_calendar_list' or app.request.get('_route') == 'front_recteur_thesis_calendar_list' or app.request.get('_route') == 'front_sg_thesis_calendar_list') ? "active" : "" %}
+
+{% set menuExamenCalendarActive     = (app.request.get('_route') == 'front_cm_examen_calendar_list' or app.request.get('_route') == 'front_cm_examen_calendar_edit' or app.request.get('_route') == 'front_doyen_examen_calendar_list' or app.request.get('_route') == 'front_cm_examen_calendar_edit' or app.request.get('_route') == 'front_recteur_examen_calendar_list' or app.request.get('_route') == 'front_sg_examen_calendar_list') ? "active" : "" %}
+
+{% set menuNotesActive              = (app.request.get('_route') == 'front_cm_enseignant' or app.request.get('_route') == 'front_cm_notes' or app.request.get('_route') == 'front_cm_manage_notes' or app.request.get('_route') == 'front_doyen_enseignant' or app.request.get('_route') == 'front_doyen_notes' or app.request.get('_route') == 'front_doyen_manage_notes' or app.request.get('_route') == 'front_recteur_enseignant' or app.request.get('_route') == 'front_recteur_notes' or app.request.get('_route') == 'front_recteur_manage_notes' or app.request.get('_route') == 'front_sg_enseignant' or app.request.get('_route') == 'front_sg_notes' or app.request.get('_route') == 'front_sg_manage_notes') ? "active" : "" %}
+
+{% set menuExtraNotesActive         = (app.request.get('_route') == 'front_cm_extranote_list' or app.request.get('_route') == 'front_cm_extranote_edit' or app.request.get('_route') == 'front_doyen_extranote_list' or app.request.get('_route') == 'front_doyen_extranote_edit' or app.request.get('_route') == 'front_recteur_extranote_list' or app.request.get('_route') == 'front_recteur_extranote_edit' or app.request.get('_route') == 'front_sg_extranote_list' or app.request.get('_route') == 'front_sg_extranote_edit') ? "active" : "" %}
+
+{% set menuConcoursResultActive         = (app.request.get('_route') == 'front_cm_concours_result') ? "active" : "" %}
+{% set menuExamenNoteActive           = (app.request.get('_route') == 'front_cm_examen_note') ? "active" : "" %}
+
+{% if edtPath is not defined %}
+    {% set edtPath = 'front_chefmention_gestion_emploi_du_temps' %}
+{% endif %}
+{#% if fpePath is not defined %}
+    {% set fpePath = 'front_chefmention_presence_enseignant_index' %}
+{% endif %#}
+{% if resultConcoursPath is not defined %}
+    {% set resultConcoursPath = 'front_cm_concours_result' %}
+{% endif %}
+{% if validateResultConcoursPath is not defined %}
+    {% set validateResultConcoursPath = 'front_cm_validate_concours_result' %}
+{% endif %}
+{% if concoursCandidatNotesPath is not defined %}
+    {% set concoursCandidatNotesPath = 'front_cm_concours_candidate_notes' %}
+{% endif %}
+
+{% if validateExamenNotePath is not defined %}
+    {% set validateExamenNotePath = 'front_cm_examen_note' %}
+{% endif %}
+{% if vacationPath is not defined %}
+    {% set vacationPath = 'front_chefmention_presence_enseignant_index' %}
+{% endif %}
+{% if vacationEnseignantPath is not defined %}
+    {% set vacationEnseignantPath = 'front_cm_vacation_enseignant_index' %}
+{% endif %}
+{% if vacationEnseignantEditPath is not defined %}
+    {% set vacationEnseignantEditPath = 'front_cm_vacation_enseignant_edit' %}
+{% endif %}
+
+{% if vacationValidationPath is not defined %}
+    {% set vacationValidationPath = 'front_cm_vacation_validation' %}
+{% endif %}
+
+{% if prestationPath is not defined %}
+    {% set prestationPath = 'front_cm_prestation_index' %}
+{% endif %}
+{% if prestationDetailsPath is not defined %}
+    {% set prestationDetailsPath = 'front_cm_prestation_details_index' %}
+{% endif %}
+{% if prestationValidationPath is not defined %}
+    {% set prestationValidationPath = 'front_cm_prestation_validation' %}
+{% endif %}
+{% if prestValidIndexPath is not defined %}
+    {% set prestValidIndexPath = 'front_cm_valid_prestation_index' %}
+{% endif %}
+
+{% if surveyIndexPath is not defined %}
+    {% set surveyIndexPath = 'front_cm_surveillance_index' %}
+{% endif %}
+{% if surveyDetailsPath is not defined %}
+    {% set surveyDetailsPath = 'front_cm_surveillance_details' %}
+{% endif %}
+{% if syrveyValidatePath is not defined %}
+    {% set syrveyValidatePath = 'front_cm_surveillance_validate' %}
+{% endif %}
+
+<!-- Titre  breadcrumb-->
+{% set breadcrumbTitre = "" %}
+
+<!-- menu for assitant pages -->
+{% set _controller = app.request.get('_controller')|split(':') %}
+{% set controller = _controller[0]|replace({'App\\Controller\\Frontend\\': ''}) %}
+<nav class="menu_list menu_assistant">
+    {% if is_granted('ROLE_RECTEUR') %}
+        <a class="nav-Link " href="{{ path('dashboard') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-file"></span>
+            <span>Dashboard</span>
+        </a>
+    {% endif %}
+    
+     {% if  is_granted('ROLE_SG')%}
+        <a class="nav-Link " href="{{ path('dashboardsg') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-file"></span>
+            <span>Dashboard</span>
+        </a>
+    {% endif %}
+
+    {% if not is_granted('ROLE_DOYEN') %}
+        <a class="nav-Link " href="{{ path(vacationPath) }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-file"></span>
+            <span>Vacations</span>
+        </a>
+
+        <a class="nav-Link " href="{{ path(prestationPath) }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-file"></span>
+            <span>Autres préstations</span>
+        </a>
+
+        <a class="nav-Link " href="{{ path(surveyIndexPath) }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-file"></span>
+            <span>Surveillance</span>
+        </a>
+    {% endif %}
+
+
+    {% if is_granted('ROLE_RECTEUR') %}
+        <a class="nav-Link {{ menuDemandeDocActive }}" href="{{ path('front_recteur_student_index') }}"
+           title="Etudiant">
+            <span class="fa fa-file"></span>
+            <span>Etudiant</span>
+        </a>
+    {% endif %}
+
+   
+
+    
+    
+
+
+
+    {% if is_granted('ROLE_CHEFMENTION') %}
+        <a class="nav-Link {{ menuDemandeDocActive }}" href="{{ path('front_chefmention_demande_doc_list') }}"
+           title="Demande de document">
+            <span class="fa fa-file"></span>
+            <span>Demande de document</span>
+        </a>
+    {% endif %}
+
+    <a class="nav-Link {{ menuEdtActive }}" href="{{ path(edtPath) }}" title="Emploi du temps">
+        <span class="fa fa-calendar-alt"></span>
+        <span>Emploi du temps</span>
+    </a>
+
+    <a class="nav-Link {{ menuCalendarActive }}" href="{{ path(thesisCalendarIndex) }}" title="Calendrier soutenance">
+        <span class="fa fa-calendar-alt"></span>
+        <span>Calendrier soutenances</span>
+    </a>
+
+    <a class="nav-Link {{ menuExamenCalendarActive }}" href="{{ path(calendarIndex) }}" title="Calendrier examen">
+        <span class="fa fa-calendar-alt"></span>
+        <span>Calendrier examen</span>
+    </a>
+    {% if not is_granted('ROLE_DOYEN') %}
+        <a class="nav-Link {{ menuNotesActive }}" href="{{ path(noteIndex) }}" title="Notes">
+            <span class="fa fa-book-open"></span>
+            <span>Notes</span>
+        </a>
+
+        <a class="nav-Link {{ menuExtraNotesActive }}" href="{{ path(extraNoteIndex) }}" title="Notes">
+            <span class="fa fa-book-open"></span>
+            <span>Extra Notes</span>
+        </a>
+        <a class="nav-Link {{ menuExamenNoteActive }}" href="{{ path(validateExamenNotePath) }}" title="Examen">
+            <span class="fa fa-book-open"></span>
+            <span>Resultat examen</span>
+        </a>
+    {% endif %}
+    <a class="nav-Link {{ menuConcoursResultActive }}" href="{{ path(resultConcoursPath) }}" title="Concours">
+        <span class="fa fa-book-open"></span>
+        <span>Resultat concours</span>
+    </a>
+</nav>

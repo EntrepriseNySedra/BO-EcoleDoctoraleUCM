@@ -1,0 +1,181 @@
+{% extends layout_frontend %}
+{% block title %}Extra note{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Extra note</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Note</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/chef-mention/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <div class="title-group">
+                    <h2 class="title-bloc">Extra note</h2>
+                </div>
+                <div class="form-bloc filter-bloc">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="filter-form" autocomplete="off">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group row">
+                                            <label class="col-xl-4">Mention :</label>
+                                            <div class="form-field select-field col-xl-8">
+                                                <select class="form-control" name="mention" id="mention">
+                                                    <option value="">--- Sélectionner ---</option>
+                                                    {% for item in mentions %}
+                                                        <option value="{{ item.id }}">{{ item.nom }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" id="niveau-bloc">
+                                        <div class="form-group row">
+                                            <label class="col-xl-4">Niveaux :</label>
+                                            <div class="form-field select-field col-xl-8">
+                                                <select class="form-control" name="niveau" id="niveau">
+                                                    <option value="">--- Sélectionner ---</option>
+                                                    {% for item in niveaux %}
+                                                        <option value="{{ item.id }}" {#{% if item.id == m %}selected{% endif %}#}>{{ item.libelle }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" id="parcours-bloc">
+                                        <div class="form-group row">
+                                            <label class="col-xl-4">Parcours :</label>
+                                            <div class="form-field select-field col-xl-8">
+                                                <select class="form-control" name="parcours" id="parcours">
+                                                    <option value="">--- Sélectionner ---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div> <!-- /filter block -->
+
+                <!-- content  -->
+                <section class="demande-doc-content content richText" id="items-list">
+                    <p class="alert alert-secondary" role="alert"><strong>Aucune information</strong></p>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('#niveau-bloc').hide();
+                $('#parcours-bloc').hide();
+                $('#mention').on('change', function () {
+                    $("#niveau").val("");
+                    $("#parcours").val("");
+
+                    $("#items-list").html('<p class="alert alert-secondary" role="alert"><strong>Aucune information</strong></p>');
+
+                    if ($(this).val() == "") {
+                        $('#niveau-bloc').hide();
+                        $('#parcours-bloc').hide();
+                    } else {
+                        $('#niveau-bloc').show();
+                        $('#parcours-bloc').show();
+                    }
+
+                });
+                $('#niveau').on('change', function () {
+                    const niveauId = $(this).val(),
+                        mentionId = $('#mention').val();
+
+                    $("#items-list").html('');
+
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path('front_options_ajax_parcours') }}",
+                        data:   {
+                            mentionId: mentionId,
+                            niveauId:  niveauId,
+                        }
+                    }).done(
+                        function (html) {
+                            $('#mention').val(mentionId)
+                            $('#parcours').html(html);
+                        }
+                    )
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path('front_ajax_get_extra_note') }}",
+                        data:   {
+                            mentionId:  mentionId,
+                            niveauId: niveauId,
+                            parcoursId: $('#parcours').val(),
+                        }
+                    }).done(
+                        function (html) {
+                            $('#items-list').html(html);
+                        }
+                    )
+                });
+
+                $('#parcours').on('change', function () {
+                    const parcoursId = $(this).val(),
+                        mentionId = $('#mention').val(),
+                        niveauId = $('#niveau').val()
+                    ;
+
+                    $("#items-list").html('');
+
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path('front_ajax_get_extra_note') }}",
+                        data:   {
+                            mentionId:  mentionId,
+                            niveauId: niveauId,
+                            parcoursId: parcoursId,
+                        }
+                    }).done(
+                        function (html) {
+                            $('#items-list').html(html);
+                        }
+                    )
+                });
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}
+

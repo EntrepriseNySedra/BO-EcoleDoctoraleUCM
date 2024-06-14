@@ -1,0 +1,275 @@
+{% extends layout_frontend %}
+{% block title %}Validation concours{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Concours notes</h1>
+
+    <!-- big slider banner espace chef de mention -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace {{ workspaceTitle }}</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Chef de mention">Espace {{ workspaceTitle }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Resultat concours</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/chef-mention/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">{{ workspaceTitle }}</p>
+                    <h2 class="title-bloc">Resultat concours</h2>
+                </div>
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <!-- filter block -->
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="filter-form" autocomplete="off">
+                                    <div class="form-group row">
+                                        {% if not is_granted('ROLE_CHEFMENTION') %}
+                                            <label class="col-xl-1">Mention :</label>
+                                            <div class="form-field select-field col-xl-3">
+                                                <select class="form-control" name="mention" id="mention">
+                                                    <option value="">--- Sélectionner ---</option>
+                                                    {% for mention in mentions %}
+                                                        <option value="{{ mention.id }}" {% if m is defined and mention.id == m %}selected{% endif %}>{{ mention.nom }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% endif %}
+
+                                        <label class="col-xl-1">Parcours :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="parcours" id="parcours">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for parc in parcours %}
+                                                    <option value="{{ parc.id }}" {% if p is defined and parc.id == p %}selected{% endif %}>{{ parc.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <label class="col-xl-1">Concours :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="concours" id="concours">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for conc in concours %}
+                                                    <option value="{{ conc.id }}" {% if c is defined and conc.id == c %}selected{% endif %}>{{ conc.libelle }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        {% if is_granted('ROLE_RECTEUR') %}
+                                            <div class="col-8 mt-1">
+                                                <div class="form-group row">
+                                                    <label class="col-2" >Candidat :</label>
+                                                    <div class="form-field col-10">
+                                                        <input class="col-12" type="text" name="candidat" id="candidat" placeholder="Rechercher ...">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> <!-- /filter block -->
+
+
+                    <div class="table-responsive table-wrapper" id="result_list">
+                        {% if resultats is defined and resultats | length > 0 %}
+                            <form id="validate_concours_result_form" method="post" enctype="multipart/form-data" role="form" action="{{ path(validateResultConcoursPath, {id: selectedConcours.id}) }}">
+                                <table class="table table-bordered table-hover list-data">
+                                    <thead>
+                                        <tr>
+                                            <th>Rang</th>
+                                            <th class="text-center">Immatricule</th>
+                                            <th class="text-center">Nom</th>
+                                            <th class="text-center">Prénom</th>
+                                           
+                                            <th class="text-center">Centre</th>
+                                 
+                                           
+                                            {% if is_granted('ROLE_RECTEUR') %}
+                                                <th class="text-center">Resultat</th>
+                                            {% endif %}
+                                            <th class="text-center">Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% set rang = 1 %}
+                                    {% for key, item in resultats %}
+                                        <tr class="middle-align">
+                                            <td class="w-15">{{ rang }}</td>
+                                            <td class="w-15">{{ item.immatricule }}</td>
+                                            <td class="w-15">{{ item.first_name }}</td>
+                                            <td class="w-15">{{ item.last_name }}</td>
+                                     
+                                            <td class="text-center w-15">{{ item.centre }}</td>
+                                          
+                                            {% if is_granted('ROLE_RECTEUR') %}
+                                                <td class="text-center w-15">Admis <input type="checkbox" name="candidat_id[]" 
+                                                    {% if item.average >= selectedConcours.deliberation or item.resultat %}
+                                                        checked = checked
+                                                    {% endif %}
+                                                    value="{{ item.concours_candidature_id }}">
+                                                </td>
+                                            {% endif %}
+                                            <td class="action_col w-15">
+                                                <div class="wrap-btn">
+                                                    <a class="btn" href="{{ path(concoursCandidatNotesPath, { 'id': item.concours_candidature_id }) }}?c={{ c }}&p={{ p }}">
+                                                        <span class="fa fa-eye"></span>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% set rang = rang + 1 %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% if selectedConcours and (selectedConcours.deliberation is not null) %}
+                                    <input type="hidden" id="c" name="c" value="{{ c }}" />
+                                    <input type="hidden" id="p" name="p" value="{{ p }}" />
+                                    <div class="form-group text-right">
+                                        {% if 
+                                            is_granted('ROLE_RECTEUR') and (selectedConcours.resultStatut == constant('\\App\\Entity\\Concours::STATUS_VALIDATED_RECTEUR'))
+                                            
+                                        %}
+                                            <button type="button" id="send_result_btn" class="btn btn-primary btn-connexion btn-cancel my-2" onclick="sendResult()">
+                                                ENVOYER RESULTAT
+                                            </button>
+                                        {% endif %}
+                                        {#% if 
+                                            (
+                                                is_granted('ROLE_RECTEUR') or
+                                                (is_granted('ROLE_SG') and selectedConcours.resultStatut < constant('\\App\\Entity\\Concours::STATUS_VALIDATED_RECTEUR')) or
+                                                (is_granted('ROLE_DOYEN') and selectedConcours.resultStatut < constant('\\App\\Entity\\Concours::STATUS_VALIDATED_SG')) or
+                                                (is_granted('ROLE_CHEFMENTION') and selectedConcours.resultStatut < constant('\\App\\Entity\\Concours::STATUS_VALIDATED_DOYEN'))
+                                            )
+                                         %#}
+                                         {% if  is_granted('ROLE_RECTEUR') %}
+                                            <button type="submit" class="btn btn-primary btn-connexion btn-cancel my-2 " onclick="submit_form()">
+                                                VALIDER
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </form>
+                        {% endif %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        ( function( $, window ) {
+            $(document).ready(function () { 
+                _mentionUrlParam = "";
+                _parcoursId = $('#parcours').val();
+                _mentionId  = $('#mention').val();
+                _concoursId = $('#concours').val();
+                if(_mentionId != undefined) {
+                    _mentionUrlParam = "&m=" + _mentionId;
+                }
+
+                $('#mention').bind('change', function(){
+                    location.href = '{{ path(resultConcoursPath)}}' + "?m=" + $(this).val() + "&p=" + _parcoursId + "&c=" + _concoursId;
+                });
+                $('#concours').bind('change', function(){
+                    location.href = '{{ path(resultConcoursPath)}}' + "?c=" + $(this).val() + "&p=" + _parcoursId + _mentionUrlParam;
+                });
+                $('#parcours').bind('change', function(){
+                    location.href = '{{ path(resultConcoursPath)}}' + "?c=" + _concoursId + "&p=" + $(this).val() + _mentionUrlParam;
+                });
+
+                $('#parcours').bind('change', function(){
+                    location.href = '{{ path(resultConcoursPath)}}' + "?c=" + _concoursId + "&p=" + $(this).val() + _mentionUrlParam;
+                });
+                // $('#send_result_btn').bind('click', function(){
+                //     alert('');
+                // });
+
+
+                $('#candidat').on('keyup', function () {
+                    const mentionId = $('#mention').val(),
+                        parcoursId = $('#parcours').val(),
+                        concoursId = $('#concours').val(),
+                        qString    = $(this).val();
+                    $("#result_list").html('');
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path(concoursAjaxResult) }}",
+                        data:   {
+                            m:  mentionId,
+                            p: parcoursId,
+                            c: concoursId,
+                            q: qString
+                        }
+                    }).done(
+                        function (html) {
+                            $('#result_list').html(html);
+                        }
+                    )
+                });
+
+
+            });
+        } )( jQuery, Window);
+
+        function submit_form() {
+            $('#validate_concours_result_form').submit();
+        }
+        function sendResult() {
+            _concoursId = $('#concours').val();
+            candidatIds = [];
+            $("input[name='candidat_id[]']:checked").each(function(){
+                candidatIds.push($(this).val())
+            });
+            console.log(candidatIds);
+            $.ajax({
+                method: "POST",
+                url: "/recteur/concours/" + _concoursId + "/result/send",
+                data: {
+                    candidat_id : candidatIds
+                }
+            }).done(
+                function(html){
+                    alert('Resultat envoyé');
+                }
+            )
+        }
+    </script>
+{% endblock %}
+

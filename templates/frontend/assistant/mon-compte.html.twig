@@ -1,0 +1,165 @@
+{% extends layout_frontend %}
+{% block title %}Fiche présence enseignants{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Fiche de renseignements</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace {{ workspaceTitle }}</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path(workspacePath) }}" title="Assistant">Espace {{ workspaceTitle }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Mon compte</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+           
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">{{ workspaceTitle }}</p>
+                    <h2 class="title-bloc">Mon compte</h2>
+                </div>
+                <!-- content actualites -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="form-bloc">
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="user_edit" method="POST" class="page-form-edit-new form-validation" role="form" action="{{ path('front_assistant_me') }}">
+                                    {{ form_errors(form) }}
+                                    {{ form_row(form._token) }}
+                                    {% if user.id %}
+                                        <input type="hidden" id="user_id" name="user_id" value="{{ user.id }}" />
+                                    {% endif %}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form_label(form.login, 'Login') }}
+                                                {{ form_widget(form.login) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form_label(form.plainPassword, 'Mot de passe') }}
+                                                {% if user.id %}
+                                                    {{ form_widget(form.plainPassword) }}
+                                                {% else %}
+                                                    {{ form_widget(form.plainPassword, { "attr": { "required": "" } }) }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form_label(form.firstName, 'Prénom') }}
+                                                {{ form_widget(form.firstName) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form_label(form.lastName, 'Nom') }}
+                                                {{ form_widget(form.lastName) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form_label(form.email) }}
+                                                {{ form_widget(form.email) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                {{ form_label(form.bank_name, 'Banque :') }}
+                                                {{ form_widget(form.bank_name) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                {{ form_label(form.bank_num, 'RIB :') }}
+                                                {{ form_widget(form.bank_num) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                {{ form_widget(form.bank_num) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" style="visibility: hidden;display: none;">
+                                            <div class="form-group">
+                                                {{ form_widget(form.status) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" style="visibility: hidden;display: none;">
+                                            <div class="form-group">
+                                                {{ form_widget(form.profil) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" style="visibility: hidden;display: none;">
+                                            <div class="form-group">
+                                                {{ form_widget(form.mention) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" style="visibility: hidden;display: none;">
+                                            <div class="form-group">
+                                                {{ form_widget(form.faculte) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="groups-btn justify-content-end mt-0">
+                                        <button type="button" class="btn btn-secondary" id="btn-cancel">Annuler</button>
+                                        <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Valider</button>
+                                    </div>
+                                </form>
+
+
+
+                            </div>
+                        </div>
+
+
+                        
+                    </div>
+
+                </section>
+
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {});
+        } )( jQuery );
+    </script>
+{% endblock %}
+

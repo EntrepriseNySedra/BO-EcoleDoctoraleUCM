@@ -1,0 +1,83 @@
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Empoloi du temps</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="{{ path('front_student_emploi_du_temps') }}" title="Formation">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Forum</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container">
+        <div class="container container_row">
+           <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/etudiant/_menu.html.twig') }}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <section>
+                    {% if data | length > 0 %}
+                        {% for disc in data %}
+                           <div class="card my-1">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 bg-primary text-light py-2">{{ disc.titre }}</div>
+                                        <div class="col-12">{{ disc.description }}</div>
+                                        <div class="col-12 text-small text-right">Auteur: {{ disc.auteur.firstName }} {{ disc.auteur.lastName }}<br>
+                                            <small>Créée le: {{ disc.createdAt | date('d/m/Y')}}</small>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            <a class="btn btn-secondary" href="{{ path('frontend_discussion_comment_index', {id: disc.id}) }}">Commenter</a>
+                                        </div>
+                                    </div>
+                                </div>                       
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-12">
+                                <p class="alert alert-secondary text-center m-0" role="alert"><strong>Aucune information</strong></p>
+                        </div>
+                    {% endif %}
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+        } )( jQuery );
+    </script>
+{% endblock %}
+

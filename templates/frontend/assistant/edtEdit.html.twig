@@ -1,0 +1,387 @@
+{% extends layout_teacher %}
+{% block title %}Espace assistant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Espace assistant</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Modifier emploi du temps</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Modifier emploi du temps</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+           <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+           <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Espace assistant</p>
+                    <h2 class="title-bloc">Modifier emploi du temps</h2>
+                </div>
+                <!-- content emploi du temps -->
+                <section class="content emploi-temps-content richText">
+                    <div class="form-bloc form-inline">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="emploi_du_temps-edit" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+                                    {% set mention = "" %}
+                                    {% if app.user.mention is defined %}
+                                        {% set mention = app.user.mention.id %}
+                                    {% endif %}
+                                    <input type="hidden" name="mentionId" value="{{ mention }}" />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="emploi_du_temps_niveaux" class="col-xl-4">Niveaux<span class="">*</span> : </label>
+                                                <div class="form-field select-field col-xl-8">
+                                                    <select id="emploi_du_temps_niveaux" name="emploi_du_temps[niveau]" required="required" class="form-control">
+                                                        <option> -- Séléctionner -- </option>
+                                                        {% for niveau in niveaux %}
+                                                            <option 
+                                                            {% if niveau.id == emploiDuTemps.niveau.id %}
+                                                                selected
+                                                            {% endif %}
+                                                            value="{{ niveau.id }}">{{ niveau.libelle }} {{ niveau.systeme }} {{ niveau.diplome }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="emploi_du_temps_parcours" class="col-xl-4">Parcours<span class="">*</span> : </label>
+                                                <div class="form-field select-field col-xl-8">
+                                                    <select id="emploi_du_temps_parcours" name="emploi_du_temps[parcours]" class="form-control">
+                                                        <option value=""> -- Séléctionner -- </option>
+                                                        {% for parc in parcours %}
+                                                            <option 
+                                                                {% if emploiDuTemps.parcours and parc.id == emploiDuTemps.parcours.id %}
+                                                                    selected
+                                                                {% endif %}
+                                                            value="{{ parc.id }}">{{ parc.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="emploi_du_temps_semestre" class="col-xl-4">Semestres<span class="">*</span> : </label>
+                                                <div class="form-field select-field col-xl-8">
+                                                    <select id="emploi_du_temps_semestre" name="emploi_du_temps[semestre]" class="form-control">
+                                                        <option> -- Séléctionner -- </option>
+                                                        {% for semestre in semestres %}
+                                                            <option 
+                                                                {% if semestre.id == emploiDuTemps.semestre.id %}
+                                                                    selected
+                                                                {% endif %}
+                                                            value="{{ semestre.id }}">{{ semestre.libelle }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="emploi_du_temps_ue" class="col-xl-4">Unité d'enseignements<span class="">*</span> : </label>
+                                                <div class="form-field select-field col-xl-8">
+                                                    <select id="emploi_du_temps_ue" name="emploi_du_temps[ue]" class="form-control">
+                                                        <option> -- Séléctionner -- </option>
+                                                        {% for ue in uniteEnseignements %}
+                                                            <option 
+                                                                {% if ue.id == emploiDuTemps.ue.id %}
+                                                                    selected
+                                                                {% endif %}
+                                                            value="{{ ue.id }}">{{ ue.libelle }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="emploi_du_temps_matiere" class="col-xl-4">Matières<span class="">*</span> : </label>
+                                                <div class="form-field select-field col-xl-8">
+                                                    <select id="emploi_du_temps_matiere" name="emploi_du_temps[matiere]" class="form-control">
+                                                        <option> -- Séléctionner -- </option>
+                                                        {% for matiere in matieres %}
+                                                            <option 
+                                                                {% if matiere.id == emploiDuTemps.matiere.id %}
+                                                                    selected
+                                                                {% endif %}
+                                                            value="{{ matiere.id }}">{{ matiere.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.dateSchedule, 'Date :') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.dateSchedule) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.startTime, 'Heure début* :') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.startTime) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.endTime, 'Heure fin* :') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.endTime) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12">
+                                            {{ form_widget(form.troncCommun) }}
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            {{ form_widget(form.connexion) }}
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            {{ form_widget(form.videoprojecteur) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive table-wrapper emploi_du_temps_salle_ue">
+                                        <table class="table table-bordered table-hover list-data">
+                                            <thead>
+                                                <tr>
+                                                    <th>Numéro</th>
+                                                    <th>Batiment</th>
+                                                    <th>Salles</th>
+                                                    <th>Capacité</th>
+                                                    <th class="action_col w-7">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for salle in salles %}
+                                                    <tr class="middle-align">
+                                                        <td>{{ salle.id }}</td>
+                                                        <td>{{ salle.batimentNom }}</td>
+                                                        <td>{{ salle.libelle }}</td>
+                                                        <td>{{ salle.capacite }} </td>
+                                                        <td class="action_col w-7">
+                                                            <input type="radio" id="emploi_du_temps_salle_{{salle.id}}" name="emploi_du_temps[salles]"
+                                                            {% if salle.id == emploiDuTemps.salles.id %}
+                                                                checked=checked
+                                                            {% endif %}
+                                                            value="{{salle.id}}" />
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="alert alert-danger edt-required-fields" role="alert" style="display: none;"> Merci de renseigner la date, heure début et heure fin </div>
+                                    <div class="form-group text-right m-t-20">
+                                        <button type="button"  class="btn btn-primary checkListClass">Vérification  des salles disponibles</button>
+                                    </div>
+                                    {{ form_errors(form) }}
+                                    {{ form_row(form._token) }}
+                                    
+                                    <!-- <div class="action-validate" style="display: none;"> -->
+                                    <div class="action-validate" style="display: block;">
+                                        <div class="groups-btn justify-content-end mt-0">
+                                            <button type="button" class="btn btn-primary" id="btn-submit-edt-form">Valider</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                _defaultOption = "<option> --Séléctionner-- </option>";
+                $('#emploi_du_temps_niveaux').bind('change', function(){
+                    $(".action-validate").hide();
+                    mentionId = $("input[name='mentionId']").val();
+                    parcoursId = $("#emploi_du_temps_parcours").val();                    
+                    niveauId = $(this).val();
+                    $('.emploi_du_temps_salle_ue').html("");
+                    $('#emploi_du_temps_ue').html(_defaultOption);
+                    $('#emploi_du_temps_matiere').html(_defaultOption);
+                    $(".checkListClass").show();
+                    $.ajax({
+                        method: "GET",
+                        url: "/assistant/niveaux/effectif",
+                        data: {
+                            niveauId    : niveauId,
+                            mentionId   : mentionId,
+                            parcoursId   : parcoursId
+                        }
+                    }).done(
+                        function(html){
+                            $('.emploi_du_temps_salle_ue').html(html);
+                        }
+                    )
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('front_edt_ajax_options') }}",
+                        data: {
+                            parent_name : 'niveau',
+                            parent_id   : niveauId,
+                            child_target: 'semestre'
+                        }
+                    }).done(
+                        function(html){
+                            $('#emploi_du_temps_semestre').html(html);
+                        }
+                    );
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('front_edt_ajax_options') }}",
+                        data: {
+                            parent_name : 'niveau',
+                            parent_id   : niveauId,
+                            child_target: 'parcours'
+                        }
+                    }).done(
+                        function(html){
+                            $('#emploi_du_temps_parcours').html(html);
+                        }
+                    );
+                });
+
+                $('#emploi_du_temps_parcours').bind('change', function(){
+                    $(".action-validate").hide();
+                    $('#emploi_du_temps_ue').html(_defaultOption);
+                    $('#emploi_du_temps_matiere').html(_defaultOption);
+                });
+
+                $('#emploi_du_temps_semestre').bind('change', function(){
+                    $(".action-validate").hide();
+                    niveauId = $('#emploi_du_temps_niveaux').val();
+                    parcoursId = $('#emploi_du_temps_parcours').val();
+                    semestreId = $(this).val();
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('front_edt_ajax_options') }}",
+                        data: {
+                            parent_name : 'semestre',
+                            parent_id   : semestreId,
+                            niveau_id   : niveauId,
+                            parcours_id : parcoursId
+                        }
+                    }).done(
+                        function(html){
+                            $('#emploi_du_temps_ue').html(html);
+                        }
+                    );                    
+                });
+
+                $('#emploi_du_temps_ue').bind('change', function(){
+                    $(".action-validate").hide();
+                    parentId = $(this).val();
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('front_edt_ajax_options') }}",
+                        data: {
+                            parent_name : 'uniteEnseignements',
+                            parent_id   : parentId,
+                        }
+                    }).done(
+                        function(html){
+                            $('#emploi_du_temps_matiere').html(html);
+                        }
+                    );                    
+                });
+
+                $('.checkListClass').bind('click', function(){
+                    dateSchedule    = $("#emploi_du_temps_dateSchedule").val();
+                    startTime       = $("#emploi_du_temps_startTime").val();
+                    endTime         = $("#emploi_du_temps_endTime").val();
+                    mentionId       = $("input[name='mentionId']").val();
+                    niveauId        = $("#emploi_du_temps_niveaux").val();
+                    matiereId       = $("#emploi_du_temps_matiere").val();
+                    parcoursId      = $("#emploi_du_temps_parcours").val();
+                    connexionOn     = $("#emploi_du_temps_connexion").is(":checked") ? 1 : 0;
+                    videoProjecteurOn     = $("#emploi_du_temps_videoprojecteur").is(":checked") ? 1: 0;
+                    troncCommunOn       = $("#emploi_du_temps_troncCommun").is(":checked") ? 1: 0;
+                    $(".action-validate").hide();
+                    $(".edt-required-fields").hide();
+                    if(dateSchedule === "" || startTime === "" || endTime === ""){
+                        $(".edt-required-fields").show();
+                    }
+                    else{
+                        $.ajax({
+                            method: "GET",
+                            url: "{{ path('front_assistant_edt_salles')}}",
+                            data: {
+                                mentionId   :mentionId,
+                                niveauId    :niveauId,
+                                parcoursId  :parcoursId,
+                                matiereId   :matiereId,
+                                dateSchedule:dateSchedule,
+                                startTime   :startTime,
+                                endTime     :endTime,
+                                connexion   :connexionOn,
+                                videoProjecteur     :videoProjecteurOn,
+                                troncCommun :troncCommunOn
+                            }
+                        }).done(
+                            function(html){
+                                $('.emploi_du_temps_salle_ue').html(html);
+                                $(".edt-required-fields").hide();
+                            }
+                        )
+                    }
+                });
+                $("#btn-submit-edt-form").on('click', function(){
+                    $("#emploi_du_temps-edit").submit();
+                });
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

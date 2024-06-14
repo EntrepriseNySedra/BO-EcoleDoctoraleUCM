@@ -1,0 +1,35 @@
+{% if emploiDuTemps|length > 0 %}
+    <table class="table table-bordered table-hover emploiDuTemps-day">
+        <thead>
+            <tr>
+                <th class="w-5">Date</th>
+                <th class="w-10">Heure</th>
+                <th>Matière</th>
+                <th class="w-10">Salle</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% set initStartDate = "" %}
+        {% if emploiDuTemps|length > 0 %}
+            {% for edt in emploiDuTemps %}
+            <tr class="middle-align">
+                    <td class="w-5">{{ edt['startDate']|date('d/m/Y') }}</td>
+                    <td class="w-10">
+                        {{ edt['startDate'] | format_time(timeFormat='short', locale='fr') }}
+                        &mdash; <!-- <span class="fa fa-minus"></span> -->
+                        {{ edt['endDate'] | format_time(timeFormat='short', locale='fr') }}
+                    </td>
+                    <td>{{ edt['matiere'] }}</td>
+                    <td class="w-10">{{ edt['salle'] }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4">Aucune information</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="alert alert-secondary" role="alert"><strong>Aucun résultat</strong></p>
+{% endif %}

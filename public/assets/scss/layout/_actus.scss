@@ -1,0 +1,36 @@
+.actuDetail-bloc {
+    .date-pub {
+        color: #333;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0 0 1.25rem;
+        .label-text {
+            color: $red;
+        }
+    }
+    .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-left: -5px;
+        margin-right: -5px;
+        margin-bottom: 20px;
+        a {
+            background-color: #333;
+            color: #fff;
+            display: inline-flex;
+            flex-wrap: nowrap;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.25;
+            margin: 0 5px 5px;
+            padding: 5px 10px;
+            text-decoration: none;
+            white-space: nowrap;
+            &:hover {
+                background-color: $red;
+            }
+        }
+    }
+}

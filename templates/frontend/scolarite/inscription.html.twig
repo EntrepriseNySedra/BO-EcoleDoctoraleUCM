@@ -1,0 +1,160 @@
+{% extends layout_frontend %}
+{% block title %}Candidatures{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/buttons.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/libs/datatable/DT_bootstrap.css') }}"/>
+    <style>
+        .dt-buttons button {
+            color: #f2f2f2;
+            /*font-size: 12px;*/
+            border-radius: 4px;
+            /*border: 1px solid #64c3c2 !important;*/
+            background: #282b2b;
+        }
+
+        .dt-buttons button:hover {
+            color: #f2f2f2;
+            /*font-size: 12px;*/
+            border-radius: 4px !important;
+            /*border: 1px solid #64c3c2 !important;*/
+            background: #282b2b !important;
+        }
+
+        .dt-buttons {
+            /*position: absolute!important;*/
+            left: 50%;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Inscriptions</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-training.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Inscriptions</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <!-- content -->
+                <section class="inscriptions-content content">
+                    <div class="title-group">
+                        <p class="sup-title">Scolarité</p>
+                        <h2 class="title-bloc">Liste des inscriptions</h2>
+                    </div>
+                    {% if inscriptions|length > 0 %}
+                        <div class="table-responsive table-wrapper">
+                            <table class="table table-bordered table-hover table-advance">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Prénom</th>
+                                        <th>Email</th>
+                                        <th class="text-center">Niveau</th>
+                                        <th>Mention</th>
+                                        <th>Parcours</th>
+                                        <th class="action_col w-5">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% set processedIds = [] %}
+                                {% for item in inscriptions %}
+                                    {% if item.etudiant.id not in processedIds %}
+                                        {% set processedIds = processedIds|merge([item.etudiant.id]) %}
+                                        <tr class="middle-align">
+                                            <td>{{ item.etudiant.firstName }}</td>
+                                            <td>{{ item.etudiant.lastName }}</td>
+                                            <td>{{ item.etudiant.email }}</td>
+                                            <td>{{ item.etudiant.mention.nom }}</td>
+                                            <td>{{ item.etudiant.niveau.libelle }}</td>
+                                            <td>{% if item.etudiant.parcours %}{{ item.etudiant.parcours.nom }} {% endif %}</td>
+                                            <td style="text-align: center;">
+                                                <div class="wrap-btn">
+                                                    <a class="btn btn-primary" href="{{ path('front_scolarite_detail_inscription', { id: item.id}) }}"
+                                                        title="Valider">
+                                                        <span>Afficher</span>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+
+                            </table></br>
+
+                           
+                        </div>
+                    {% else %}
+                        <p class="alert alert-secondary" role="alert"><strong>Aucun résultat</strong></p>
+                    {% endif %}
+                </div>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+    <script>
+        $(function () {
+            var oTable = $('#list-validated').dataTable({
+                "aLengthMenu":    [[100, 250, 500, -1], [100, 250, 500, "Tout"]],
+                "iDisplayLength": 1000,
+                "aoColumnDefs":   [{
+                    "bSortable": false,
+                    "aTargets":  [4]
+                }],
+                "paging":         false,
+                "ordering":       false,
+                "searching":      false,
+                "info":           false
+            });
+        })
+
+        function updateElement(id, value) {
+            $("#action").val(value);
+            $("#validate-form-" + id).submit();
+        }
+    </script>
+{% endblock %}
+

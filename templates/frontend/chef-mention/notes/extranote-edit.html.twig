@@ -1,0 +1,122 @@
+{% extends layout_teacher %}
+{% block title %}Espace {{ workspaceTitle }}{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Extra note</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace {{ workspaceTitle }}</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Note</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/chef-mention/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <!-- content -->
+                <div class="title-group">
+                    <h2 class="title-bloc">Modification d'une note</h2>
+                </div>
+
+                <section class="edit-emploiTemps-content content">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-bloc form-inline">
+                                <form id="emploi_du_temps-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.etudiant, 'Etudiant *:') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.etudiant) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.note, 'Note *:') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.note) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.type, 'Type *:') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.type) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-4 label-content">
+                                                    {{ form_label(form.status, 'Statut *:') }}
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    {{ form_widget(form.status) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{ form_errors(form) }}
+                                    {{ form_row(form._token) }}
+
+                                    <div class="action-validate">
+                                        <div class="groups-btn justify-content-end mt-0">
+                                            <button type="submit" class="btn btn-primary" id="btn-submit-edt-form">Valider</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {  });
+
+        })(jQuery);
+    </script>
+{% endblock %}

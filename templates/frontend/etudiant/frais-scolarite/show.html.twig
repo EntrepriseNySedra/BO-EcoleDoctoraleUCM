@@ -1,0 +1,92 @@
+{% extends layout_frontend %}
+{% block title %}Frais scolarité{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Frais de scolarité</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="{{ path('front_student_emploi_du_temps') }}" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Frais de scolarité</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Scolarité</p>
+                    <h2 class="title-bloc">Frais de scolarité</h2>
+                </div>
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <h3>{{ etudiant.lastName }} {{ etudiant.firstName }} :</h3>
+                    <div class="table-responsive table-wrapper">
+                        {% if fraisScolarites is defined and fraisScolarites | length > 0 %}
+                            <table class="table table-bordered table-hover list-data">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Semestre</th>
+                                        <th class="text-center">Date</th>
+                                        <th class="text-center">Montant payé</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in fraisScolarites %}
+                                    <tr class="middle-align">
+                                        <td class="w-15">{{ item.semestre }}</td>
+                                        <td class="text-center w-15">{{ item.datePaiement | date('d/m/Y') }}</td>
+                                        
+                                        <td class="text-center w-15">{{ item.montant }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                           
+                                
+                           
+                        {% endif %}
+                    </div>
+                    <a href="{{ path('front_scolarite_frais_index') }}?s={{s}}&m={{m}}&n={{n}}&p={{p}}" class="btn btn-primary mt-1" id="btn-submit-edt-form">Retour</a>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+        } )( jQuery );
+    </script>
+{% endblock %}
+

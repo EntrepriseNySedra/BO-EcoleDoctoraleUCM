@@ -1,0 +1,71 @@
+{% if resultats|length > 0 %}
+    <div class="dt-custom-title texte-center">Résultat {{ selectedConcours.libelle }} - {{ selectedMentions.nom }}</div>
+    {% if is_granted('ROLE_SSRS') %}
+        <div class="form-bloc filter-bloc">
+            <div class="card">
+                <div class="card-body">
+                    <form id="form-deliberation" method="post" autocomplete="off" action="">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                <label class="col-xl-4">Déliberation :</label>
+                                <div class="form-field text-field col-xl-8">
+                                    <input type="text" name="concours[deliberation]" id="concours_deliberation" value="{{ selectedConcours.deliberation }}">
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <table class="table table-bordered table-hover table-advance" id="list-validated">
+        <thead>
+        <tr>
+            <th>Matricule</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Centre</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for key, item in resultats %}
+            <tr class="middle-align">
+                <td>{{ item.immatricule }}</td>
+                <td>{{ item.first_name }}</td>
+                <td>{{ item.last_name }}</td>
+                <td>{{ item.centre }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+    <div class="groups-btn justify-content-start my-1">
+       
+    </div>
+    
+
+{% else %}
+    <p class="alert alert-secondary" role="alert"><strong>Aucun résultat</strong></p>
+{% endif %}
+
+<script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+<script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+<script !src="">
+    var oTable = $('#list-validated').dataTable({
+        "aLengthMenu":    [[100, 250, 500, -1], [100, 250, 500, "Tout"]],
+        "iDisplayLength": 1000,
+        "aoColumnDefs":   [{
+            "bSortable": false,
+            "aTargets":  [4]
+        }],
+        "paging":         false,
+        "ordering":       false,
+        "searching":      false,
+        "info":           false
+    });
+</script>

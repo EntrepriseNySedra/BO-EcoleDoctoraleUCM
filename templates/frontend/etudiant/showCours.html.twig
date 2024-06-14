@@ -1,0 +1,146 @@
+
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Mes cours</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path('front_student_emploi_du_temps') }}" title="Espace étudiant">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Mes cours</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/etudiant/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+            <!-- main Bloc -->
+           <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="sup-title">Espace étudiant</p>
+                            <div class="title-group text-center">
+                                
+                                <h2 class="title-bloc">{{ cours.matiere.nom }}</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="mesCours-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h3 class="text-center">{{ cours.libelle }}</h3>
+                                        <p>{{ cours.description|raw }}</p>
+                                    </div>
+
+                                    <div class="card-body">
+                                        {% for media in cours.coursMedia %}
+                                            {% if media.id %}
+                                                <a href="{{ path('front_download_classes', { id: media.id }) }}">
+                                                    {% if media.type == 'pdf' %}
+                                                        <span class="fa fa-file-pdf text-danger mr-2">{{ media.path }}</span>
+                                                    {% elseif media.type == 'doc' or media.type == 'vnd.openxmlformats-officedocument.wordprocessingml.document' or media.type == 'docx' %}
+                                                        <span class="fa fa-file-word text-info">{{ media.path }}</span>
+                                                    {% elseif media.type == 'audio' or media.type == 'mp4' or media.type == 'mp3' %}
+                                                        <span class="fa fa-file-audio text-warning">{{ media.path }}</span>
+                                                    {% else %}
+                                                        <i class="fa fa-file-pdf text-danger mr-2">{{ media.path }}</i>
+                                                    {% endif %}
+                                                </a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="card-body">
+                                        {% for section in cours.section %}
+                                            <div class="form-group row align-items-start mt-4">
+                                                <div class="col-xl-10">
+                                                    <span class="d-block">{{ section.nom }}</span>
+                                                    <span class="d-block">{{ section.description }}</span>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="card-body">
+                                      
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="text-center">Vos documents et devoirs</h4>
+                                            {% for doc in coursdoc %}
+                                                <div class="form-group row align-items-start mt-4">
+                                                    <div class="col-xl-10">
+                                                        <span class="d-block">{{ doc.nom }}</span>
+                                                        <span class="d-block">{{ doc.description }}</span>
+                                                        <span class="d-block">
+                                                            <a href="{{ path('front_download_cours_doc', { id: doc.id }) }}">
+                                                                <span class="fa fa-file text-danger">{{ doc.nom }}</span> </br>
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="item text-right mt-1">
+                                        <div class="row align-items-center">
+                                            <div class="wrap-btn">
+                                                <a href="{{ path('front_student_cours_new_document', {id: cours.id })}}" class="btn btn-sm btn-primary">AJOUTER</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

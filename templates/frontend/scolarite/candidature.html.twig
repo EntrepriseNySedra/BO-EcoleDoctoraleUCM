@@ -1,0 +1,222 @@
+{% extends layout_frontend %}
+{% block title %}Candidatures{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/buttons.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/libs/datatable/DT_bootstrap.css') }}"/>
+    <style>
+        .dt-buttons button {
+            color: #f2f2f2;
+            /*font-size: 12px;*/
+            border-radius: 4px;
+            /*border: 1px solid #64c3c2 !important;*/
+            background: #282b2b;
+        }
+
+        .dt-buttons button:hover {
+            color: #f2f2f2;
+            /*font-size: 12px;*/
+            border-radius: 4px !important;
+            /*border: 1px solid #64c3c2 !important;*/
+            background: #282b2b !important;
+        }
+
+        .dt-buttons {
+            /*position: absolute!important;*/
+            left: 50%;
+        }
+
+        .pagination {
+            margin: 15px 0;
+        }
+
+        .pagination a {
+            color: #5d5656;
+        }
+
+        .page-item.active .page-link {
+            background-color: #a09f9f;
+            border-color: #a09f9f;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Candidatures</h1>
+
+    <!-- big slider banner scolarité -->
+    <section class="banner banner-espaceEtudiant banner-scolarity">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider --> 
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Candidatures</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <!-- content -->
+                <div class="candidatures-content content">
+                    <div class="title-group">
+                        <p class="sup-title">Scolarité</p>
+                        <h2 class="title-bloc">Liste des candidatures</h2>
+                    </div>
+                    
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active fw-bold" id="pending-tab" data-bs-toggle="tab"
+                                data-bs-target="#pending" type="button" role="tab" aria-controls="pending"
+                                aria-selected="true">NON TRAITÉES
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-bold" id="validated-tab" data-bs-toggle="tab"
+                                data-bs-target="#validated" type="button" role="tab" aria-controls="validated"
+                                aria-selected="false">VALIDÉES
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-bold" id="refused-tab" data-bs-toggle="tab"
+                                data-bs-target="#refused" type="button" role="tab" aria-controls="refused"
+                                aria-selected="false">REFUSÉES
+                            </button>
+                        </li>
+                        {% if is_granted('ROLE_SCOLARITE') %}
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link fw-bold" id="refused-tab" data-bs-toggle="tab"
+                                    data-bs-target="#convocations" type="button" role="tab" aria-controls="convocations"
+                                    aria-selected="false">CONVOCATIONS
+                                </button>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    
+                    <div class="tab-content" id="scolariteTabs">
+                        <!-- filter block -->
+                        <div class="form-bloc filter-bloc">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form id="filter-form" autocomplete="off">                                    
+                                        <div class="form-group row">
+                                            <label class="col-xl-2">Mention :</label>
+                                            <div class="form-field select-field col-xl-2">
+                                                <select class="form-control" name="mention" id="mention">
+                                                    <option value="">--- Sélectionner ---</option>
+                                                    {% for mention in mentions %}
+                                                        <option value="{{ mention.id }}" {% if m is defined and mention.id == m %}selected{% endif %}>{{ mention.nom }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+
+                                            <label class="col-xl-2">Niveau :</label>
+                                            <div class="form-field select-field col-xl-2">
+                                                <select class="form-control" name="niveau" id="niveau">
+                                                    <option value="">--- Sélectionner ---</option>
+                                                    {% for niveau in niveaux %}
+                                                        <option value="{{ niveau.id }}" {% if n is defined and niveau.id == n %}selected{% endif %}>{{ niveau.libelle }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+
+                                            <label class="col-xl-2">Parcours :</label>
+                                            <div class="form-field select-field col-xl-2">
+                                                <select class="form-control" name="parcours" id="parcours">
+                                                    <option value="">--- Sélectionner ---</option>
+                                                    {% for parc in parcours %}
+                                                        <option value="{{ parc.id }}" {% if p is defined and parc.id == p %}selected{% endif %}>{{ parc.nom }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                         
+
+                                        </div>
+                                            
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div> <!-- /filter block -->                        
+                        {{ include('frontend/scolarite/_candidature_pending.html.twig') }}    
+                        {{ include('frontend/scolarite/_candidature_refused.html.twig') }}
+                        {{ include('frontend/scolarite/_candidature_validated.html.twig') }}
+                        {% if is_granted('ROLE_SCOLARITE') %}
+                            {{ include('frontend/scolarite/candidature_convocation_list.html.twig') }}
+                        {% endif %}
+                    </div>
+                </div>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+    <script>
+        $(function () {
+            var oTable = $('#list-validated').dataTable({
+                "aLengthMenu":    [[100, 250, 500, -1], [100, 250, 500, "Tout"]],
+                "iDisplayLength": 1000,
+                "aoColumnDefs":   [{
+                    "bSortable": false,
+                    "aTargets":  [4]
+                }],
+                "paging":         false,
+                "ordering":       false,
+                "searching":      false,
+                "info":           false
+            });
+            mentionId = $('#mention').val();
+            niveauId = $('#niveau').val();
+            parcousId = $('#parcours').val();
+            $('#mention').on('change', function () {
+                window.location.href = "{{ path('front_scolarite_candidature') }}" + "?m=" + $(this).val() + "&n=" + niveauId + "&p=" + parcousId;
+            });
+            $('#niveau').on('change', function () {
+                window.location.href = "{{ path('front_scolarite_candidature') }}" + "?m=" + mentionId + "&n=" + $(this).val() + "&p=" + parcousId;
+            });
+            $('#parcours').on('change', function () {
+                window.location.href = "{{ path('front_scolarite_candidature') }}" + "?m=" + mentionId + "&n=" + niveauId + "&p=" + $(this).val();
+            })
+
+
+        })
+
+        function updateElement(id, value) {
+            $("#action").val(value);
+            $("#validate-form-" + id).submit();
+        }
+    </script>
+{% endblock %}
+

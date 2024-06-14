@@ -1,0 +1,19 @@
+<!-- Chercher les classes actives -->
+{% set estGestionAbsenceActive    = (app.request.get('_route') == 'front_rvn_absence_index' or app.request.get('_route') == 'front_rvn_absence_index') ? "active" : "" %}
+<!-- Titre  breadcrumb-->
+{% set breadcrumbTitre = "" %}
+{% if (app.request.get('_route') == 'front_rvn_absence_index') %}
+    {% set breadcrumbTitre = "Liste absence" %}
+{% endif %}
+
+<!-- breadcrumb -->
+<!-- breadcrumb
+
+<!-- menu scolarité -->
+<nav class="menu_etudiant menu_list">
+    <a class="nav-Link {{ estGestionAbsenceActive }}" href="{{ path('front_rvn_absence_index') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-list"></span>
+        <span>Gestion absences</span>
+    </a>
+</nav>
+    

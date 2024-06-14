@@ -1,0 +1,267 @@
+{% extends layout_frontend %}
+{% block title %}Ecolage{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Ecolage</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace {% if is_granted('ROLE_COMPTABLE') %}
+                            Comptable
+                        {% elseif is_granted('ROLE_RF') %}
+                            Responsable financier
+                        {% endif %}</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace {% if is_granted('ROLE_COMPTABLE') %}
+                            Comptable
+                        {% elseif is_granted('ROLE_RF') %}
+                            Responsable financier
+                        {% endif %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Ecolage</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/comptable/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">{% if is_granted('ROLE_COMPTABLE') %}
+                            Comptable
+                        {% elseif is_granted('ROLE_RF') %}
+                            Responsable financier
+                        {% endif %}</p>
+                    <h2 class="title-bloc">Ecolage</h2>
+                </div>
+                <div class="form-bloc filter-bloc">
+                    
+                    <div class="groups-btn justify-content-start my-1">
+                        <form id="num_piece_form" method="GET" class="page-form-edit-new form-validation" role="form">
+                            
+                            <div class="form-group row mt-1">
+                                <label class="col-3">Index numéro de pièce</label>
+                                <div class="form-field col-9 text-left">
+                                    <input type="text" name="num_piece" id="num_piece" value="" class="col-3">
+                                    <a href="{{ path('front_finance_vente_index') }}" class="btn btn-primary" id="btn-submit-edt-form">VENTE PREVISIONNELLE</a>
+                                        <a class="btn btn-primary" id="btn-submit-edt-form"  onclick="exportEtatBank()">Etat BANQUE</a>
+                                </div>
+                            </div>
+                        
+                            <div class="form-group row mt-1">
+                                <label class="col-3">Rechercher :</label>
+                                <div class="form-field col-9">
+                                    <input type="text" name="search" id="search" class="col-12">
+                                </div>
+                            </div> 
+                            
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="filter-form" autocomplete="off">
+                                <div class="row">                                   
+                                    <div class="form-group row">
+                                        <label class="col-lg-2">Calendrier :</label>
+                                        <div class="form-field select-field col-lg-4">
+                                            <select class="form-control" name="calendrier-paiement" id="calendrier_paiement">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for cal in calPaiements %}
+                                                    <option value="{{ cal.id }}" 
+                                                        {% if  cal.id == c %}selected{% endif %}>{{ cal.libelle }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div> <!-- /filter block -->
+                <!-- content  -->
+                <section class="content presenceEnseignant-content">
+                    <div class="table-responsive table-wrapper">
+                        {% if list is defined and list | length > 0 %}
+                            <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" role="form" >
+                                <table class="table table-bordered table-hover list-data">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center w-15">Date de paiement</th>
+                                            <th class="text-center w-10">Mention</th>
+                                            <th class="text-center w-5">Niveau</th>
+                                            <th class="text-center w-10">Parcours</th>
+                                            <th class="text-center">Etudiant</th>
+                                            <th class="text-center">Matricule</th>
+                                            <th class="text-center w-10">Référence</th>
+                                            <th class="text-center  w-15">remetant</th>
+                                            <th class="text-center  w-5">Tranche</th>
+                                            <th class="text-center  w-10">Montant</th>
+                                            <th class="action_col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% set total = 0 %}
+                                        {% for fraisScol in list %}
+                                            <tr class="middle-align">
+                                                <td class="text-center">{{ fraisScol.date_paiement | date('d/m/Y') }}</td>
+                                                <td class="text-center">{{ fraisScol.mention }}</td>
+                                                <td class="text-center">{{ fraisScol.niveau }}</td>
+                                                <td class="text-center">{{ fraisScol.parcours }}</td>
+                                                <td class="text-center">{{ fraisScol.first_name }} {{ fraisScol.last_name }}</td>
+                                                <td class="text-center">{{ fraisScol.immatricule }}</td>
+                                                <td class="text-center">{{ fraisScol.reference }}</td>
+                                                <td class="text-center">{{ fraisScol.remitter }}</td>
+                                                <td class="text-center">{{ fraisScol.semestre }}</td>
+                                                <td class="text-center">{{ fraisScol.montant | number_format(2, '.', ' ') }}</td>
+                                                <td class="action_col w-50">
+                                                    {{ fraisScol.status }}
+                                                    {% if fraisScol.status < profilListStatut %}
+                                                        <label>En attente</label>
+                                                    {% endif %}
+                                                    {% if fraisScol.status == profilListStatut %}
+                                                        <label>Valider</label>
+                                                        <input type="checkbox" name="ecolage[]" value="{{ fraisScol.ecolageId }}">
+                                                    {% endif %}
+                                                    {% if fraisScol.status == profilNextStatut %}
+                                                        <label>Annuler</label>
+                                                        <input type="checkbox" name="ecolage[]" value="{{ fraisScol.ecolageId }}">
+                                                    {% endif %}
+                                                    {% if fraisScol.status > profilNextStatut %}
+                                                        {% if fraisScol.status == constant('\\App\\Services\\WorkflowEcolageStatutService::STATUS_ARCHIVED') %}
+                                                            <label>Archivé</label>
+                                                        {% else %}
+                                                            <label>Archiver</label>
+                                                            <input type="checkbox" name="archive[]" value="{{ fraisScol.ecolageId }}">
+                                                        {% endif %}    
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            {% set total = total + fraisScol.montant %}
+                                        {% endfor %}
+                                        <tr>
+                                            <td colspan="8" align="center">Total</td>
+                                            <td align="center">{{ total | number_format(2, '.', ' ') }}</td>
+                                            <td align="center" colspan="4">
+                                                <label>Tout coché</label>
+                                                <input type="checkbox" name="checkall" id="checkall">
+                                                <button type="button" class="btn" id="submit_form">Executer</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                            <div class="text-center">
+                                            <div class="pagination">
+                                                {{ knp_pagination_render(list) }}
+                                            </div> </br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        {% endif %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        function exportEtatBank() {
+            indexNumPiece = $("#num_piece").val();
+            window.location.href = "{{ path('front_finance_ecolage_index') }}?np=" + indexNumPiece + "&export=1&c=" + {{ c }}
+        }
+
+        ( function( $ ) {
+            $(document).ready(function () { 
+                $("#calendrier_paiement").bind('change', function(){
+                    window.location.href = "{{ path('front_finance_ecolage_index') }}?c=" + $(this).val();
+                });
+                $('#search').bind('keyup', function(){
+                    $.ajax({
+                        method: "POST",
+                        url: "{{ path('front_finance_frais_search') }}",
+                        data: {
+                            q : $(this).val()
+                        }
+                    }).done(
+                        function(html){
+                            $('.table-wrapper').html(html);
+                            $('#checkall').click(function(){
+                                $( "input:checkbox" ).prop('checked', this.checked);
+                            });
+                        }
+                    ); 
+                });
+                $('#checkall').click(function(){
+                    $( "input:checkbox" ).prop('checked', this.checked);
+                });
+                $('#submit_form').bind('click', function(){
+                    ecolageIds = $('input[name="ecolage[]"]').map(
+                            function() {
+                                if($(this).prop("checked"))
+                                    return $(this).val() ;
+                            }
+                        ).get();
+                    $.ajax({
+                        method: "POST",
+                        url: "{{ path('front_finance_frais_update') }}",
+                        data: {
+                            ecolage : ecolageIds
+                        }
+                    })
+
+                    archivableIds = $('input[name="archive[]"]').map(
+                            function() {
+                                if($(this).prop("checked"))
+                                    return $(this).val() ;
+                            }
+                        ).get();
+                    $.ajax({
+                        method: "POST",
+                        url: "{{ path('front_finance_frais_archive') }}",
+                        data: {
+                            ecolage : archivableIds
+                        }
+                    }).done(
+                        function(html){
+                             window.location.href = "{{ path('front_finance_ecolage_index') }}";
+                        }
+                    ); 
+                });                
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}

@@ -1,0 +1,199 @@
+{% extends layout_teacher %}
+{% block title %}Espace assistant{% endblock %}
+{% block content %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/buttons.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/libs/datatable/DT_bootstrap.css') }}"/>
+    <style>
+        .dt-buttons button {
+            color: #f2f2f2;
+            /*font-size: 12px;*/
+            border-radius: 4px;
+            /*border: 1px solid #64c3c2 !important;*/
+            background: #282b2b;
+        }
+
+        .dt-buttons button:hover {
+            color: #f2f2f2;
+            /*font-size: 12px;*/
+            border-radius: 4px !important;
+            /*border: 1px solid #64c3c2 !important;*/
+            background: #282b2b !important;
+        }
+
+        .dt-buttons {
+            /*position: absolute!important;*/
+            left: 50%;
+        }
+
+        .pagination {
+            margin: 15px 0;
+        }
+
+        .pagination a {
+            color: #5d5656;
+        }
+
+        .page-item.active .page-link {
+            background-color: #a09f9f;
+            border-color: #a09f9f;
+        }
+    </style>
+{% endblock %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Espace assistant</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Assistant</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Assistant</p>
+                    <h2 class="title-bloc">Espace assistant</h2>
+                </div>
+                <!-- content assistant -->
+                <section class="content assistant-content richText">
+                    {% if (app.request.get('_route') == 'frontend_assistant_index') %}
+                        <div class="btn-wrap form-group text-right">
+                            <a href="{{ path('front_assistant_create_enseignant') }}" class="btn btn-primary" id="btn-submit-product-form" >Ajouter un enseignant</a>
+                        </div>
+                    {% endif %}
+                    {% if enseignants is defined and enseignants | length > 0 %}
+                    <div class="table-responsive table-wrapper">
+                        <table class="table table-bordered table-hover table-advance list-data" id="list-data">
+                            <thead>
+                                <tr>
+                                    <th>Matricule</th>
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                    <th>Email</th>
+                                    <th>Adresse</th>
+                                    <th class="text-center">Telephone</th>
+                                    <th class="action_col w-7">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for enseignant in enseignants %}
+                                    <tr class="middle-align">
+                                        <td>{{ enseignant.immatricule }}</td>
+                                        <td>{{ enseignant.last_name }}</td>
+                                        <td>{{ enseignant.first_name }}</td>
+                                        <td>{{ enseignant.email }}</td>
+                                        <td>{{ enseignant.address }}</td>
+
+
+                                        <td class="numbercol">{{ enseignant.phone }}</td>
+                                        <td class="action_col w-5">
+                                            <div class="wrap-btn">
+                                                <a href="{{ path('front_assistant_edit_enseignant', { id: enseignant.id}) }}" class="btn btn-secondary" title="Modifier">
+                                                    <i class="far fa-edit"></i>
+                                                </a>
+                                                <!-- <a href="{{ path('front_assistant_edit_enseignant', { id: enseignant.id}) }}" title="Modifier">
+                                                    <button class="btn btn-secondary">Modifier</button>
+                                                </a> -->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+
+                    {% if (app.request.get('_route') == 'frontend_matiere_index') %}
+                        <a href="{{ path('front_assistant_create_enseignant_matiere') }}" class="btn btn-primary my-3" id="btn-submit-product-form" >Affecter une matière</a>                            
+                        <div class="content-list card">
+                            {% for niveau, matieres in enseignantsEtmatieres %}
+                            <h3 class="card-header">{{ niveau }}</h3>
+                            <div class="card-body">
+                                {% set initEnseignantame = "" %}
+                                {% set initParcoursName = "" %}
+                                {% for mat in matieres %}
+                                    {% if mat.parcoursNom != initParcoursName %}
+                                        <div class="col-12 align-items-center bg-dark text-white">{{ mat.parcoursNom }}</div>
+                                    {% endif %}
+                                    <div class="list-matiere row m-b-10">
+                                        {% if mat.enseignantName != initEnseignantame %}
+                                            <div class="col-3 align-items-center">{{ mat.enseignantName }}</div>
+                                            <div class="col-2 align-items-center">{{ mat.semestreNom }}</div>
+                                            <div class="col-2 align-items-center">{{ mat.ueNom }}</div>
+                                            <div class="col-4">{{ mat.matiereCode }} {{ mat.matiereNom }}</div>
+                                        {% else %}
+                                            <div class="offset-3 col-2 align-items-center">{{ mat.semestreNom }}</div>
+                                            <div class="col-2 align-items-center">{{ mat.ueNom }}</div>
+                                            <div class="col-4">{{ mat.matiereCode }} {{ mat.matiereNom }}</div>
+                                        {% endif %}
+                                    </div>
+                                    {% set initEnseignantame = mat.enseignantName %}
+                                    {% set initParcoursName = mat.parcoursNom %}
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+    <script>
+        $(function () {
+            var oTable = $('#list-data').dataTable({
+                "aLengthMenu":    [[10, 25, 50, -1], [10, 25, 50, "Tout"]],
+                "iDisplayLength": 1000,
+                "aoColumnDefs":   [{
+                    "bSortable": false,
+                    "aTargets":  [4]
+                }],
+                "paging":         false,
+                "ordering":       false,
+                "searching":      false,
+                "info":           false
+            });
+        })
+    </script>
+{% endblock %}

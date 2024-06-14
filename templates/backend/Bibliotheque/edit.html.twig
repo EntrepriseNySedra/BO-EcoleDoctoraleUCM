@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% block title %}Bibliotheque::Modification{% endblock %}
+
+{% set menuBatiment = true %}
+{% set menuBatimentAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Bibliotheque
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/Bibliotheque/_form.html.twig') }}
+     <a href="{{ path('Bibliotheque_index') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

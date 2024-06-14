@@ -1,0 +1,75 @@
+{% if resultats is defined and resultats | length > 0 %}
+    <form id="validate_concours_result_form" method="post" enctype="multipart/form-data" role="form" action="{{ path(validateResultConcoursPath, {id: selectedConcours.id}) }}">
+        <table class="table table-bordered table-hover list-data">
+            <thead>
+                <tr>
+                    <th class="text-center">Rang</th>
+                    <th class="text-center">Immatricule</th>
+                    <th class="text-center">Nom</th>
+                    <th class="text-center">Prénom</th>
+                    <th class="text-center">Centre</th>
+                    {% if is_granted('ROLE_RECTEUR') %}
+                        <th class="text-center">Resultat</th>
+                    {% endif %}
+                    <th class="text-center">Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            {% set rang = 1 %}
+            {% for item in resultats %}
+                <tr class="middle-align">
+                    <td class="w-15">{{ rang }}</td>
+                    <td class="w-15">{{ item.immatricule }}</td>
+                    <td class="w-15">{{ item.first_name }}</td>
+                    <td class="w-15">{{ item.last_name }}</td>
+                    <td class="text-center w-15">{{ item.centre }}</td>
+                    {% if is_granted('ROLE_RECTEUR') %}
+                        <td class="text-center w-15">Admis <input type="checkbox" name="candidat_id[]" 
+                            {% if item.average >= selectedConcours.deliberation or item.resultat %}
+                                checked = checked
+                            {% endif %}
+                            value="{{ item.concours_candidature_id }}">
+                        </td>
+                    {% endif %}
+                    <td class="action_col w-15">
+                        <div class="wrap-btn">
+                            <a class="btn" href="{{ path(concoursCandidatNotesPath, { 'id': item.concours_candidature_id }) }}?c={{ c }}&p={{ p }}">
+                                <span class="fa fa-eye"></span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% set rang = rang + 1 %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if selectedConcours and (selectedConcours.deliberation is not null) %}
+            <input type="hidden" id="c" name="c" value="{{ c }}" />
+            <input type="hidden" id="p" name="p" value="{{ p }}" />
+            <div class="form-group text-right">
+                {% if 
+                    is_granted('ROLE_RECTEUR') and (selectedConcours.resultStatut == constant('\\App\\Entity\\Concours::STATUS_VALIDATED_RECTEUR'))
+                    
+                %}
+                    <button type="button" id="send_result_btn" class="btn btn-primary btn-connexion btn-cancel my-2" onclick="sendResult()">
+                        ENVOYER RESULTAT
+                    </button>
+                {% endif %}
+                {#% if 
+                    (
+                        is_granted('ROLE_RECTEUR') or
+                        (is_granted('ROLE_SG') and selectedConcours.resultStatut < constant('\\App\\Entity\\Concours::STATUS_VALIDATED_RECTEUR')) or
+                        (is_granted('ROLE_DOYEN') and selectedConcours.resultStatut < constant('\\App\\Entity\\Concours::STATUS_VALIDATED_SG')) or
+                        (is_granted('ROLE_CHEFMENTION') and selectedConcours.resultStatut < constant('\\App\\Entity\\Concours::STATUS_VALIDATED_DOYEN'))
+                    )
+                 %#}
+                 {% if  is_granted('ROLE_RECTEUR') %}
+                    <button type="submit" class="btn btn-primary btn-connexion btn-cancel my-2 " onclick="submit_form()">
+                        VALIDER
+                    </button>
+                {% endif %}
+            </div>
+        {% endif %}
+    </form>
+{% endif %}

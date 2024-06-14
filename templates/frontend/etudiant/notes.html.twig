@@ -1,0 +1,168 @@
+
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Mes Notes</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="{{ path('front_student_emploi_du_temps') }}" title="Formation">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Mes notes</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container">
+        <div class="container container_row">
+             <!-- aside Left -->
+             <aside class="asideLeft asideSticky">
+                {{ include('frontend/etudiant/_menu.html.twig') }}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Espace étudiant</p>
+                    <h2 class="title-bloc">Mes Notes</h2>
+                </div>
+                <!-- content mes notes -->
+                <section class="content mesNotes-content">
+                    <div class="form-bloc">
+                        <div class="form-group row">
+                            <label class="col-md-1">Semestre :</label>
+                            <div class="form-field select-field col-md-1">
+                                <select name="semester" id="semester" class="form-control">
+                                    {% for semester in semesters %}
+                                        <option value="{{ semester.id }}" {% if semester.id == s %}selected{% endif %}>{{ semester.libelle }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    {% if notes|length > 0 %}
+                        {% set initMatiereUe = "" %}
+                        <h3 class="my-2"><strong>Notes</strong></h3>
+                        <div class="table-responsive table-wrapper">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">UE</th>
+                                        <th>Credits</th>
+                                        <th width="20%">EC</th>
+                                        <th width="10%">V.H</th>
+                                        <th width="8%">Note</th>
+                                        <th width="12%">Moyenne UE</th>
+                                        <th width="12%">Crédits EC</th>
+                                        <th>Statut</th>
+                                        <th>Statut UE</th>
+                                        <th>Responsable UE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for key, note in notes %}
+                                        {#  credit par UE #}
+                                        {% set credit = '' %}
+                                        {% if note.unite_enseignements_id in credits|keys %}
+                                            {% set credit = credits[note.unite_enseignements_id] %}
+                                        {% endif %}
+
+                                        {#  moyenne par UE #}
+                                        {% set moyenneUE = 0 %}
+                                        {% if note.unite_enseignements_id in moyennesUE|keys %}
+                                            {% set moyenneUE = moyennesUE[note.unite_enseignements_id] %}
+                                        {% endif %}
+
+                                        {#  gestion statut #}
+                                        {% set status = 'Validé' %}
+                                        {% if note.note <= constant('App\\Entity\\Notes::STATUS_REFERENCE') %}
+                                            {% set status = 'Non validé' %}
+                                        {% endif %}
+
+                                        {#  gestion libellé #}
+                                        {% set ueLibelle = '' %}
+                                        {% if note.ue_libelle != initMatiereUe %}
+                                            {% set ueLibelle = note.ue_libelle %}
+                                            {% set withRowSpan = 1 %}
+                                        {% else %}
+                                            {% set withRowSpan = 0 %}
+                                        {% endif %}
+
+                                        {#  gestion note #}
+                                        {% set noteValue = '-' %}
+                                        {% if note.note != null %}
+                                            {% set noteValue = note.note ~ '' %}
+                                        {% else %}
+                                            {% set status = '-' %}
+                                        {% endif %}
+                                        <tr class="middle-align">
+                                            {% if withRowSpan == 1 %}
+                                                <td rowspan="{{ notesUE[note.unite_enseignements_id]|length }}" style="vertical-align: middle">{{ ueLibelle }}</td>
+                                                <td rowspan="{{ notesUE[note.unite_enseignements_id]|length }}" style="vertical-align: middle">{{ credit }}</td>
+                                            {% endif %}
+                                            <td>{{ note.matiere_nom }}</td>
+                                            <td>{{ note.volume_horaire_total }}</td>
+                                            <td>{{ noteValue }}</td>
+                                            {% if withRowSpan == 1 %}
+                                                <td rowspan="{{ notesUE[note.unite_enseignements_id]|length }}" style="vertical-align: middle">{{ moyenneUE }}</td>
+                                            {% endif %}
+
+                                            <td>{{ note.matiere_credit }}</td>
+
+                                            <td>{{ status }}</td>
+                                            <td></td>
+                                            <td>{{ note.ue_responsable}}</td>
+                                        </tr>
+                                        {% set initMatiereUe = note.ue_libelle %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="mt-1">Moyenne du semestre</span> : <strong>{{ moyenneG }}</strong></p>
+                    {% else %}
+                        <p class="alert alert-secondary text-center emptyresult" role="alert"><strong>Aucun résultat</strong></p>
+                    {% endif %}
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                let semester = $('#semester :selected').val();
+                $('#semester').on('change', function () {
+                    window.location.href = "{{ path('front_student_notes') }}" + "?s=" + $(this).val();
+                })
+            });
+
+        } )( jQuery );
+    </script>
+{% endblock %}
+

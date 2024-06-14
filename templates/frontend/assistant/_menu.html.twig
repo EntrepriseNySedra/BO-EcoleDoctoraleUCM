@@ -1,0 +1,67 @@
+<!-- Chercher les classes actives -->
+{% set menuAssistantActive    = app.request.get('_route') == 'frontend_assistant_index' ? "active" : "" %}
+
+<!-- Titre  breadcrumb-->
+{% set breadcrumbTitre = "" %}
+
+<!-- breadcrumb -->
+<!-- <nav aria-label="breadcrumb" class="breadcrumb-bloc">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{{ path('frontend_assistant_index') }}" title="Assistant">Espace assistant</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><span>{{ breadcrumbTitre }}</span></li>
+    </ol>
+</nav> -->
+<!-- breadcrumb -->
+
+<!-- menu for assitant pages -->
+<nav class="menu_list menu_assistant">
+    <a class="nav-Link {{ menuAssistantActive }}" href="{{ path('frontend_assistant_index') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Enseignants</span>
+    </a>
+    <a class="nav-Link" href="{{ path('frontend_matiere_index') }} " title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Matières</span>
+    </a>
+
+    <a class="nav-Link" href="{{ path('front_gestion_emploi_du_temps') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-calendar-alt"></span>
+        <span>Emploi du temps</span>
+    </a>
+
+    <a class="nav-Link " href="{{ path('front_assistant_presence_enseignant_index') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Vacations</span>
+    </a>
+
+    <a class="nav-Link " href="{{ path('front_assistant_prestation_index') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Autres préstations</span>
+    </a>
+
+    <a class="nav-Link " href="{{ path('front_assistant_surveillance_index') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Surveillants</span>
+    </a>
+
+    <a class="nav-Link " href="{{ path('front_assistant_demande_doc_list') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Demande de document</span>
+    </a>
+
+    <a class="nav-Link " href="{{ path('front_thesis_calendar_list') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-calendar-alt"></span>
+        <span>Calendrier soutenances</span>
+    </a>
+
+    <a class="nav-Link " href="{{ path('front_examen_calendar_list') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-calendar-alt"></span>
+        <span>Calendrier examen</span>
+    </a>
+
+    <a class="nav-Link" href="{{ path('front_assistant_extranote_list') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-list"></span>
+        <span>Extra note</span>
+    </a>
+</nav>

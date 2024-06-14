@@ -1,0 +1,228 @@
+{% extends layout_frontend %}
+{% block title %}Emploi du temps{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Emploi du temps</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">{{ workspaceTitle }}</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path(workspacePath) }}" title="{{ workspaceTitle }}">{{ workspaceTitle }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Emploi du temps</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+           <!-- aside Left -->
+           <aside class="asideLeft asideSticky">
+                {{ include('frontend/chef-mention/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">{{ workspaceTitle }}</p>
+                    <h2 class="title-bloc">Emploi du temps</h2>
+                </div>
+                <!-- content emploi du temps -->
+                <section class="content emploi-temps-content">
+                    {% if app.request.get('_route') == 'front_chefmention_gestion_emploi_du_temps' %}
+                        <div class="btn-wrap form-group text-right">
+                            <a href="{{ path('front_chefmention_gestion_emploi_du_temps_add') }}" class="btn btn-primary" id="btn-submit-product-form" >Mettre à jour l'emploi du temps</a>
+                        </div>
+                    {% endif %}
+
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="filter-form" autocomplete="off">
+                                    <div class="row">                                   
+                                        <div class="form-group row">
+                                            <label class="col-lg-2">Calendrier :</label>
+                                            <div class="form-field select-field col-lg-4">
+                                                <select class="form-control" name="calendrier-paiement" id="calendrier_paiement">
+                                                    <option value="">--- Sélectionner ---</option>
+                                                    
+                                                </select>
+                                            </div>
+
+                                            <label class="col-lg-2">Semaine :</label>
+                                            <div class="form-field select-field col-lg-4">
+                                                <select class="form-control" name="week" id="week">
+                                                    <option value="">--- Sélectionner ---</option>
+                                                    
+                                                </select>
+                                            </div>
+                                            
+                                            <label class="col-lg-2">Date :</label>
+                                            <div class="form-field select-field col-lg-4">
+                                                <input type="date" id="date_schedule" name="date_schedule" class="form-control" value="">
+                                            </div>
+
+                                            <label class="col-lg-2">Niveau :</label>
+                                            <div class="form-field select-field col-lg-4">
+                                                <select class="form-control" name="niveau" id="niveau">
+                                                    <option value="">--- Sélectionner ---</option>
+                                                   
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> <!-- /filter block -->
+                    
+                    <div class="table-responsive table-wrapper">
+                        <table class="table table-bordered table-hover emploiDuTemps-day">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Heure début</th>
+                                    <th class="text-center">Heure fin</th>
+                                    <th class="text-center">Niveau</th>
+                                    <th class="text-center w-20">Matière</th>
+                                    <th class="text-center">Statut</th>
+                                    <th class="text-center">Salles</th>
+                                    <th class="text-center">Capacité</th>
+                                    <th class="text-center">Connexion</th>
+                                    <th class="text-center w-5">Projecteur</th>
+                                    {% if app.request.get('_route') == 'front_chefmention_gestion_emploi_du_temps' %}
+                                        <th class="action_col w-7">Actions</th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set initStartDate = "" %}
+                                {% if emploiDuTemps|length > 0 %}
+                                {% for edt in pagination %}
+                                    <tr class="middle-align">
+                                        <td class="text-center w-5">{{ edt.dateSchedule|date('d/m/Y') }}</td>
+                                        <td class="text-center w-10">{{ edt.startTime|date('H:i:s') }}</td>
+                                        <td class="text-center w-10">{{ edt.endTime|date('H:i:s') }}</td>
+                                        <td class="text-center w-5"> niveau </td>
+                                        <td class="w-15">{{ edt.matiere.nom }}</td>
+                                        <td class="text-center w-10">
+                                            {% if edt.statut > constant('\\App\\Entity\\EmploiDuTemps::STATUS_CREATED') %}
+                                                Validé
+                                            {% else %}
+                                                Créé
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center w-5">{{ edt.salles.libelle }}</td>
+                                        <td class="text-center w-5">{{ edt.salles.capacite }}</td>
+                                        <td class="text-center w-7">
+                                            {% if edt.connexion == 1 %}
+                                                {% set connexion = "Oui" %}
+                                            {% else %}
+                                                {% set connexion = "Non" %}
+                                            {% endif %}
+                                            {{ connexion }}
+                                        </td>
+                                        <td class="text-center w-5">
+                                            {% if edt.videoprojecteur == 1 %}
+                                                {% set videoprojecteur = "Oui" %}
+                                            {% else %}
+                                                {% set videoprojecteur = "Non" %}
+                                            {% endif %}
+                                            {{ videoprojecteur }}
+                                        </td>
+                                        {% if app.request.get('_route') == 'front_chefmention_gestion_emploi_du_temps' %}
+                                            <td class="action_col w-7">
+                                                <div class="wrap-btn">
+                                                    <a class="btn btn-danger" href="{{ path('front_chefmention_gestion_emploi_du_temps_edit', { id: edt.id}) }}" class="btn btn-secondary" title="Modifier">
+                                                        <i class="far fa-edit"></i>
+                                                    </a>
+                                                    <form id="delete-form-{{edt.id}}" method="POST" action="{{ path('front_chefmention_gestion_emploi_du_temps_delete', { id: edt.id }) }}" style="display:inline-block">
+                                                        <input type="hidden" name="method" value="DELETE" />
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ edt.id) }}" />
+                                                        <a class="btn btn-danger" onclick="javascript:deleteElement('{{ edt.id }}');" href="javascript:;" title="Supprimer">
+                                                            <i class="fas fa-times"></i>
+                                                        </a>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4"><strong>Aucune information</strong></td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+
+                        <div class="container">
+                            <div class="row mt-1">
+                                <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                    <div class="text-center">
+                                    <div class="pagination">
+                                        {{ knp_pagination_render(pagination) }}
+                                    </div> </br>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                let matiere = $('#matiere :selected').val();
+                $('#matiere').on('change', function () {
+                    window.location.href = "{{ path('front_student_classes') }}" + "?m=" + $(this).val();
+                })
+
+                $('#cours').on('change', function () {
+                    window.location.href = "{{ path('front_student_classes') }}" + "?m=" + matiere + "&c=" + $(this).val();
+                })
+                
+                $('.edt-filter').on('click', function () {
+                    var $this       = $(this);
+                    $(".table-condensed").each(function() {
+                        $(this).hide();
+                    });
+                    $(".emploiDuTemps-"+$this.data('lib')).show();
+                })
+            });
+
+        } )( jQuery );
+        function deleteElement(id) {
+            if (confirm('Etes-vous sûr de vouloir supprimer cet element ?')) {
+                $("#delete-form-"+id).submit();
+            }
+        }
+    </script>
+{% endblock %}
+

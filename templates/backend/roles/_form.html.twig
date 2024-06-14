@@ -1,0 +1,45 @@
+<style>
+    .form-group legend {
+        font-size: 15px;
+    }
+</style>
+
+{% set action = path('admin_roles_add') %}
+{% if role.id %}
+    {% set action = path('admin_roles_edit', { id: role.id }) %}
+{% endif %}
+<form id="role-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+    {{ form_errors(form) }}
+    {{ form_row(form._token) }}
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-bd">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Action</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        {{ form_label(form.name, 'Titre *') }}
+                        {{ form_widget(form.name) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.code, 'Code *') }}
+                        {{ form_widget(form.code) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-bd">
+                <div class="panel-body">
+                    <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

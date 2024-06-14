@@ -1,0 +1,24 @@
+{# templates/pagination.html.twig #}
+<div class="pagination-container">
+    <ul class="pagination">
+        {% if pagination.pageCount > 1 %}
+            <li class="page-item {% if pagination.current == 1 %}disabled{% endif %}">
+                <a class="page-link" href="{{ path(route, query|merge({(pageParameterName): 1})) }}">First</a>
+            </li>
+            <li class="page-item {% if not pagination.hasPrevious %}disabled{% endif %}">
+                <a class="page-link" href="{{ path(route, query|merge({(pageParameterName): pagination.current - 1})) }}">Previous</a>
+            </li>
+            {% for page in pagination.pages %}
+                <li class="page-item {% if page == pagination.current %}active{% endif %}">
+                    <a class="page-link" href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item {% if not pagination.hasNext %}disabled{% endif %}">
+                <a class="page-link" href="{{ path(route, query|merge({(pageParameterName): pagination.current + 1})) }}">Next</a>
+            </li>
+            <li class="page-item {% if pagination.current == pagination.pageCount %}disabled{% endif %}">
+                <a class="page-link" href="{{ path(route, query|merge({(pageParameterName): pagination.pageCount})) }}">Last</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>

@@ -1,0 +1,115 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Afficher note</h1>
+
+    <!-- big slider banner authentification espace etudiant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace enseignant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Afficher note</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+                <!-- content actualites -->
+                <div class="title-group">
+                    <p class="sup-title">Enseignant</p>
+                    <h2 class="title-bloc">{{matiere.nom}}</h2>
+                </div>
+
+                <section class="afficher-note-content richText">
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="form-filtre" method="post" autocomplete="off">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-xl-7">Année universitaire :</label>
+                                                <div class="form-field select-field col-xl-5">
+                                                    <select name="anneeUniv" class="form-control date-format" id="anneeUniv">
+                                                        {% for item in anneeUniv %}
+                                                            <option value="{{ item.id }}" {% if item.id == au %}selected{% endif %}>{{ item.libelle }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive table-wrapper list-group">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <th width="80%">Nom</th>
+                                <th>Note</th>
+                                <th>Rattrapage</th> 
+                            </thead>
+                            <tbody>
+                                {% for note in notes %}
+                                    {% if note |length > 0 %}
+                                        <tr>
+                                            <td>{{ note.etudiant_name }}</td>
+                                            <td>{{ note.note }}</td>
+                                            <td>{{ note.rattrapage }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('#anneeUniv').change((e) => {
+                    const anneeUnivId = e.target.value;
+
+                    window.location.href = "{{ path('front_teacher_show_notes', { id: matiere.id}) }}?au=" + anneeUnivId
+                });
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}
+

@@ -1,0 +1,110 @@
+{% extends layout_backend %}
+{% block title %}Departement::Liste{% endblock %}
+
+{% set menuFormation = true %}
+{% set menuFormationDeparListe = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Liste des départements
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+{% block content %}
+{% for message in app.flashes('Infos') %}
+    <div class="alert alert-success" style="border:none;border-radius:0;">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color:#fff; opacity:0.9;">&times;</a>
+        {{ message }}
+    </div>
+{% endfor %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-bd lobidrag">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <div class="list-count">
+                            <span class="title-count-text"> TOTAL: </span><span class="title-count"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="add-btn-top-list">
+                    <a href="{{ path('admin_rf_departement_new') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif"><i class="glyphicon glyphicon-plus"></i> Nouveau</button></a>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover list-data">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Département</th>
+                                <th>Date de création</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for dep in departements %}
+                                <tr>
+                                    <td>{{ dep.id }}</td>
+                                    <td>{{ dep.nom }}</td>
+                                    <td>{{ dep.createdAt | date('d/m/Y') }}</td>
+                                    <td style="text-align: center;">
+                                        <a href="{{ path('admin_rf_departement_edit', { id: dep.id }) }}" title="Modifier">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>
+                                            &nbsp;
+                                        <form id="delete-form-{{dep.id}}" method="post" action="{{ path('admin_rf_depatement_delete', {id: dep.id })}}" style="display:inline-block">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{csrf_token('delete' ~ dep.id)}}">
+                                            <a class="" onclick="javascript:deleteElement('{{ dep.id }}');" href="javascript:;" title="Supprimer">
+                                                <i class="glyphicon glyphicon-remove color-red"></i>
+                                            </a>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/jquery.mask.min.js') }}"></script>
+    <script>
+        function deleteElement(id) {
+            if (confirm('Etes-vous sûr de vouloir supprimer cet element ?')) {
+                $("#delete-form-"+id).submit();
+            }
+        }
+        
+        $(document).ready(function () {
+            $('.list-data').DataTable({
+                "rubriqueLength": 10,
+                "order": [[ 0, "desc" ]],
+                "bProcessing": true,
+                "bFilter": true,
+                "oLanguage": {
+                    "sProcessing": "traitement...",
+                    "oPaginate": {
+                        "sPrevious": "Précédente",
+                        "sNext": "Suivante",
+                    },
+                    "sSearch": "Filtrer: ",
+                    "sLengthMenu": "Afficher _MENU_ enregistrement par département",
+                    "sInfo": "Voir _TOTAL_ de _PAGE_ pour _PAGES_ entrées",
+                    "sInfoEmpty": "Voir 0 de 0 pour 0 entrées",
+                    "sEmptyTable": "Aucune enregistrement trouvée",
+                },
+                "footerCallback": function ( row, data, start, end, display ) {
+                    $('.title-count').html(display.length);
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

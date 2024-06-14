@@ -1,0 +1,48 @@
+
+<form id="vacation_edit" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-bd">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                    {% if prestation.id %}
+                        <h4>Modification</h4>
+                    {% else %}
+                        <h4>Ajout</h4>
+                    {% endif %}
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        {{ form_label(form.date, 'Date *') }}
+                        {{ form_widget(form.date, {'attr':{'required':'required'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.quantite, 'Quantité *') }}
+                        {{ form_widget(form.quantite, {'attr':{'required':'required'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_errors(form) }}
+                        {{ form_row(form._token) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.type_prestation, 'Type de préstation *') }}
+                        {{ form_widget(form.type_prestation, {'attr':{'required':'required'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.user, 'Utilisateurs *') }}
+                        {{ form_widget(form.user, {'attr':{'required':'required'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.commentaire, 'Commentaire') }}
+                        {{ form_widget(form.commentaire) }}
+                    </div>
+                </div>
+
+                <a class="btn btn-primary" href="{{ path('front_assistant_prestation_index') }}" onclick=";">Retour vers la liste</a>
+                <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                
+            </div>
+        </div>
+    </div>
+</form>     

@@ -1,0 +1,208 @@
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Mes absences</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="/" title="Espace étudiant">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Mes absences</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <!-- content mes absences -->
+                <section class="mesAbsences-content content-list">
+                    <div class="alert alert-info info-aler-list info-absence-etudiant" role="alert">
+                        <p class="item">
+                            <strong>Nom et prénom :</strong><span>{{ etudiant.firstName }} {{ etudiant.lastName }}</span>
+                        </p>
+                        <p class="item">
+                            <strong>Domaine :</strong><span>{{ etudiant.mention.departement.nom }}</span>
+                        </p>
+                        <p class="item">
+                            <strong>Mention :</strong><span>{{ etudiant.mention.nom }}</span>
+                        </p>
+                        <p class="item">
+                            <strong>Parcours :</strong><span>{% if etudiant.parcours.nom is defined %} {{ etudiant.parcours.nom }} {% endif %}</span>
+                        </p>
+                        <p class="item">
+                            <strong>Niveau :</strong><span>{{ etudiant.niveau.libelle }}</span>
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        {% if niveauSemestre1 %}
+                        <h3 class="card-header">Semestre : {{ niveauSemestre1.libelle }}</h3>
+                        <div class="card-body">
+                            <div class="table-responsive table-wrapper">
+                                <table class="table table-bordered table-hover table-md list-data" id="list-validated">
+                                    <thead>
+                                        <tr>
+                                            <th>UE/EC</th>
+                                            <th>Moyenne</th>
+                                            <th>Résultat</th>
+                                            <th>Session</th>
+                                            <th>Crédits</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for key, value in resultUeSem1 %}
+                                            <tr class="middle-align">
+                                                <td>
+                                                    {{ key }} <br>
+                                                    {% for itemEc in value.EC %}
+                                                        <span>{{ itemEc.matiere }}</span><br>
+                                                    {% endfor %}
+                                                </td>
+                                                <td>
+                                                    {{ value.avgUe}}<br>
+                                                    {% for itemEc in value.EC %}
+                                                        <span>{{ itemEc.note }}</span><br>
+                                                    {% endfor %}
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                    <br>
+                                                    {% for itemEc in value.EC %}
+                                                        <span>{{ itemEc.matiereCredit }}</span><br>
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr>
+                                            <td>RESULTAT AU SEMESTRE : {{ niveauSemestre1.libelle }}</td>
+                                            <td>{{ moyenneSem1 }}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card">
+                        {% if niveauSemestre2 %}
+                        <h3 class="card-header">Semestre : {{ niveauSemestre2.libelle }}</h3>
+                        <div class="card-body">
+                            <div class="table-responsive table-wrapper">
+                                <table class="table table-bordered table-hover table-md list-data">
+                                    <thead>
+                                        <tr>
+                                            <th>UE/EC</th>
+                                            <th>Moyenne</th>
+                                            <th>Résultat</th>
+                                            <th>Session</th>
+                                            <th>Crédits</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for key, value in resultUeSem2 %}
+                                            <tr class="middle-align">
+                                                <td>
+                                                    {{ key }} <br>
+                                                    {% for itemEc in value.EC %}
+                                                        <span>{{ itemEc.matiere }}</span><br>
+                                                    {% endfor %}
+                                                </td>
+                                                <td>
+                                                    {{ value.avgUe}}<br>
+                                                    {% for itemEc in value.EC %}
+                                                        <span>{{ itemEc.note }}</span><br>
+                                                    {% endfor %}
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                    <br>
+                                                    {% for itemEc in value.EC %}
+                                                        <span>{{ itemEc.matiereCredit }}</span><br>
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr>
+                                            <td>RESULTAT AU SEMESTRE : {{ niveauSemestre2.libelle }}</td>
+                                            <td>{{ moyenneSem2 }}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <h5 class="text-dark m-t-10">Moyenne générale de l'étudiant(e) : <strong>{{ moyenneGenerale }}</strong></h5>
+                        </div>
+                        {% endif %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                
+                var oTable = $('#list-validated').dataTable({
+                    "aLengthMenu":    [[100, 250, 500, -1], [100, 250, 500, "Tout"]],
+                    "iDisplayLength": 1000,
+                    "aoColumnDefs":   [{
+                        "bSortable": false,
+                        "aTargets":  [4]
+                    }],
+                    "paging":         false,
+                    "ordering":       false,
+                    "searching":      false,
+                    "info":           false
+                });
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}

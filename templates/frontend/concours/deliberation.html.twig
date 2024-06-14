@@ -1,0 +1,159 @@
+{% extends layout_frontend %}
+{% block title %}Candidatures{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/buttons.dataTables.min.css') }}"> -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/libs/datatable/DT_bootstrap.css') }}"/>
+    <style>
+        .dt-buttons button {
+            /* color: #f2f2f2; */
+            /*font-size: 12px;*/
+            /* border-radius: 4px; */
+            /*border: 1px solid #64c3c2 !important;*/
+            /* background: #282b2b; */
+        }
+
+        .dt-buttons button:hover {
+            /* color: #f2f2f2; */
+            /*font-size: 12px;*/
+            /* border-radius: 4px !important; */
+            /*border: 1px solid #64c3c2 !important;*/
+            /* background: #282b2b !important; */
+        }
+
+        .dt-buttons {
+            /*position: absolute!important;*/
+            /* left: 50%; */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Moyenne et résultat</h1>
+
+    <!-- big slider banner scolarité -->
+    <section class="banner banner-training">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/training/banner-training.png') }}" alt="Candidatures">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Déliberation</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Déliberation</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <!-- big slider banner home -->
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <section class="moyenne-resultat-content richText">
+                    <!-- content -->
+                    <div class="title-group">
+                        <p class="sup-title">Scolarité</p>
+                        <h2 class="title-bloc">Déliberation</h2>
+                    </div>
+
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="form-filtre" method="post" autocomplete="off">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-xl-6">Année universitaire :</label>
+                                                <div class="form-field select-field col-xl-6">
+                                                    <select name="annee-universitaire" class="form-control" id="annee_univ">
+                                                        {% for item in anneeUnivList %}
+                                                            <option value="{{ item.id }}" selected>{{ item.libelle }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive table-wrapper" id="result">
+                        {% if concoursList|length > 0 %}
+                            <div class="dt-custom-title texte-center">Résultat</div>
+                            <table class="table table-bordered table-hover table-advance" id="list-validated">
+                                <thead>
+                                <tr>
+                                    <th>Mention</th>
+                                    <th>Niveau</th>
+                                    <th>Parours</th>
+                                    <th>Déliberation</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <form id="form-deliberation" method="post" autocomplete="off" action="{{ path('front_concours_deliberation_index') }}">
+                                        {% for key, item in concoursList %}
+                                            <tr class="middle-align">
+                                                <td>{{ item.mention.nom }}</td>
+                                                <td>{{ item.niveau.libelle }}</td>
+                                                <td>{% if item.parcours %}{{ item.parcours.nom }} {% endif %}</td>
+                                                <td>
+                                                    <input type="text" name="deliberation[{{ item.id }}]" id="concours_deliberation_{{ item.id }}" value="{{ item.deliberation }}">
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr class="middle-align">
+                                            <td colspan="4">
+                                                <div class="groups-btn mt-0">
+                                                    <button type="submit" class="btn btn-primary" id="btn-submit-edt-form">Modifier</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </form>
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p class="alert alert-secondary" role="alert"><strong>Aucun résultat</strong></p>
+                        {% endif %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+
+    <script>
+        (function ($) {
+            // $(document).ready(function () {
+            //     $('#annee_univ').on('change', function () {
+            //         window.location.href = "{{ path('front_concours_deliberation_index') }}" + "?a=" + $(this).val();
+            //     });
+            // });
+        })(jQuery);
+    </script>
+{% endblock %}
+

@@ -1,0 +1,25 @@
+<!-- Chercher les classes actives -->
+{% set menuComptableActive    = (app.request.get('_route') == 'front_comptable_presence_enseignant_index') or (app.request.get('_route') == 'front_comptable_vacation_enseignant_index')  ? "active" : "" %}
+
+<!-- Titre  breadcrumb-->
+{% set breadcrumbTitre = "" %}
+
+<!-- menu for assitant pages -->
+<nav class="menu_list menu_assistant">
+    <a class="nav-Link " href="{{ path('front_comptable_presence_enseignant_index') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Vacations</span>
+    </a>
+    <a class="nav-Link " href="{{ path('front_finance_prestation_index') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Préstations</span>
+    </a>
+    <a class="nav-Link " href="{{ path('front_finance_surveillance_index') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Surveillants</span>
+    </a>
+    <a class="nav-Link " href="{{ path('front_finance_ecolage_index') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Ecolages</span>
+    </a>
+</nav>

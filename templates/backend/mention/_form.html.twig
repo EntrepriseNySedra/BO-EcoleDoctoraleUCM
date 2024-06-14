@@ -1,0 +1,116 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_rf_mention_new') %}
+{% if mention.id %}
+    {% set action = path('admin_rf_mention_edit', { id: mention.id }) %}
+{% endif %}
+<section class="content">
+    <form id="mention-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        {% if(departement|length == 0 ) %}
+            <div class="col-sm-12 alert alert-warning" style="border:none;border-radius:0;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                Renseigner au moins une département
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if mention.id %}
+                            <h4>Modification mention</h4>
+                        {% else %}
+                            <h4>Ajout mention</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(formMention) }}
+                            {{ form_row(formMention._token) }}
+                        </div>                   
+                        <div class="form-group">
+                            {{ form_label(formMention.departement, 'Département *') }}
+                            {{ form_widget(formMention.departement, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMention.nom, 'Nom *') }}
+                            {{ form_widget(formMention.nom) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMention.diminutif, 'Diminutif *') }}
+                            {{ form_widget(formMention.diminutif) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMention.numCompteGenerale, 'Numéro de compte générale') }}
+                            {{ form_widget(formMention.numCompteGenerale) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMention.active, 'Active') }}
+                            {{ form_widget(formMention.active) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMention.description, 'Description') }}
+                            {{ form_widget(formMention.description) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMention.objectif, 'Objectif') }}
+                            {{ form_widget(formMention.objectif) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMention.admission, 'Admission') }}
+                            {{ form_widget(formMention.admission) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMention.diplomes, 'Description de diplôme') }}
+                            {{ form_widget(formMention.diplomes) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMention.debouches, 'Débouches') }}
+                            {{ form_widget(formMention.debouches) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMention.dmio, 'Dmio') }}
+                            {{ form_widget(formMention.dmio) }}
+                        </div>
+                        <div class="custom-file-container" data-upload-id="myupload">
+                            <label class="custom-file-container__custom-file">
+                                {{ form_row(formMention.file,{'attr':{
+                                    'class':"custom-file-container__custom-file__custom-file-input",
+                                    "aria-label":"Multiple select files"
+                                }})}}
+                                <input type="hidden" name="MAX_FILE_SIZE" value="10485764">
+                                <span class="custom-file-container__custom-file__custom-file-control"></span>
+                            </label>
+                            <hr>
+                            <label>Effacer<a href="javascript:void(0);" class="custom-file-container__image-clear">
+                                    &times;
+                                </a>
+                            </label>
+                            <div class="custom-file-container__image-preview" style="overflow: hidden;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if mention.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</form>

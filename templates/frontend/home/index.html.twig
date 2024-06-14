@@ -1,0 +1,125 @@
+{% extends layout_frontend %}
+{% block title %}Accueil | {{ parent() }}{% endblock %}
+{% block content %}
+    <div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Université Catholique de Madagascar</h1>
+
+    <!-- big slider banner home -->
+    <section class="banner banner-home">
+        <div class="banner-container">
+            <div class="owl-carousel slider-banner">
+                {% if(actualites | length > 0) %}
+                    {% for actualite in actualites %}
+                        <div class="item">
+                            {%  set param = null %}
+                            {% if actualite.slug is not empty %}
+                                {%  set param = path('details_actualite', { slug: actualite.slug })  %}
+                            {% endif %}
+                            <figure class="bigImg">
+                                <img src="{{ asset("uploads/actualite/")~ actualite.uuid~"/1920-"~ actualite.path }}" alt="{{ actualite.path }}" >
+                            </figure>
+                            <div class="desc">
+                                <div class="container">
+                                    <h2 class="item-title">{{ actualite.title }}</h2>
+                                    <div class="text">
+                                        <p>{#{ actualite.detail|raw| striptags | u.truncate(100, '...') }#}</p>
+                                        <p>{{ actualite.description}}</p>
+                                    </div>
+                                    <div class="wrap-btnMore">
+                                        <a href="{{ param }}" class="btnMore" title="{{ actualite.title }}"><span>Lire la suite</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <p class="wrap-slidBtn">
+                <a href="javascript:;" class="btn-slideDown">
+                    <span>Découvrir</span>
+                    <i class="iconucm-mouseDown"></i>
+                </a>
+            </p>
+        </div>
+    </section> <!-- /big slider banner home -->
+
+    <div class="main-contentPage home-container">
+        <div class="container">
+            <!-- aside Right -->
+            <aside class="asideRight asideSticky">
+                {# évènements #}
+                <section class="widget events-widget">
+                    <h2 class="widget-title flex-bloc">
+                        <span>évènements</span>
+                        <a href="" class="showAll" title="Afficher tout">Afficher tout <i class="iconucm-chevron-right"></i></a>
+                    </h2>
+                    <div class="list-events">
+                        {% for evt in events %}
+                            <a  class="item-event" href="" title="Evènement-01">
+                                <p class="date-event">
+                                    <span class="nbr">{{ evt.date | date('d')}}</span>
+                                    <span class="month">{{ evt.date | format_datetime(pattern="MMM",locale='fr') }}</span>
+                                </p>
+                                <div class="desc-event">
+                                    <h3>{{ evt.title }}</h3>
+                                    <p class="full-date">{{ evt.date | date('d.m.Y')}}</p>
+                                    <p class="text">{{ evt.description }}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </section>
+                {# les plus consultés #}
+                <section class="widget mostConstulted-widget">
+                    <h2>Sujets les plus consultés</h2>
+                    <div class="list-tag">
+                        <a class="most" href="" title="UCM">UCM</a>
+                        <a class="most" href="" title="sciences humaines">sciences humaines</a>
+                        <a class="enough" href="" title="Historique">Historique</a>
+                        <a class="enough" href="" title="campus">campus</a>
+                        <a class="many" href="" title="Institut Supérieur de Théologie">Institut Supérieur de Théologie</a>
+                        <a class="many" href="" title="Arche">Arche</a>
+                        <a class="few" href="" title="sciences humaines">sciences humaines</a>
+                    </div>
+                </section>
+                <!-- aside Right actuality-->
+                {{ include('frontend/layoutactus/_actus.html.twig') }}
+            </aside> <!-- /aside Right -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-home" id="mainBloc">
+                <!-- découvrir bloc -->
+                <section class="decouvrir-bloc">
+                    {{ include('frontend/home/articles.html.twig') }}
+                </section> <!-- /découvrir bloc -->
+            </article> <!-- /main Bloc -->
+        </div>
+
+        <!-- gmap and newsletter -->
+        <section class="newsletter-bloc">
+            <div class="gmap-content">
+                <img src="{{ asset('/assets/images/data/gmap.png') }}" alt="GMAP">
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="offset-lg-7 col-lg-5">
+                        <div class="newsletter-content">
+                            <form action="" id="newsletterForm">
+                                <p class="supTitle">newsletter</p>
+                                <h2>Université Catholique de Madagascar</h2>
+                                <p>Restez informé de toutes les actualités nous concernant en vous inscrivant à notre
+                                    newsletter.</p>
+                                <div class="form-field">
+                                    <input type="text" class="form-control" placeholder="Saisissez votre adresse e-mail">
+                                    <button type="submit" class="submitBtn">S'inscrire</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- /gmap and newsletter -->
+    </div>
+    </div>
+{% endblock %}

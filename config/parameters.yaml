@@ -1,0 +1,13 @@
+parameters:
+    sexes  : ["Masculin", "Feminin"]
+    version: "0.10.0"
+    impot  : 0.02
+    taux_surveillant: 10000  
+    num_compte_general_1 : "6041000000000"
+    num_compte_general_2 : "4460000000000"
+    num_compte_general_bank : "5121120000000"
+    num_compte_old_ecoge : "4110000000000"
+    opavi_col1_head : "00005000072422706000181"
+    opavi_col3head : "V00451"
+    concours_host_ip : "192.168.92.100"
+    concours_host_mac : "f2:03:a2:66:e9:d5"

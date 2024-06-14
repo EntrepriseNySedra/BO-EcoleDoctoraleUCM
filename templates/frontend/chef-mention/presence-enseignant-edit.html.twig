@@ -1,0 +1,156 @@
+{% extends layout_frontend %}
+{% block title %}Fiche présence enseignants{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Fiche de renseignements</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace {{ workspaceTitle }}</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path(workspacePath) }}" title="Assistant">Espace {{ workspaceTitle }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Présence enseignant</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/chef-mention/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+           
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">{{ workspaceTitle }}</p>
+                    <h2 class="title-bloc">Fiche de renseignements</h2>
+                </div>
+                <!-- content actualites -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="form-bloc">
+                        <form method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+                            <div class="alert alert-info" role="alert">
+                                Date:           {{ fpEnseignant.date|date('d/m/Y') }} <br>
+                                Faculté:        {{ fpEnseignant.domaine.nom }} <br>
+                                Mention:        {{ fpEnseignant.mention.nom }} <br>
+                                Niveau:         {{ fpEnseignant.niveau.libelle }} <br>
+                                Parcours:       {% if fpEnseignant.parcours.nom is defined %} {{ fpEnseignant.parcours.nom }} {% endif %}<br>
+
+                                UE:             {{ fpEnseignant.ue.libelle }} <br>
+                                EC:             {{ fpEnseignant.matiere.nom }} <br>
+                                Code EC:             {{ fpEnseignant.matiere.code }} <br>
+                                Crédits:             {{ fpEnseignant.matiere.credit }} <br>
+                                Heure début:    {{ fpEnseignant.startTime|date('H:i:s') }} <br>
+                                Heure fin:      {{ fpEnseignant.endTime|date('H:i:s') }}
+                            </div>
+                            <div class="row">
+                                <input type="hidden" id="fiche_presence_enseignant_date" name="fiche_presence_enseignant[date]" value="{{ fpEnseignant.date | date()}}">
+                                <input type="hidden" id="fiche_presence_enseignant_start_time" name="fiche_presence_enseignant[startTime]" value="{{ fpEnseignant.startTime | date('H:i:s') }}">
+                                <input type="hidden" id="fiche_presence_enseignant_end_time" name="fiche_presence_enseignant[endTime]" value="{{ fpEnseignant.endTime | date('H:i:s')}}">
+
+                                {#
+                                    <div class="form-group col-lg-6">
+                                    <label class="control-label" for="plusInfos-stnd">Faculté<span class="">*</span> :</label>
+                                    <input type="text" name="domaine" class="form-control"  disabled="disabled" value="{{ fpEnseignant.domaine.nom }}">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label class="control-label" for="plusInfos-stnd">Mention<span class="">*</span> :</label>
+                                    <input type="text" name="mention" class="form-control"  disabled="disabled" value="{{ fpEnseignant.mention.nom }}">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label class="control-label" for="plusInfos-stnd">Niveau<span class="">*</span> :</label>
+                                    <input type="text" name="niveau" class="form-control"  disabled="disabled" value="{{ fpEnseignant.niveau.libelle }}">
+                                </div>
+                                <div class="form-group col-lg-6">
+
+                                    <label class="control-label" for="plusInfos-stnd">Parcours<span class="">*</span> :</label>
+                                    <input type="text" name="parcours" class="form-control"  disabled="disabled" 
+                                    {% if fpEnseignant.parcours.nom is defined %}
+                                        value="{{ fpEnseignant.parcours.nom }}"
+                                    {% else %}
+                                        value=""
+                                    {% endif %}
+                                    >
+
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label class="control-label" for="plusInfos-stnd">UE<span class="">*</span> :</label>
+                                    <input type="text" name="ue" class="form-control"  disabled="disabled" value="{{ fpEnseignant.ue.libelle }}">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label class="control-label" for="plusInfos-stnd">EC<span class="required">*</span> :</label>
+                                    <input type="text" name="matiere" class="form-control"  disabled="disabled" value="{{ fpEnseignant.matiere.nom }}">
+                                </div>
+
+                                <div class="form-group col-lg-4">
+                                    <label class="control-label" for="plusInfos-stnd">Date<span class="">*</span> :</label>
+                                    <input type="text" name="startTime" class="form-control"  disabled="disabled" value="{{ fpEnseignant.date|date('d/m/Y') }}">
+                                </div>
+
+                                <div class="form-group col-lg-4">
+                                    <label class="control-label" for="plusInfos-stnd">Heure de début du cours<span class="">*</span> :</label>
+                                    <input type="text" name="endTime" class="form-control"  disabled="disabled" value="{{ fpEnseignant.endTime|date('H:i:s') }}">
+                                </div>
+
+                                <div class="form-group col-lg-4">
+                                    <label class="control-label" for="plusInfos-stnd">Heure de fin du cours<span class="">: </span></label>
+                                    <input type="text" name="endTime" class="form-control"  disabled="disabled" value="{{ fpEnseignant.endTime|date('H:i:s') }}">
+                                </div>
+                                #}
+
+                                <div class="form-group col-lg-12">
+                                    <label class="control-label" for="plusInfos-stnd">Thème<span class="">*</span> :</label>
+                                    {{ form_widget(form.theme) }}
+                                </div>
+                                
+                                {{ form_errors(form) }}
+                                {{ form_row(form._token) }}
+                                
+
+                                <div class="mb-2 text-right">
+                                    <button type="submit" class="btn btn-primary">Valider</button>
+                                </div>
+
+                            </div>
+                            
+                        </form>
+                        
+                    </div>
+
+                </section>
+
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {});
+        } )( jQuery );
+    </script>
+{% endblock %}
+

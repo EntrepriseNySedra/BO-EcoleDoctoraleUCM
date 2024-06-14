@@ -1,0 +1,17 @@
+{% extends layout_backend %}
+{% block title %}Examen::Modification{% endblock %}
+
+{% set menuExamenAdd = true %}
+{% set menuExamenList = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Batiment
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/examen/_form.html.twig') }}
+{% endblock %}

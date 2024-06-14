@@ -1,0 +1,84 @@
+
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Mes absences</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="{{ path('front_student_emploi_du_temps') }}" title="Espace étudiant">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Mes absences</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/etudiant/_menu.html.twig') }}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Espace étudiant</p>
+                    <h2 class="title-bloc">Mes absences</h2>
+                </div>
+
+                <!-- content mes absences -->
+                <section class="mesAbsences-content">
+                    {% if absences|length > 0 %}
+                        <div class="table-responsive table-wrapper">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Heure</th>
+                                        <th>EC</th>
+                                        <th>Motif</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for absence in absences %}
+                                    <tr class="middle-align">
+                                        <td>{{ absence.date | format_datetime('short', 'none', locale='fr') }}</td>
+                                        <td>{{ absence.emploiDutemps.startTime | format_time(timeFormat='short', locale='fr') }} <span class="fa fa-long-arrow-alt-right fa-1x"></span> {{ absence.emploiDutemps.endTime | format_time(timeFormat='short',locale='fr') }}</td>
+                                        <td>{{ absence.emploiDutemps.matiere.nom }}</td>
+                                        <td>{{ absence.justification }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

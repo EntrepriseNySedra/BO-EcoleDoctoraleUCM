@@ -1,0 +1,4 @@
+<option value=""> -- Semestre -- </option>
+{% for sem in semestres %}
+    <option value="{{ sem.id }}">{{ sem.libelle }}</option>
+{% endfor %}

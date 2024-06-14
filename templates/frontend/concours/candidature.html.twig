@@ -1,0 +1,567 @@
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Fiche de renseignements  </h1>
+
+    <div class="main-container profil-container">
+        <div class="container">
+                
+                   
+            <div class="card">
+            <button type="button" style="margin: 20px; height: 10%" class="btn btn-danger" data-bs-toggle="" data-bs-target="#exampleModal">
+                    L'inscription 
+                </button>
+ <br>
+<!-- Modif Sedra pop UP  -->
+            <!-- Button trigger modal -->
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Cliquez ici pour voir les dossiers à fournir
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="exampleModalLabel">DOSSIER A FOURNIR</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <h4> 1. Matière mises au concours </h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Mention Economie: Maths(Serie C); Anglais ; Philosophie ; français</li>
+            <li class="list-group-item">Mention Gestion: Maths(Serie L); Anglais ; Philosophie ; français</li>
+            <li class="list-group-item">Mention Droit: Connaissances générales; Anglais ; Philosophie ; français</li>
+            <li class="list-group-item">Mention SSAD: Maths(Serie L); Anglais ; Philosophie ; français</li>
+        </ul>
+        </br>
+        </br>
+        <h4> 2. Pièces à fournir pour le concours d'entrée en L1 </h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Droit de concours 50 000 Ar</li>
+            <li class="list-group-item">Reçu de versement du droit de concours auprès d'un agence BFV </li>
+            <li class="list-group-item">Photo d'identité numéroque sur flash lors de votre inscription</li>
+            <li class="list-group-item">Justification de l'obtention du Bacc ou numéro d'inscription du bacc</li>
+            <li class="list-group-item">Adresse Email et numéro Téléphone</li>
+        </ul>
+        </br>
+        <h5> ( Compte BFV: 00008 00002 05003013639 74 )</h5>
+        </br>
+        </br>
+        <h4> 3. Pièces à fournir après admission </h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">CV + 2photos d'identité (dimension 4*4)</li>
+            <li class="list-group-item">Certificat médical d'aptitude</li>
+            <li class="list-group-item">Acte d'état-civil ou bulletin de naissance/li>
+            <li class="list-group-item">Reçu de versement auprès d'un agence BNI de la première tranche du frais de scolarité</li>
+            <li class="list-group-item">Photocopie certifiée du diplome de Baccalaureat ou relevé des notes </li>
+            <li class="list-group-item">Enveloppe A4</li>
+            
+        </ul>
+        </br>
+        <h5> ( Compte BNI: 00005 00004 2467384020 097 )</h5>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+                <div class="card-body">
+                    <h2>Fiche de renseignements </h2>
+                    <h5> (Les champs marqués d'un astérisque * sont obligatoires.)</h5>
+                    </br>
+                     </br>
+                    {{ form_start(registrationForm, {'attr': {'class': 'row'}}) }}
+                    {{ form_row(registrationForm._token) }}
+                        <div class="form-bloc">
+                            <div class="row">    
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="plusInfos-stnd">Référence de paiement  (Droit de concours) <span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.payementRef) }}
+                                    <span class="error">{{ form_errors(registrationForm.payementRef) }}</span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="payement_ref_date">Date<span class="required">*</label>
+                                    {{ form_widget(registrationForm.payement_ref_date) }}
+                                    <span class="error">{{ form_errors(registrationForm.payement_ref_date) }}</span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="plusInfos-stnd">Ajouter <span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.payementRefPath) }}
+                                    <span class="error">{{ form_errors(registrationForm.payementRefPath) }}</span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="mention">Mention<span class="required">*</span></label>
+                                    <select id="concours_candidature_form_mention" name="concours_candidature_form[mention]" required="required" class="form-control">
+                                        <option value="">-- Mention --</option>
+                                        {% for mention in mentions %}
+                                           
+                                                <option value="{{mention.id}}">{{ mention.nom }}</option>
+                                          
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="niveau">Niveau<span class="required">*</span></label>
+                                    <select id="concours_candidature_form_niveau" name="concours_candidature_form[niveau]" required="required" class="form-control">
+                                        <option value="" selected="selected">-- Niveau --</option>
+                                        {% for niveau in niveaux %}
+                                            <option value="{{ niveau.id }}">{{ niveau.libelle }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="error"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="niveau">Parcours</label>
+                                    {{ form_widget(registrationForm.parcours) }}
+                                </div> 
+
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="niveau">Centre <span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.centre) }}
+                                </div> 
+
+                                <h3 class="text-left text-danger">Etat civil</h3>
+
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_civility">Civilité <span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.civility) }}
+                                    <span class="error">{{ form_errors(registrationForm.civility) }}</span>
+                                </div>
+                                <div class="form-group col-md-8">
+                                    <label class="control-label" for="first_inscription_form_photo1">Photo d'identité</label>
+                                    {{ form_widget(registrationForm.photo) }}
+                                </div>
+                                 <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_firstName">Nom(s) <span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.firstName) }}
+                                    <span class="error">{{ form_errors(registrationForm.firstName) }}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_lastName">Prénom(s)<span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.lastName) }}
+                                    <span class="error">{{ form_errors(registrationForm.lastName) }}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="dateOfBirth">Date de naissance<span class="required">*</label>
+                                    {{ form_widget(registrationForm.dateOfBirth) }}
+                                    <span class="error">{{ form_errors(registrationForm.dateOfBirth) }}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="lieuNaissance-stnd">Lieu de naissance</label>
+                                    {{ form_widget(registrationForm.birthPlace) }}
+                                    <span class="error">{{ form_errors(registrationForm.birthPlace) }}</span>
+                                </div>
+                                
+                                <div class="form-group col-md-2">
+                                    <label class="control-label" for="nationalite-stnd">Nationalité <span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.nationality) }}
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <label class="control-label" for="adresse-stnd">Adresse exacte </label>
+                                    {{ form_widget(registrationForm.address) }}
+                                    <span class="error">{{ form_errors(registrationForm.address) }}</span>
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <label class="control-label" for="phone-stnd">Téléphone </label>
+                                    {{ form_widget(registrationForm.phone1) }}
+                                    <span class="error">{{ form_errors(registrationForm.phone1) }}</span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="email">Adresse email<span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.email) }}
+                                    <span class="error">{{ form_errors(registrationForm.email) }}</span>
+                                </div>
+                                 <div class="form-group col-md-4">
+                                    <label class="control-label" for="numcin-stnd">Num CIN</label>
+                                    {{ form_widget(registrationForm.cinNum) }}
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="livreDate-stnd">Delivré le</label>
+                                    {{ form_widget(registrationForm.cinDeliverDate) }}
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="livreLieu-stnd">à</label>
+                                    {{ form_widget(registrationForm.cinDeliverLocation) }}
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="livreLieu-stnd">Confession religieuse <span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.confessionReligieuse) }}
+                                </div>
+                                
+                                <div class="form-group col-md-12">
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" id="concours_candidature_form_situation_matrimoniale_celiba" name="concours_candidature_form[situationMatrimoniale]" value="Célibataire">
+                                        <label for="concours_candidature_form_situation_matrimoniale_celiba">Célibataire</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" id="concours_candidature_form_situation_matrimoniale_marie" name="concours_candidature_form[situationMatrimoniale]" value="Marié(e)">
+                                        <label for="concours_candidature_form_situation_matrimoniale_marie">Marié(e)</label>
+                                    </div>                                    
+                                </div>
+
+                                <!-- Father infos -->
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_fatherlastName">Nom(s) du père</label>
+                                    {{ form_widget(registrationForm.fatherLastName) }}
+                                    <span class="error">{{ form_errors(registrationForm.fatherLastName) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_fatherFirsttName">Prénom(s)</label>
+                                    {{ form_widget(registrationForm.fatherFirstName) }}
+                                    <span class="error">{{ form_errors(registrationForm.fatherFirstName) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_fatherJob">Profession</label>
+                                    {{ form_widget(registrationForm.fatherJob) }}
+                                    <span class="error">{{ form_errors(registrationForm.fatherJob) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_fatherJobAddress">Adresse</label>
+                                    {{ form_widget(registrationForm.fatherJobAddress) }}
+                                    <span class="error">{{ form_errors(registrationForm.fatherJobAddress) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_fatherJobPhone">Contacts</label>
+                                    {{ form_widget(registrationForm.fatherJobPhone) }}
+                                    <span class="error">{{ form_errors(registrationForm.fatherJobPhone) }}</span>
+                                </div>
+                                <!-- END Father infos -->
+
+                                <!-- Mother infos -->
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_motherLastName">Nom(s) de la mère</label>
+                                    {{ form_widget(registrationForm.motherLastName) }}
+                                    <span class="error">{{ form_errors(registrationForm.motherLastName) }}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_motherFirsttName">Prénom(s)</label>
+                                    {{ form_widget(registrationForm.motherFirstName) }}
+                                    <span class="error">{{ form_errors(registrationForm.motherFirstName) }}</span>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_motherJob">Profession</label>
+                                    {{ form_widget(registrationForm.motherJob) }}
+                                    <span class="error">{{ form_errors(registrationForm.motherJob) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_motherJobAddress">Adresse</label>
+                                    {{ form_widget(registrationForm.motherJobAddress) }}
+                                    <span class="error">{{ form_errors(registrationForm.motherJobAddress) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_motherJobPhone">Contacts</label>
+                                    {{ form_widget(registrationForm.motherJobPhone) }}
+                                    <span class="error">{{ form_errors(registrationForm.motherJobPhone) }}</span>
+                                </div>
+                                <!-- END Mother infos -->
+
+                                <h4 class="text-left text-dark">Pour les mariés (es)</h4>
+
+                                <!-- Joint infos -->
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_conjointLastName">Nom(s) du conjoint(e)</label>
+                                    {{ form_widget(registrationForm.conjointLastName) }}
+                                    <span class="error">{{ form_errors(registrationForm.conjointLastName) }}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_conjointFirsttName">Prénom(s)</label>
+                                    {{ form_widget(registrationForm.conjointFirstName) }}
+                                    <span class="error">{{ form_errors(registrationForm.conjointFirstName) }}</span>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_conjointJob">Profession</label>
+                                    {{ form_widget(registrationForm.conjointJob) }}
+                                    <span class="error">{{ form_errors(registrationForm.conjointJob) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_conjointJobAddress">Adresse</label>
+                                    {{ form_widget(registrationForm.conjointJobAddress) }}
+                                    <span class="error">{{ form_errors(registrationForm.conjointJobAddress) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_conjointJobPhone">Contacts</label>
+                                    {{ form_widget(registrationForm.conjointJobPhone) }}
+                                    <span class="error">{{ form_errors(registrationForm.conjointJobPhone) }}</span>
+                                </div>
+                                <!-- END Joint infos -->
+
+                                <!-- Tutor infos -->
+                                
+                                <h4 class="text-left text-dark">Tuteur</h4>
+
+                                <div class="form-group col-md-2">
+                                    <label class="control-label" for="concours_candidature_form_tuteurCivility">Civilité</label>
+                                    {{ form_widget(registrationForm.tuteurCivility) }}
+                                    <span class="error">{{ form_errors(registrationForm.tuteurCivility) }}</span>
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <label class="control-label" for="concours_candidature_form_tuteurLastName">Nom(s)</label>
+                                    {{ form_widget(registrationForm.tuteurLastName) }}
+                                    <span class="error">{{ form_errors(registrationForm.tuteurLastName) }}</span>
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <label class="control-label" for="concours_candidature_form_tuteurFirsttName">Prénom(s)</label>
+                                    {{ form_widget(registrationForm.tuteurFirstName) }}
+                                    <span class="error">{{ form_errors(registrationForm.tuteurFirstName) }}</span>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_tuteurJob">Profession</label>
+                                    {{ form_widget(registrationForm.tuteurJob) }}
+                                    <span class="error">{{ form_errors(registrationForm.tuteurJob) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_tuteurJobAddress">Adresse</label>
+                                    {{ form_widget(registrationForm.tuteurJobAddress) }}
+                                    <span class="error">{{ form_errors(registrationForm.tuteurJobAddress) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_tuteurJobPhone">Contacts</label>
+                                    {{ form_widget(registrationForm.tuteurJobPhone) }}
+                                    <span class="error">{{ form_errors(registrationForm.tuteurJobPhone) }}</span>
+                                </div>
+                                <!-- END Tutor infos -->
+
+                                <!-- Religious infos -->
+                                
+                                <h4 class="text-left text-dark">Pour les religieux</h4>
+
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="concours_candidature_form_religiousCongregationName">Nom de la congrégation</label>
+                                    {{ form_widget(registrationForm.religiousCongregationName) }}
+                                    <span class="error">{{ form_errors(registrationForm.religiousCongregationName) }}</span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="concours_candidature_form_religiousAddress">Adresse</label>
+                                    {{ form_widget(registrationForm.religiousAddress) }}
+                                    <span class="error">{{ form_errors(registrationForm.religiousAddress) }}</span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="concours_candidature_form_religiousResponsableFoyerName">Nom du responsable du foyer ou de l'econome</label>
+                                    {{ form_widget(registrationForm.religiousResponsableFoyerName) }}
+                                    <span class="error">{{ form_errors(registrationForm.religiousResponsableFoyerName) }}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_religiousPhone">Téléphone</label>
+                                    {{ form_widget(registrationForm.religiousPhone) }}
+                                    <span class="error">{{ form_errors(registrationForm.religiousPhone) }}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_religiousEmail">Email</label>
+                                    {{ form_widget(registrationForm.religiousEmail) }}
+                                    <span class="error">{{ form_errors(registrationForm.religiousEmail) }}</span>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" id="concours_candidature_form_religious_profil_frere" name="concours_candidature_form[religiousProfil]" value="Frère">
+                                        <label for="concours_candidature_form_religious_profil_frere">Frère</label>
+                                    </div>                                  
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" id="concours_candidature_form_religious_profil_sœur" name="concours_candidature_form[religiousProfil]" value="Sœur">
+                                        <label for="concours_candidature_form_religious_profil_sœur">Sœur</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" id="concours_candidature_form_religious_profil_pere" name="concours_candidature_form[religiousProfil]" value="Père">
+                                        <label for="concours_candidature_form_religious_profil_pere">Père</label>
+                                    </div>                                  
+                                </div>
+                                <!-- END Religious infos -->
+        
+                                <!-- Etudes sencodaire infos -->
+                                
+                                <h4 class="text-left text-dark">Etudes sécondaires</h4>
+
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="bacc_serie">Série (Baccalaureat Malagasy) <span class="required">*</span></label>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" id="concours_candidature_form_baccSerieL" name="concours_candidature_form[baccSerie]" value="L">
+                                        <label for="concours_candidature_form_baccSerieL">L</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" id="concours_candidature_form_baccSerieS" name="concours_candidature_form[baccSerie]" value="S">
+                                        <label for="concours_candidature_form_baccSerieS">S</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_baccAutreName">Autres</label>
+                                    {{ form_widget(registrationForm.baccAutreName) }}
+                                    <span class="error">{{ form_errors(registrationForm.baccAutreName) }}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_baccAutreSerie">Série (Baccalauréat français ou autre) <span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.baccAutreSerie) }}
+                                    <span class="error">{{ form_errors(registrationForm.baccAutreSerie) }}</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="concours_candidature_form_baccMention">Mention</label>
+                                    {{ form_widget(registrationForm.baccMention) }}
+                                    <span class="error">{{ form_errors(registrationForm.baccMention) }}</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="concours_candidature_form_baccSession">Session</label>
+                                    {{ form_widget(registrationForm.baccSession) }}
+                                    <span class="error">{{ form_errors(registrationForm.baccSession) }}</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="concours_candidature_form_baccAnnee">Année <span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.baccAnnee) }}
+                                    <span class="error">{{ form_errors(registrationForm.baccAnnee) }}</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="concours_candidature_form_baccNumInscription">Numéro d'inscription Baccalaureat <span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.baccNumInscription) }}
+                                    <span class="error">{{ form_errors(registrationForm.baccNumInscription) }}</span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="concours_candidature_form_originEtablissement">Etablissement d'origine <span class="required">*</span></label>
+                                    {{ form_widget(registrationForm.originEtablissement) }}
+                                    <span class="error">{{ form_errors(registrationForm.originEtablissement) }}</span>
+                                </div>
+                                <!-- END Etude secondaire infos -->
+
+                                <!-- Etude universitaires antérieurs infos -->
+
+                                <h4 class="text-left text-dark">Etudes universitaires antérieurs</h4>
+
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_universityName">Nom de l'université</label>
+                                    {{ form_widget(registrationForm.universityName) }}
+                                    <span class="error">{{ form_errors(registrationForm.universityName) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_faculteName">Faculté</label>
+                                    {{ form_widget(registrationForm.faculteName) }}
+                                    <span class="error">{{ form_errors(registrationForm.faculteName) }}</span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label" for="concours_candidature_form_universityCountry">Pays</label>
+                                    {{ form_widget(registrationForm.universityCountry) }}
+                                    <span class="error">{{ form_errors(registrationForm.universityCountry) }}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_universityDiplome">Diplôme</label>
+                                    {{ form_widget(registrationForm.universityDiplome) }}
+                                    <span class="error">{{ form_errors(registrationForm.universityDiplome) }}</span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="control-label" for="concours_candidature_form_universityDiplomeDate">Date d'obtention</label>
+                                    {{ form_widget(registrationForm.universityDiplomeDate) }}
+                                    <span class="error">{{ form_errors(registrationForm.universityDiplomeDate) }}</span>
+                                </div>
+
+                                <!-- END Etude universitaires antérieurs infos -->
+                               
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="diplome">Ajouter diplôme</label>
+                                    {{ form_widget(registrationForm.diplomePath) }}
+                                </div>
+
+                                <div class="btns-group col-md-12 text-right">
+                                    <button type="submit" class="btn btn-lg btn-secondary btn-connexion" type="button" name="Enregsitrer">ENREGISTRER</button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    {{ form_end(registrationForm, {'render_rest': false}) }}
+                </div>
+            <!-- main Bloc -->
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        window.onload = function() {
+            $('#concours_candidature_form_mention').bind('change', function(){
+                mentionId = $(this).val();
+                niveauId = $('#concours_candidature_form_niveau').val();
+                path = "/concours/mention/" + mentionId + "/parcours";
+                $.ajax({
+                    method: "GET",
+                    url: path,
+                    data: {
+                        mention_id: mentionId,
+                        niveau_id: niveauId
+                    }
+                }).done(
+                    function(html){
+                        $('#concours_candidature_form_parcours').html(html);
+                    }
+                );                    
+            });
+            $('#concours_candidature_form_niveau').bind('change', function(){
+                mentionId = $('#concours_candidature_form_mention').val();
+                niveauId = $(this).val();
+                path = "/concours/mention/" + mentionId + "/parcours";
+                $.ajax({
+                    method: "GET",
+                    url: path,
+                    data: {
+                        mention_id: mentionId,
+                        niveau_id: niveauId
+                    }
+                }).done(
+                    function(html){
+                        $('#concours_candidature_form_parcours').html(html);
+                    }
+                );                    
+            });
+
+            MaskedInput({
+                elm: document.getElementById('concours_candidature_form_dateOfBirth'), // select only by id
+                format: '__/__/____',
+                separator: ''
+            });
+
+            MaskedInput({
+                elm: document.getElementById('concours_candidature_form_cinDeliverDate'), // select only by id
+                format: '__/__/____',
+                separator: ''
+            });
+
+            MaskedInput({
+                elm: document.getElementById('concours_candidature_form_universityDiplomeDate'), // select only by id
+                format: '__/__/____',
+                separator: ''
+            });
+
+            MaskedInput({
+                elm: document.getElementById('concours_candidature_form_payement_ref_date'), // select only by id
+                format: '__/__/____',
+                separator: ''
+            });
+        };
+
+        // masked_input_1.4-min.js
+        (function(a){a.MaskedInput=function(f){if(!f||!f.elm||!f.format){return null}if(!(this instanceof a.MaskedInput)){return new a.MaskedInput(f)}var o=this,d=f.elm,s=f.format,i=f.allowed||"0123456789",h=f.allowedfx||function(){return true},p=f.separator||"/:-",n=f.typeon||"_YMDhms",c=f.onbadkey||function(){},q=f.onfilled||function(){},w=f.badkeywait||0,A=f.hasOwnProperty("preserve")?!!f.preserve:true,l=true,y=false,t=s,j=(function(){if(window.addEventListener){return function(E,C,D,B){E.addEventListener(C,D,(B===undefined)?false:B)}}if(window.attachEvent){return function(D,B,C){D.attachEvent("on"+B,C)}}return function(D,B,C){D["on"+B]=C}}()),u=function(){for(var B=d.value.length-1;B>=0;B--){for(var D=0,C=n.length;D<C;D++){if(d.value[B]===n[D]){return false}}}return true},x=function(C){try{C.focus();if(C.selectionStart>=0){return C.selectionStart}if(document.selection){var B=document.selection.createRange();return -B.moveStart("character",-C.value.length)}return -1}catch(D){return -1}},b=function(C,E){try{if(C.selectionStart){C.focus();C.setSelectionRange(E,E)}else{if(C.createTextRange){var B=C.createTextRange();B.move("character",E);B.select()}}}catch(D){return false}return true},m=function(D){D=D||window.event;var C="",E=D.which,B=D.type;if(E===undefined||E===null){E=D.keyCode}if(E===undefined||E===null){return""}switch(E){case 8:C="bksp";break;case 46:C=(B==="keydown")?"del":".";break;case 16:C="shift";break;case 0:case 9:case 13:C="etc";break;case 37:case 38:case 39:case 40:C=(!D.shiftKey&&(D.charCode!==39&&D.charCode!==undefined))?"etc":String.fromCharCode(E);break;default:C=String.fromCharCode(E);break}return C},v=function(B,C){if(B.preventDefault){B.preventDefault()}B.returnValue=C||false},k=function(B){var D=x(d),F=d.value,E="",C=true;switch(C){case (i.indexOf(B)!==-1):D=D+1;if(D>s.length){return false}while(p.indexOf(F.charAt(D-1))!==-1&&D<=s.length){D=D+1}if(!h(B,D)){c(B);return false}E=F.substr(0,D-1)+B+F.substr(D);if(i.indexOf(F.charAt(D))===-1&&n.indexOf(F.charAt(D))===-1){D=D+1}break;case (B==="bksp"):D=D-1;if(D<0){return false}while(i.indexOf(F.charAt(D))===-1&&n.indexOf(F.charAt(D))===-1&&D>1){D=D-1}E=F.substr(0,D)+s.substr(D,1)+F.substr(D+1);break;case (B==="del"):if(D>=F.length){return false}while(p.indexOf(F.charAt(D))!==-1&&F.charAt(D)!==""){D=D+1}E=F.substr(0,D)+s.substr(D,1)+F.substr(D+1);D=D+1;break;case (B==="etc"):return true;default:return false}d.value="";d.value=E;b(d,D);return false},g=function(B){if(i.indexOf(B)===-1&&B!=="bksp"&&B!=="del"&&B!=="etc"){var C=x(d);y=true;c(B);setTimeout(function(){y=false;b(d,C)},w);return false}return true},z=function(C){if(!l){return true}C=C||event;if(y){v(C);return false}var B=m(C);if((C.metaKey||C.ctrlKey)&&(B==="X"||B==="V")){v(C);return false}if(C.metaKey||C.ctrlKey){return true}if(d.value===""){d.value=s;b(d,0)}if(B==="bksp"||B==="del"){k(B);v(C);return false}return true},e=function(C){if(!l){return true}C=C||event;if(y){v(C);return false}var B=m(C);if(B==="etc"||C.metaKey||C.ctrlKey||C.altKey){return true}if(B!=="bksp"&&B!=="del"&&B!=="shift"){if(!g(B)){v(C);return false}if(k(B)){if(u()){q()}v(C,true);return true}if(u()){q()}v(C);return false}return false},r=function(){if(!d.tagName||(d.tagName.toUpperCase()!=="INPUT"&&d.tagName.toUpperCase()!=="TEXTAREA")){return null}if(!A||d.value===""){d.value=s}j(d,"keydown",function(B){z(B)});j(d,"keypress",function(B){e(B)});j(d,"focus",function(){t=d.value});j(d,"blur",function(){if(d.value!==t&&d.onchange){d.onchange()}});return o};o.resetField=function(){d.value=s};o.setAllowed=function(B){i=B;o.resetField()};o.setFormat=function(B){s=B;o.resetField()};o.setSeparator=function(B){p=B;o.resetField()};o.setTypeon=function(B){n=B;o.resetField()};o.setEnabled=function(B){l=B};return r()}}(window));
+    
+        // required form
+        var candidature_form = $("form[name='concours_candidature_form']").find("input,select,textarea").filter('[required]:visible');
+        $("button[name='Enregsitrer']").on("click",function(){
+            candidature_form.each(function(){
+                if($(this).val() == "" || $(this).val() == "__/__/____" )
+                    $(this).css('border-color','#BD0B1D');
+                else
+                    $(this).removeAttr("style");
+            });
+        });
+    </script>
+   
+{% endblock %}

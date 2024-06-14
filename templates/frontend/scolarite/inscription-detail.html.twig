@@ -1,0 +1,317 @@
+{% extends layout_frontend %}
+{% block title %}Candidatures{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Détail candidature</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-training.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Détail candidature</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Inscription détail</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <!-- content -->
+                <section class="content">
+                    <div class="title-group">
+                        <p class="sup-title">Scolarité</p>
+                        <h2 class="title-bloc">Inscription de "{{ inscription.etudiant.firstName }} {{ inscription.etudiant.lastName }}" pour l'anneé universitaire {{ inscription.anneeUniversitaire.libelle }}</h2>
+                    </div>
+
+                    <div class="menu-list">
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Référence de paiement : </label> 
+                                    {{ inscription.payementRef }}
+                                    <a  class="mx-2 text-danger" href="{{ path('front_scolarite_download_inscription_paiement_ref', { id: inscription.id }) }}">Télécharger</a>
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Montant : </label>
+                                    {{ inscription.fraisScolarite.montant |format_currency('MGA', {fraction_digit: 2}) }}
+                            </div>
+
+                            <h3>Cursus</h3>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Mention : </label>
+                                    {{ inscription.mention.nom }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Niveau : </label>
+                                    {{ inscription.niveau.libelle }}
+                            </div>
+                            {% if inscription.mention.id != inscription.etudiant.mention.id or inscription.niveau.id != inscription.etudiant.niveau.id %}
+                                <div class="col-6">
+                                    <label class="text-left col-5" style="font-weight:bold;">Ancienne Mention : </label>
+                                    {{ inscription.etudiant.mention.nom }}
+                                </div>
+                            {% endif %}
+                            {% if inscription.mention.id != inscription.etudiant.mention.id or inscription.niveau.id != inscription.etudiant.niveau.id %}
+                                <div class="col-6">
+                                    <label class="text-left col-5" style="font-weight:bold;">Ancien Niveau : </label>
+                                        {{ inscription.etudiant.niveau.libelle }}
+                                </div>
+                            {% endif %}
+
+                            <!-- Etat civil infos -->
+                            
+                            <h3>Etat civil</h3>
+
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Nom et prénom : </label>
+                                {% if inscription.etudiant.civility %}{{ inscription.etudiant.civility.libelle }} {% endif %}{{ inscription.etudiant.lastName }} {{ inscription.etudiant.firstName}}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Date et lieu de naissance : </label> 
+                                    {{ inscription.etudiant.birthDate | date('d/m/Y') }} à {{ inscription.etudiant.birthPlace }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Nationalité : </label> 
+                                {{ inscription.etudiant.nationality }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Situation : </label> 
+                                {{ inscription.etudiant.situationMatrimoniale }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Email : </label> 
+                                    {{ inscription.etudiant.email }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Adresse : </label> 
+                                {{ inscription.etudiant.address }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Téléphone : </label> 
+                                {{ inscription.etudiant.phone }}
+                            </div>
+                            <div class="col-6"></div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">CIN : </label> 
+                                {{ inscription.etudiant.cinNum}}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Délivré le : </label> 
+                                {{ inscription.etudiant.cinDeliveryDate | date('d/m/Y') }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Confession religieuse : </label> 
+                                {{ inscription.etudiant.religion }}
+                            </div>
+                            <div class="col-6"></div>
+
+                            <!-- Parents infos -->
+
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Nom et prénom du père : </label> 
+                                {{ inscription.etudiant.fatherName }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Adresse et contacts : </label> 
+                                {{ inscription.etudiant.fatherAddressContact }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Profession : </label> 
+                                {{ inscription.etudiant.fatherJob }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Adresse et contacts professionnel : </label> 
+                                {{ inscription.etudiant.fatherJobAddressContact }}
+                            </div>
+                            
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Nom et prénom de la mère : </label> 
+                                {{ inscription.etudiant.motherName }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Adresse et contacts : </label> 
+                                {{ inscription.etudiant.motherAddressContact }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Profession : </label> 
+                                {{ inscription.etudiant.motherJob }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Adresse et contacts professionnel : </label> 
+                                {{ inscription.etudiant.motherJobAddressContact }}
+                            </div>
+                            <!-- Joint infos -->
+
+                            <h3>Pour les marié (es)</h3>
+
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Nom et prénom du conjoint : </label> 
+                                {{ inscription.etudiant.jointLastName }} {{ inscription.etudiant.jointFirstName }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Adresse et contacts : </label> 
+                                {{ inscription.etudiant.jointAddressContact }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Profession : </label> 
+                                {{ inscription.etudiant.jointJob }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Adresse et contacts professionnel : </label> 
+                                {{ inscription.etudiant.jointAddressContact }}
+                            </div>
+
+                            <!-- Tutor infos -->
+                            <h3>Tuteur</h3>
+
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Civilité Nom et prénom : </label>
+                                {% if inscription.etudiant.tutorCivility %}{{ inscription.etudiant.tutorCivility.libelle }} {% endif %}{{ inscription.etudiant.tutorLastName }} {{ inscription.etudiant.tutorFirstName }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Adresse et contacts : </label> 
+                                {{ inscription.etudiant.tutorAddressContact }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Profession : </label> 
+                                {{ inscription.etudiant.tutorJob }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Adresse et contacts professionnel : </label> 
+                                {{ inscription.etudiant.tutorJobAddressContact }}
+                            </div>
+
+                            <!-- Religious infos -->
+                            <h3>Pour les réligieux </h3>
+
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Nom de la congrégation : </label> 
+                                {{ inscription.etudiant.religiousCongregationName }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Adresse : </label> 
+                                {{ inscription.etudiant.religiousAddress }}
+                            </div>
+                                <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Profil : </label> 
+                                {{ inscription.etudiant.religiousProfil }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Nom résponsable du foyer : </label> 
+                                {{ inscription.etudiant.religiousResponsibleName }}
+                            </div>
+                            
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Téléphone : </label> 
+                                {{ inscription.etudiant.religiousPhone }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Adresse : </label> 
+                                {{ inscription.etudiant.religiousEmail }}
+                            </div>
+
+                            <!-- College study infos -->
+                            <h3>Etudes secondaires </h3>
+
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Série (Baccalauréat Malagasy) : </label> 
+                                {{ inscription.etudiant.baccSerie }}
+                            </div>
+                            <div class="col-6"></div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Mention : </label> 
+                                {{ inscription.etudiant.baccMention }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">Année : </label>
+                                {{ inscription.etudiant.baccAnnee }}
+                            </div>
+                            <div class="col-6">
+                                <label class="text-left col-5" style="font-weight:bold;">N° d'inscription au Bacc : </label> 
+                                {{ inscription.etudiant.baccNumInscription }}
+                            </div>
+
+                        </div>
+                        <div class="row my-5">
+                            <div class="col">
+                                <form id="validate_form" method="post" action="{{ path('front_scolarite_validate_inscription', {id: inscription.id })}}" style="display:inline-block">
+                                    <input type="hidden" name="_token" value="{{csrf_token('validate' ~ inscription.id)}}">
+                                    <input type="hidden" name="inscription_status" id="inscription_status">
+                                    <div class="form-group">
+                                        <label for="motif" class="col-sm-2 control-label"><strong>Motif</strong></label>
+                                        <div id="error" class="alert alert-danger col-sm-10 hidden">
+                                            <strong>Merci de remplir votre motif</strong>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <textarea name="motif" class="form-control" id="motif" rows="11" cols="125"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="my-2 text-right">
+                                        <a onclick="javascript:valider('{{ constant('App\\Entity\\Inscription::STATUS_VALIDATED') }}');" href="javascript:;" title="Valider">
+                                            <button class="btn btn-primary">Valider</button>
+                                        </a>
+                                        <a onclick="javascript:valider('{{ constant('App\\Entity\\Inscription::STATUS_REFUSED') }}');" href="javascript:;" title="Refuser">
+                                            <button type="button" class="btn btn-danger">Refuser</button>
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article>
+            <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+
+<style>
+   .menu-list {
+       color: #000;
+   }
+   .menu-list span {
+       font-weight: bold;
+   }
+</style>
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        function valider(value) {
+            $("#inscription_status").val(value);
+            if ($('#inscription_status').val() == '' || $('#motif').val() == '') {
+                $('#error').removeClass('hidden');
+                return false;
+            } else {
+                if($("#inscription_status").val() != '')
+                    $("#validate_form").submit();
+            }
+        }
+    </script>
+{% endblock %}
+

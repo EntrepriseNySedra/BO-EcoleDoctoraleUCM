@@ -1,0 +1,142 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Notes</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace enseignant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Emploi du temps</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+                <!--div class="title-group">
+                    <p class="sup-title">Enseignant</p>
+                    <h2 class="title-bloc">Emploi du temps</h2>
+                </div-->
+                <!-- content notes -->
+                <section class="emploiTemps-content">
+                    <div class="groups-btn justify-content-end text-right mb-3">
+                        <button class="btn btn-primary edt-filter" data-lib="day">JOUR  </button>
+                        <button class="btn btn-primary edt-filter" data-lib="week">SEMAINE  </button>
+                    </div>
+                    <div class="table-responsive table-wrapper">
+                        <table class="table table-item table-bordered table-hover emploiDuTemps-day">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Heure</th>
+                                    <th>Matière</th>
+                                    <th>Bâtiment</th>
+                                    <th>Salles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            
+                            {% if edtDay | length > 0 %}
+                            {% for edt in edtDay %}
+                                
+                                <tr class="middle-align">
+                                    <td>{{ edt.dateSchedule | format_datetime('short', 'none', locale='fr')  }}</td>
+                                    <td>{{ edt.startTime | format_time(timeFormat='short', locale='fr') }} <span class="fa fa-minus"></span>{{ edt.endTime | format_time(timeFormat='short', locale='fr') }}</td>
+                                    <td>{{ edt.matiere.nom }}</td>
+                                    <td>{{ edt.salles.batiment.nom }}</td>
+                                    <td>{{ edt.salles.libelle }}</td>
+                                </tr>
+                                
+                                
+                            {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="5">
+                                        <p class="alert alert-secondary text-center m-0" role="alert"><strong>Aucune information</strong></p>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                        <table class="table table-item table-bordered table-hover emploiDuTemps-week" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Heure</th>
+                                    <th>Matière</th>
+                                    <th>Bâtiment</th>
+                                    <th>Salles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if currentWeek|length > 0 %}
+                                    {% for edt in currentWeek %}
+                                       <tr class="middle-align">
+                                            <td>{{ edt.dateSchedule | format_datetime('short', 'none', locale='fr')  }}</td>
+                                            <td>{{ edt.startTime | format_time(timeFormat='short', locale='fr') }} <span class="fa fa-minus"></span>{{ edt.endTime | format_time(timeFormat='short', locale='fr') }}</td>
+                                            <td>{{ edt.matiere.nom }}</td>
+                                            <td>{{ edt.salles.batiment.nom }}</td>
+                                            <td>{{ edt.salles.libelle }}</td>
+                                        </tr> 
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5">
+                                            <p class="alert alert-secondary text-center m-0" role="alert"><strong>Aucune information</strong></p>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('.edt-filter').on('click', function () {
+                    var $this       = $(this);
+                    $(".table-item").each(function() {
+                        $(this).hide();
+                    });
+                    $(".emploiDuTemps-"+$this.data('lib')).show();
+                })
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

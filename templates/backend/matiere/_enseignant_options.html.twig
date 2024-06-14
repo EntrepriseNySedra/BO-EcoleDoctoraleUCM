@@ -1,0 +1,4 @@
+<option> -- Selectionnez -- </option>
+{% for ens in enseignants %}
+    <option value="{{ ens.id }}">{{ ens.first_name }} {{ ens.last_name }}</option>
+{% endfor %}

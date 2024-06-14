@@ -1,0 +1,152 @@
+<!-- Chercher les classes actives -->
+{% set menuDemandeDocActive         = (app.request.get('_route') == 'front_chefmention_demande_doc_list' or app.request.get('_route') == 'front_chefmention_demande_doc_edit') ? "active" : "" %}
+
+{% set estListeCandidatureActive    = (app.request.get('_route') == 'front_scolarite_candidature' or app.request.get('_route') == 'front_scolarite_detail_candidature') ? "active" : "" %}
+{% set estEdtActive    = (app.request.get('_route') == 'front_scolarite_concours_edt') ? "active" : "" %}
+{% set estSalleActive    = (app.request.get('_route') == 'front_classroom_index') ? "active" : "" %}
+{% set estNotesActive    = (app.request.get('_route') == 'front_concours_candidates') ? "active" : "" %}
+{% set estResultatActive    = (app.request.get('_route') == 'front_concours_resultat') ? "active" : "" %}
+{% set estPresenceEnseignantActive    = (app.request.get('_route') == 'front_scolarite_presence_enseignant_index' or app.request.get('_route') == 'front_scolarite_presence_enseignant_add' or app.request.get('_route') == 'front_scolarite_presence_enseignant_edit') ? "active" : "" %}
+{% set estAbsenceActive    = (app.request.get('_route') == 'front_scolarite_absence_index' or app.request.get('_route') == 'front_absence_add') ? "active" : "" %}
+{% set estInscriptionActive    = (app.request.get('_route') == 'front_scolarite_inscription' or app.request.get('_route') == 'front_scolarite_inscription') ? "active" : "" %}
+{% set estInscritsActive    = (app.request.get('_route') == 'front_scolarite_inscrits' or app.request.get('_route') == 'front_scolarite_inscrits') ? "active" : "" %}
+{% set estEtudiantNoteActive    = (app.request.get('_route') == 'front_scolarite_etudiant_list' or app.request.get('_route') == 'front_scolarite_etudiant_releve') ? "active" : "" %}
+{% set estDemandeDocActive    = (app.request.get('_route') == 'front_scolarite_demande_doc_list' or app.request.get('_route') == 'front_scolarite_demande_doc_edit') ? "active" : "" %}
+{% set estExtraNoteActive    = (app.request.get('_route') == 'front_scolarite_extranote_list' or app.request.get('_route') == 'front_scolarite_extranote_new') ? "active" : "" %}
+{% set estFraisScolariteActive    = (app.request.get('_route') == 'front_scolarite_frais_index' or app.request.get('_route') == 'front_scolarite_frais_new' or app.request.get('_route') == 'front_scolarite_frais_show') ? "active" : "" %}
+{% set estGestionExamenActive    = (app.request.get('_route') == 'front_scolarite_gestion_examen_index') ? "active" : "" %}
+{% set estDeliberationActive    = (app.request.get('_route') == 'front_concours_deliberation_index') ? "active" : "" %}
+
+<!-- Titre  breadcrumb-->
+{% set breadcrumbTitre = "" %}
+{% if (app.request.get('_route') == 'front_scolarite_candidature') %}
+    {% set breadcrumbTitre = "Liste candidature" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_detail_candidature') %}
+    {% set breadcrumbTitre = "Détail candidature" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_concours_edt') %}
+    {% set breadcrumbTitre = "Emploi du temps - Concours" %}
+{% elseif (app.request.get('_route') == 'front_classroom_index') %}
+    {% set breadcrumbTitre = "Salles" %}
+{% elseif (app.request.get('_route') == 'front_concours_candidates') %}
+    {% set breadcrumbTitre = "Concours notes" %}
+{% elseif (app.request.get('_route') == 'front_concours_resultat') %}
+    {% set breadcrumbTitre = "Moyenne et résultat" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_presence_enseignant_index') %}
+    {% set breadcrumbTitre = "Prénsences enseignants" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_presence_enseignant_edit') %}
+    {% set breadcrumbTitre = "Modifier une fiche" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_presence_enseignant_add') %}
+    {% set breadcrumbTitre = "Ajouter une fiche" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_absence_index') %}
+    {% set breadcrumbTitre = "Fiche de présence" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_absence_add') %}
+    {% set breadcrumbTitre = "Ajouter une absence" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_inscription') %}
+    {% set breadcrumbTitre = "Validation inscriptions" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_inscrits') %}
+    {% set breadcrumbTitre = "Etudiants inscrits" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_etudiant_list') %}
+    {% set breadcrumbTitre = "Liste étudiants" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_etudiant_releve') %}
+    {% set breadcrumbTitre = "Relevé des notes" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_frais_index') %}
+    {% set breadcrumbTitre = "Frais de scolarité" %}
+{% elseif (app.request.get('_route') == 'front_scolarite_gestion_examen_index') %}
+    {% set breadcrumbTitre = "Gestion examen" %}
+{% elseif (app.request.get('_route') == 'front_concours_deliberation_index') %}
+    {% set breadcrumbTitre = "Déliberation" %}
+{% endif %}
+
+<!-- breadcrumb -->
+<!-- <nav aria-label="breadcrumb" class="breadcrumb-bloc">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><span>{{ breadcrumbTitre }}</span></li>
+    </ol>
+</nav> -->
+<!-- breadcrumb
+
+<!-- menu scolarité -->
+<nav class="menu_etudiant menu_list">
+    <a class="nav-Link {{ estListeCandidatureActive }}" href="{{ path('front_scolarite_candidature') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-list"></span>
+        <span>Liste candidature</span>
+    </a>
+    {% if is_granted('ROLE_SSRS') %}
+        <a class="nav-Link {{ estNotesActive }}" href="{{ path('front_concours_candidates') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-book"></span>
+            <span>Saisie notes</span>
+        </a>    
+        <a class="nav-Link {{ estDeliberationActive }}" href="{{ path('front_concours_deliberation_index') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-award"></span>
+            <span>Déliberation</span>
+        </a>
+ 
+        <a class="nav-Link {{ menuDemandeDocActive }}" href="{{ path('front_super_scolarite_student_index') }}"
+           title="Etudiant">
+            <span class="fa fa-file"></span>
+            <span>gestion étudiant</span>
+        </a>
+
+    {% endif %}
+    <a class="nav-Link {{ estResultatActive }}" href="{{ path('front_concours_resultat') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-award"></span>
+        <span>Moyenne et résultat</span>
+    </a>
+    <a class="nav-Link {{ estEdtActive }}" href="{{ path('front_scolarite_concours_edt') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-calendar"></span>
+        <span>Emploi du temps - concours</span>
+    </a>
+    {#<a class="nav-Link {{ estSalleActive }}" href="{{ path('front_classroom_index') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-school"></span>
+        <span>Salles</span>
+    </a>#}
+    {% if is_granted('ROLE_SCOLARITE') %}
+        <a class="nav-Link {{ estPresenceEnseignantActive }}" href="{{ path('front_scolarite_presence_enseignant_index') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-school"></span>
+            <span>Présence enseignants</span>
+        </a>
+        <a class="nav-Link {{ estAbsenceActive }}" href="{{ path('front_scolarite_absence_index') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-school"></span>
+            <span>Absences</span>
+        </a>
+        <a class="nav-Link {{ estInscriptionActive }}" href="{{ path('front_scolarite_inscription') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-list"></span>
+            <span>Validation inscriptions</span>
+        </a>
+        <a class="nav-Link {{ estInscritsActive }}" href="{{ path('front_scolarite_inscrits') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-list"></span>
+            <span>Etudiants inscrits</span>
+        </a>
+        <a class="nav-Link {{ estInscritsActive }}" href="{{ path('front_super_scolarite_student_index') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-list"></span>
+            <span>Etudiants</span>
+        </a>
+        <a class="nav-Link {{ estEtudiantNoteActive }}" href="{{ path('front_scolarite_etudiant_list') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-list"></span>
+            <span>Relevé des notes</span>
+        </a>
+        <a class="nav-Link {{ estDemandeDocActive }}" href="{{ path('front_scolarite_demande_doc_list') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-list"></span>
+            <span>Demande de document</span>
+        </a>
+        <a class="nav-Link {{ estExtraNoteActive }}" href="{{ path('front_scolarite_extranote_list') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-list"></span>
+            <span>Extra note</span>
+        </a>
+        <a class="nav-Link {{ estFraisScolariteActive }}" href="{{ path('front_scolarite_frais_index') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-list"></span>
+            <span>Frais de scolarité</span>
+        </a>
+        <a class="nav-Link {{ estGestionExamenActive }}" href="{{ path('front_scolarite_gestion_examen_index') }}" title="{{ breadcrumbTitre }}">
+            <span class="fa fa-list"></span>
+            <span>Gestion examen</span>
+        </a>
+    {% endif %}
+
+  
+
+
+</nav>
+    

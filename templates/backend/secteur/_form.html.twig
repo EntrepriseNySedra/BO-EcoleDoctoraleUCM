@@ -1,0 +1,67 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_rf_secteur_new') %}
+{% if secteur.id %}
+    {% set action = path('admin_rf_secteur_edit', { id: secteur.id }) %}
+{% endif %}
+<section class="content">
+    <form id="secteur-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        {% if(mention|length == 0 ) %}
+            <div class="col-sm-12 alert alert-warning" style="border:none;border-radius:0;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                Renseigner au moins une mention
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if secteur.id %}
+                            <h4>Modification secteur</h4>
+                        {% else %}
+                            <h4>Ajout secteur</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                         <div class="form-group">
+                            {{ form_errors(formSecteur) }}
+                            {{ form_row(formSecteur._token) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formSecteur.nom, 'Nom') }}
+                            {{ form_widget(formSecteur.nom) }}
+                        </div>
+                         <div class="form-group">
+                            {{ form_label(formSecteur.mention, 'Mention *') }}
+                            {{ form_widget(formSecteur.mention, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formSecteur.description, 'Description') }}
+                            {{ form_widget(formSecteur.description) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if secteur.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

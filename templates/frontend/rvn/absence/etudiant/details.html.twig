@@ -1,0 +1,129 @@
+{% extends layout_frontend %}
+{% block title %}Gestion absences{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Gestion absence</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace RVN</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace rvn</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Gestion absences</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/rvn/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">RVN</p>
+                    <h2 class="title-bloc">Gestion absences</h2>
+                </div>
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <!-- filter block -->
+                    <div class="form-bloc filter-bloc">
+                    </div> <!-- /filter block -->
+
+                    <div class="tab-pane fade show" id="validated" role="tabpanel" aria-labelledby="validated-tab">
+                        <div class="dt-custom-title">
+                            Liste absences: {{ etudiant.lastName }} {{ etudiant.firstName }}, {{matiere.nom}}
+                        </div>
+                        <div class="table-responsive table-wrapper">
+                            {% if list is defined and list | length > 0 %}
+                                <table class="table table-bordered table-hover list-data table-advance" id="list-validated">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th class="text-center">Heure</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in list %}
+                                            <tr class="middle-align">
+                                                <td class="w-30">{{ item.date_schedule }}</td>
+                                                <td class="w-15 text-center">{{ item.start_time | date('G\\h:i') }}-{{ item.end_time | date('G\\h:i') }}</td>
+                                                <td class="w-30 text-center">
+                                                    {{ item.justification }}
+                                                    {% if item.justification == 'Justifiée' %}
+                                                        <a href="{{ path('front_rvn_download_absence_justification', {id: item.absenceId}) }}" class="text-danger">Télécharger</a>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="w-5 text-center">
+                                                   
+                                                        <a href="{{ path('front_rvn_absence_edit', {id: item.absenceId}) }}"><i class="far fa-edit fa-2x text-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { 
+                var oTable = $('#list-validated').dataTable({
+                "aLengthMenu":    [[100, 250, 500, -1], [100, 250, 500, "Tout"]],
+                    "iDisplayLength": 1000,
+                    "aoColumnDefs":   [{
+                        "bSortable": false,
+                        "aTargets":  [4]
+                    }],
+                    "paging":         false,
+                    "ordering":       false,
+                    "searching":      false,
+                    "info":           false
+                });
+
+                $('#semestre, #niveau, #mention, #parcours').bind('change', function(){
+                    _parcousId  = $('#parcours').val();
+                    _niveauId   = $('#niveau').val();
+                    _mentionId  = $('#mention').val();
+                    location.href = '{{ path('front_rvn_absence_index')}}' + "?m=" + _mentionId + "&p=" + _parcousId + "&n=" + _niveauId;
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}

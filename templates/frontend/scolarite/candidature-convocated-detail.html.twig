@@ -1,0 +1,489 @@
+{% extends layout_frontend %}
+{% block title %}Candidatures{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Détail Candidature</h1>
+
+    <!-- big slider banner scolarité -->
+    <section class="banner banner-espaceEtudiant banner-scolarity">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Détail candidature</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+    
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <!-- content candidature -->
+                <section class="trainingHome-bloc">
+                    <div class="title-group">
+                        <p class="sup-title">Scolarité</p>
+                        <h2 class="title-bloc">Candidature de "{{ candidature.getFullName }}"</h2>
+                    </div>
+                    
+                    <div class="content-list candidateList">
+                        <!-- list content -->
+
+                        <form id="validate-form-{{candidature.id}}" method="post" action="{{ path('front_scolarite_validate_candidature', {id: candidature.id })}}">
+                            <div class="card">
+                                <h3 class="card-header">Candidature</h3>
+                                <div class="card-body">
+                                    <ul class=" list-infos-canditatures list-group-flush row">
+                                        <li class="col-md-4">
+                                            <p class="row">
+                                                <span class="col-md-6">Mention&nbsp;:</span>
+                                                <select id="concours_candidature_form_mention" name="mention" required="required" class="form-control">
+                                                <option value="">-- Mention --</option>
+                                                {% for mention in mentions %}
+                                                    <option value="{{mention.id}}"
+                                                        {% if mention.id == candidature.mention.id %} selected {% endif %}
+                                                    >{{ mention.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-4">
+                                            <p class="row">
+                                                <span class="col-md-6">Niveau&nbsp;:</span>
+                                                <select id="concours_candidature_form_niveau" name="niveau" required="required" class="form-control">
+                                                    <option value="" selected="selected">-- Niveau --</option>
+                                                    {% for niveau in niveaux %}
+                                                        <option value="{{ niveau.id }}"
+                                                            {% if niveau.id == candidature.niveau.id %} selected {% endif %}
+                                                        >{{ niveau.libelle }}</option>
+                                                    {% endfor %}
+                                            </select>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-4">
+                                            <p class="row">
+                                                <span class="col-md-6">Parcours&nbsp;:</span>
+                                                <select id="concours_candidature_form_parcours" name="parcours" required="required" class="form-control">
+                                                    <option value="" selected="selected">-- Parcours --</option>
+                                                    {% for parc in parcours %}
+                                                        <option value="{{ parc.id }}"
+                                                            {% if candidature.parcours and parc.id == candidature.parcours.id %} selected {% endif %}
+                                                        >{{ parc.nom }}</option>
+                                                    {% endfor %}
+                                            </select>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h3 class="card-header">Etat civil</h3>
+                                <div class="card-body">
+                                    <!-- <h3 class="card-title"></h3> -->
+                                    <ul class=" list-infos-canditatures list-group-flush row">
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Référence de paiement&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.payementRef }} du {{ candidature.payementRefDate | date('d/m/Y') }} <a  class="link text-primary" href="{{ path('front_scolarite_download_paiement_ref', { id: candidature.id }) }}">Télécharger</a></strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Nom et prénom&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidatCivility }} {{ candidature.lastName }} {{ candidature.firstName}}</strong>
+                                            </p>
+                                        </li>
+                                         <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">photo:</span>
+                                                <strong class="value col-md-6">
+                                                    {{ candidature.photo }}
+                                                    {% if candidature.photo %}
+                                                        <a  class="text-danger" href="{{ path('front_scolarite_download_photo', { id: candidature.id }) }}">Télécharger</a>
+                                                    {% endif %}
+                                                </strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Date et lieu de naissance&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.dateOfBirth | date('d/m/Y') }} à {{ candidature.birthPlace }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Nationalité&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.nationality }}</strong>
+                                            </p>
+
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Situation&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.situationMatrimoniale }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Email&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.email }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Adresse&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.address }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Téléphone&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.phone1 }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">CIN&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.cinNum}}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Délivré le&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.cinDeliverDate | date('d/m/Y') }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Confession religieuse&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.confessionReligieuse }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Nom et prénom du père&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.fatherLastName }} {{ candidature.fatherFirstName }} </strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Adresse et contacts&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.fatherAddress }} {{ candidature.fatherPhone }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Profession&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.fatherJob }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Adresse et contacts professionnel&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.fatherJobAddress }} {{ candidature.fatherJobPhone }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Nom et prénom de la mère&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.motherLastName }} {{ candidature.motherFirstName }} </strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Adresse et contacts&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.motherAddress }} {{ candidature.motherPhone }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Profession&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.motherJob }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="bdb-0 col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Adresse et contacts professionnel&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.motherJobAddress }} {{ candidature.motherJobPhone }}</strong>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h3 class="card-header">Pour les marié(es)</h3>
+                                <div class="card-body">
+                                    <ul class=" list-infos-canditatures list-group-flush row">
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Nom et prénom du conjoint&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.conjointLastName }} {{ candidature.conjointFirstName }} </strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Adresse et contacts&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.conjointAddress }} {{ candidature.conjointPhone }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="bdb-0 col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Profession&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.conjointJob }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="bdb-0 col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Adresse et contacts professionnel&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.conjointJobAddress }} {{ candidature.conjointJobPhone }}</strong>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h3 class="card-header">Tuteur</h3>
+                                <div class="card-body">
+                                    <ul class=" list-infos-canditatures list-group-flush row">
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Civilité Nom et prénom&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.tuteurCivility }} {{ candidature.tuteurLastName }} {{ candidature.tuteurFirstName }}</strong>
+                                            </p>
+                                        </li>
+                                        
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Adresse et contacts&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.tuteurAddress }} {{ candidature.tuteurPhone }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="bdb-0 col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Profession&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.tuteurJob }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="bdb-0 col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Adresse et contacts professionnel&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.tuteurJobAddress }} {{ candidature.tuteurJobPhone }}</strong>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h3 class="card-header">Pour les réligieux</h3>
+                                <div class="card-body">
+                                    <ul class=" list-infos-canditatures list-group-flush row">
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Nom de la congrégation&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.religiousCongregationName }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Adresse&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.religiousAddress }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Profil&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.religiousProfil }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Nom résponsable du foyer&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.religiousResponsableFoyerName }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="bdb-0 col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Téléphone&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.religiousPhone }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="bdb-0 col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Adresse&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.religiousEmail }}</strong>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h3 class="card-header">Etudes sécondaires</h3>
+                                <div class="card-body">
+                                    <ul class=" list-infos-canditatures list-group-flush row">
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Série (Baccalauréat Malagasy)&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.baccSerie }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Autres&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.baccAutreName }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Série (Baccalauréat français ou autre)&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.baccAutreSerie }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Mention&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.baccMention }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Session et Année&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.baccSession }} {{ candidature.baccAnnee }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">N° d'inscription au Bacc&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.baccNumInscription }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="bdb-0 col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Etablissement d'origine&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.originEtablissement }}</strong>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h3 class="card-header">Etudes universitaires antérieurs</h3>
+                                <div class="card-body">
+                                    <ul class=" list-infos-canditatures list-group-flush row">
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Nom de l'université&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.universityName }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Faculté&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.faculteName }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Pays&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.universityCountry }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Diplôme&nbsp;:</span>
+                                                <strong class="value col-md-6">
+                                                    {{ candidature.universityDiplome }}
+                                                    {% if candidature.diplomePath %}
+                                                        <a  class="text-danger" href="{{ path('front_scolarite_download_diplome', { id: candidature.id }) }}">Télécharger</a>
+                                                    {% endif %}
+                                                </strong>
+                                            </p>
+                                        </li>
+                                        <li class="col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Date d'obtention&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.universityDiplomeDate|date("d/m/Y") }}</strong>
+                                            </p>
+                                        </li>
+                                        <li class="bdb-0 col-md-6">
+                                            <p class="row">
+                                                <span class="labeled col-md-6">Autres titres&nbsp;:</span>
+                                                <strong class="value col-md-6">{{ candidature.universityAutreTitre }}</strong>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-bloc">
+                               
+                                <div class="groups-btn justify-content-end">
+                                    
+                                    <a id="backButton" class="btn btn-primary m-l-10">
+                                        <span type="button" >RETOUR</span>
+                                    </a>
+                                </div>                                
+                            </div>
+
+                        </form>
+                    </div>
+                </section>
+            </article>
+            <!-- /main Bloc -->
+        </div>
+    </div>
+
+</div>
+
+<style>
+   .menu-list {
+       color: #000;
+   }
+   .menu-list span {
+       font-weight: bold;
+   }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Attendez que le document soit prêt
+    $(document).ready(function() {
+        // Trouvez le bouton "RETOUR" par son ID
+        var backButton = document.getElementById("backButton");
+
+        // Ajoutez un gestionnaire d'événements de clic au bouton
+        backButton.addEventListener("click", function() {
+            // Utilisez JavaScript pour revenir à la page précédente
+            window.history.back();
+        });
+    });
+</script>
+{% endblock %}
+

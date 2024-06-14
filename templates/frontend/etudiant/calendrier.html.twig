@@ -1,0 +1,113 @@
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Calendrier Universitaire</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path('front_student_emploi_du_temps') }}" title="Espace étudiant">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Calendrier Universitaire</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/etudiant/_menu.html.twig') }}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Espace étudiant</p>
+                    <h2 class="title-bloc">Calendrier universitaire</h2>
+                </div>
+
+                <!-- demande de document -->
+                <section class="universityCalendar-content">
+                    {% if calendriers|length > 0 %}
+                    <div class="table-responsive table-wrapper">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="w-5">Date</th>
+                                    <th class="w-10">Libellé</th>
+                                    <th class="w-50">Description</th>
+                                    <th class="action_col w-5">Voir</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% set initStartDate = "" %}
+                            {% for cld in calendriers %}
+                                <tr class="middle-align">
+                                    {% if cld.startdate|date('Ymd') != initStartDate %}
+                                        <td>{{ cld.startdate | date('d/m/Y') }}</td>
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}                                                
+                                    <td>{{ cld.libelle }}</td>
+                                    <td>{{ cld.description | u.truncate(100, '...') }}</td>
+                                    <td class="action_col w-5">
+                                        <div class="wrap-btn">
+                                            <a class="btn btn-primary" href="{{ path('front_calendrier_universitaire_detail',{id: cld.id }) }}">
+                                                <span class="fa fa-eye"></span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% set initStartDate = cld.startdate|date('Ymd') %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                let matiere = $('#matiere :selected').val();
+                $('#matiere').on('change', function () {
+                    window.location.href = "{{ path('front_student_classes') }}" + "?m=" + $(this).val();
+                })
+
+                $('#cours').on('change', function () {
+                    window.location.href = "{{ path('front_student_classes') }}" + "?m=" + matiere + "&c=" + $(this).val();
+                })
+            });
+
+        } )( jQuery );
+    </script>
+{% endblock %}
+

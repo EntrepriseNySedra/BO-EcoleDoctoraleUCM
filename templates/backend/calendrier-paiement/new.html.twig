@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% block title %}Calendrier de paiement::Ajout{% endblock %}
+
+{% set menuCalendrierPaiement = true %}
+{% set menuCalendrierPaiementAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Calendrier de paiement
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/calendrier-paiement/_form.html.twig') }}
+     <a href="{{ path('admin_calendrier_paiement_index') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

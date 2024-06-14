@@ -1,0 +1,8 @@
+<option value=""> -- Sélectionner --</option>
+{% set addedLibelles = [] %} {# Tableau pour stocker les libellés déjà ajoutés #}
+{% for niv in niveau %}
+    {% if niv.niveau.libelle not in addedLibelles %}
+        <option value="{{ niv.niveau.id }}">{{ niv.niveau.libelle }}</option>
+        {% set addedLibelles = addedLibelles|merge([niv.niveau.libelle]) %} {# Ajouter le libellé à la liste des libellés ajoutés #}
+    {% endif %}
+{% endfor %}

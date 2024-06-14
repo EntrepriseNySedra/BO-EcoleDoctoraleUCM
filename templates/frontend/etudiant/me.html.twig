@@ -1,0 +1,76 @@
+
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Mon Compte</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section>  <!-- /Big slider -->
+
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="/" title="Formation">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Mon compte</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage  spaceStudent-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/etudiant/_menu.html.twig') }}
+            </aside>
+            <!-- /aside Left -->
+
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Espace étudiant</p>
+                    <h2 class="title-bloc">Fiche de renseignements</h2>
+                </div>
+
+                
+                <div class="content text-dark">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <label class="col-1 text-right">Nom : </label>
+                                <div class="col-4 text-left">{{ student.lastName }}</div>
+                            </div>
+                            <div class="row">
+                                <label class="col-1 text-right">Prénom : </label>
+                                <div class="col-4 text-left">{{ student.firstName }}</div>
+                            </div>
+        
+                            <div class="row">
+                                <label class="col-1 text-right">Mention : </label>
+                                <div class="col-4 text-left">{{ student.mention.nom }}</div>
+                            </div>
+                            <div class="row">
+                                <label class="col-1 text-right">Niveau : </label>
+                                <div class="col-4 text-left">{{ student.niveau.libelle }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <!-- main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}

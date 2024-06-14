@@ -1,0 +1,96 @@
+{% extends "frontend/layout/base-email.html.twig" %}
+
+{% block title %}Confirmation candidature{% endblock %}
+
+{% block body %}
+    <tr>
+        <td data-bgcolor="bg-module" bgcolor="#eaeced">
+            <table class="flexible" width="600" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td data-bgcolor="bg-block" class="holder" style="padding:58px 60px 52px;" bgcolor="#f9f9f9">
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td data-color="title" data-size="size title" data-min="25" data-max="45"
+                                    data-link-color="link title color"
+                                    data-link-style="text-decoration:none; color:#292c34;"
+                                    class="title" align="center"
+                                    style="font:35px/38px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;">
+                                    {{ site.name }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#292c34;"
+                                    style="font:bold 16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    Bonjour {{ fullname }},
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="title" data-size="size title" data-min="25" data-max="45"
+                                    data-link-color="link title color"
+                                    data-link-style="text-decoration:none; color:#292c34;"
+                                    class="title"
+                                    style="font:14px/18px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;">
+                                    {% if mention == "Psychologie" %}
+                                            Nous avons le plaisir de vous annoncer que votre candidature pour l'inscription au concours d'entrée à l'UCM - Mention: {{ mention }} - a été enregistrée sous le numéro: {{immatricule}} . Nous vous prions ainsi de recupérer votre convocation auprès de l'UCM Ambatoroka à partir du Lundi 11 Septembre 2023 . 
+                                            <br>
+                                            Les épreuves orales se dérouleront le Mardi 12 Septembre 2023. Les épreuves écrites se dérouleront le Vendredi 22 Septembre 2023. 
+                                             <br>
+                                             Les dossiers à fournir à rendre avant 8 Septembre auprès de l'UCM Ambatoroka : 
+                                             <ul> 
+                                             <li> CV </li>
+                                             <li> lM </li>
+                                             <li> Note 2nd,1ère,Terminale </li>
+                                             <li> Relevé de Note BACC </li>
+                                             <li> Diplome BACC </li>
+                                             <li> Certificat Médicale d'Aptitude </li>
+                                             <li> Bulletin de Naissance </li>
+                                             <li> Certificat De Residence </li>
+                                             <li> CIN </li>
+                                             <li> Photo d'identité 4 </li>
+                                             <li> Bordereau de Versement </li>
+                                             <li> Enveloppe A4 </li>
+                                             </ul>
+
+                                             <br>
+
+                                             N'oubliez pas d'apporter votre convocation pour les épreuves écrites et orales des concours.
+                                            <br>
+                                            NB  : 
+                                             Pour ceux qui ont oublié d'insérer leur photo d'identité pendant l'inscription, veuillez apporter votre photo d'identité lorsque vous prenez votre convocation.
+                                         
+                                        
+                                        {% elseif mention == "Institut Supérieur d'Anthropologie et d'Ecolo" %}
+                                        Nous avons le plaisir de vous annoncer que votre candidature pour l'inscription au concours d'entrée à l'UCM - Mention: {{ mention }} - a été enregistrée sous le numéro: {{immatricule}} . Nous vous prions ainsi de recupérer votre convocation auprès du centre choisi à partir du Jeudi 14 Septembre 2023 pour Antananarivo et le Mardi 19 Septembre 2023 pour les centres d'Antsirabe ,d'Antsiranana,de Fianaratsoa,de Mahajanga et de Toamasina. 
+                                            <br>
+                                            Les épreuves se dérouleront les Mardi 19 Septembre 2023.
+
+                                            <br>
+                                            NB  : 
+                                             Pour ceux qui ont oublié d'insérer leur photo d'identité pendant l'inscription, veuillez apporter votre photo d'identité lorsque vous prenez votre convocation.
+
+                                        {% else %}
+                                            Nous avons le plaisir de vous annoncer que votre candidature pour l'inscription au concours d'entrée à l'UCM - Mention: {{ mention }} - a été enregistrée sous le numéro: {{immatricule}} . Nous vous prions ainsi de recupérer votre convocation auprès du centre choisi à partir du Jeudi 14 Septembre 2023 pour Antananarivo et le Mardi 19 Septembre 2023 pour les centres d'Antsirabe ,d'Antsiranana,de Fianaratsoa,de Mahajanga et de Toamasina. 
+                                            <br>
+                                            Les épreuves se dérouleront les Mercredi 20 et Jeudi 21 Septembre 2023.
+                                            <br>
+                                            NB  : 
+                                             Pour ceux qui ont oublié d'insérer leur photo d'identité pendant l'inscription, veuillez apporter votre photo d'identité lorsque vous prenez votre convocation.
+                                            
+                                        {% endif %}
+                                    <p>
+                                        L'équipe <b>{{ site.name }}</b>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="28"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+{% endblock %}

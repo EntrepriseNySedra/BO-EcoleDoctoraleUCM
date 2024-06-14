@@ -1,0 +1,74 @@
+{% extends "frontend/layout/base-email-pdf.html.twig" %}
+
+{% block title %}Document{% endblock %}
+
+{% block body %}
+    <tr>
+        <td data-bgcolor="bg-module" >
+            <table class="flexible" width="600" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td data-bgcolor="bg-block" class="holder" style="padding:58px 60px 52px;" bgcolor="#f9f9f9">
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td data-color="title" data-size="size title" data-min="25" data-max="45"
+                                    data-link-color="link title color"
+                                    data-link-style="text-decoration:none; color:#292c34;"
+                                    class="title" align="center"
+                                    style="font:35px/38px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;">
+                                    {{ site.name }}
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    <strong>Matricule</strong>  : {{ demandeDoc.matricule }}   <br>
+                                    <strong>Civilité</strong>   : {{ demandeDoc.civility }}    <br>
+                                    <strong>Nom</strong>        : {{ demandeDoc.lastName }}    <br>
+                                    <strong>Prénom</strong>     : {{ demandeDoc.firstName }}   <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:bold 16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    Document : {{ demandeDoc.description }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:bold 16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    Quantité : {{ demandeDoc.quantity }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:bold 16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    Type : {{ demandeDoc.type.libelle }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:bold 16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    Date de création - {{ demandeDoc.createdAt|date('H:i:s') }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="28"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+{% endblock %}

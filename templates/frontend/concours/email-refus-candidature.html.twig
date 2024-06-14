@@ -1,0 +1,50 @@
+{% extends "frontend/layout/base-email.html.twig" %}
+
+{% block title %}Confirmation candidature{% endblock %}
+
+{% block body %}
+    <tr>
+        <td data-bgcolor="bg-module" bgcolor="#eaeced">
+            <table class="flexible" width="600" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td data-bgcolor="bg-block" class="holder" style="padding:58px 60px 52px;" bgcolor="#f9f9f9">
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td data-color="title" data-size="size title" data-min="25" data-max="45"
+                                    data-link-color="link title color"
+                                    data-link-style="text-decoration:none; color:#292c34;"
+                                    class="title" align="center"
+                                    style="font:35px/38px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;">
+                                    {{ site.name }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#292c34;"
+                                    style="font:bold 16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    Bonjour {{ fullname }},
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="title" data-size="size title" data-min="25" data-max="45"
+                                    data-link-color="link title color"
+                                    data-link-style="text-decoration:none; color:#292c34;"
+                                    class="title"
+                                    style="font:14px/18px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;">
+                                    <p>Votre candidature a été refusée pour la raison suivante : <br>' . {{ motif }};</p>
+                                    <p>
+                                        L'équipe <b>{{ site.name }}</b>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="28"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+{% endblock %}

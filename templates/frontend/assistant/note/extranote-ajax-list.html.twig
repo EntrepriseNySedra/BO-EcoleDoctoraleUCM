@@ -1,0 +1,79 @@
+{% if extraNoteIndex is not defined %}
+    {% set extraNoteIndex = 'front_cm_extranote_list' %}
+{% endif %}
+{% if extraNoteEdit is not defined %}
+    {% set extraNoteEdit = 'front_cm_extranote_edit' %}
+{% endif %}
+{% if notes is defined and notes | length > 0 %}
+    <div class="table-responsive table-wrapper">
+        <table class="table table-bordered table-hover table-md list-data">
+            <thead>
+            <tr>
+                <th>Matricule</th>
+                <th>Etudiant</th>
+                <th>Type</th>
+                <th>Note</th>
+                <th>Statut</th>
+                {% if is_granted(["ROLE_CHEFMENTION", "ROLE_DOYEN", "ROLE_RECTEUR", "ROLE_SG"]) %}
+                    <th class="action_col">Actions</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for note in notes %}
+                <tr class="middle-align">
+                    <td>{{ note.etudiant.immatricule }}</td>
+                    <td>{{ note.etudiant.fullName }}</td>
+                    <td>{{ note.type }}</td>
+                    <td>{{ note.note }}</td>
+                    <td>
+                        {% set libelleStatut = "" %}
+                        {% if note.status == "CREATED" %}
+                            {% set libelleStatut = "Crée" %}
+                        {% elseif note.status == "CM_VERIFIED" %}
+                            {% set libelleStatut = "Vérifié - Chef de mention" %}
+                        {% elseif note.status == "CM_VALIDATED" %}
+                            {% set libelleStatut = "Validé - Chef de mention" %}
+                        {% elseif note.status == "CM_REJECTED" %}
+                            {% set libelleStatut = "Rejeté - Chef de mention" %}
+                        {% elseif note.status == "DOYEN_VERIFIED" %}
+                            {% set libelleStatut = "Vérifié - Doyen" %}
+                        {% elseif note.status == "DOYEN_VALIDATED" %}
+                            {% set libelleStatut = "Validé - Doyen" %}
+                        {% elseif note.status == "DOYEN_REJECTED" %}
+                            {% set libelleStatut = "Rejeté - Doyen" %}
+                        {% elseif note.status == "RECTEUR_VERIFIED" %}
+                            {% set libelleStatut = "Vérifié - Recteur" %}
+                        {% elseif note.status == "RECTEUR_VALIDATED" %}
+                            {% set libelleStatut = "Validé - Recteur" %}
+                        {% elseif note.status == "RECTEUR_REJECTED" %}
+                            {% set libelleStatut = "Rejeté - Recteur" %}
+                        {% elseif note.status == "SG_VERIFIED" %}
+                            {% set libelleStatut = "Vérifié - SG" %}
+                        {% elseif note.status == "SG_VALIDATED" %}
+                            {% set libelleStatut = "Validé - SG" %}
+                        {% elseif note.status == "SG_REJECTED" %}
+                            {% set libelleStatut = "Rejeté - SG" %}
+                        {% else %}
+                            {% set libelleStatut = "Archivé" %}
+                        {% endif %}
+                        {{ libelleStatut }}
+                    </td>
+                    {% if is_granted(["ROLE_CHEFMENTION", "ROLE_DOYEN", "ROLE_RECTEUR", "ROLE_SG"]) %}
+                        <td class="action_col w-5">
+                            <div class="wrap-btn">
+                                <a class="btn" href="{{ path(extraNoteEdit, {'mention_id': m, 'note_id': note.id}) }}"
+                                   title="Modifier">
+                                    <i class="far fa-edit"></i>
+                                </a>
+                            </div>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p class="alert alert-secondary" role="alert"><strong>Aucune information</strong></p>
+{% endif %}

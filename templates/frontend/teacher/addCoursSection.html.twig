@@ -1,0 +1,97 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Ajout section</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace enseignant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Ajout section</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Enseignant</p>
+                    <h2 class="title-bloc">Ajout section</h2>
+                </div>
+                <!-- content ajout cours -->
+                <section class="content content-list content-addCours">
+                    <div class="form-bloc form-inline">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action=" {{ path('front_teacher_add_cours_section', {id: matiere.id, c_id: cours.id })}} ">
+                                    <!-- input hidden -->
+                                    {{ form_errors(form) }}
+                                    {{ form_row(form._token) }}
+
+                                    
+                                    <div class="row">
+                                        
+                                        <div class="col-lg-12">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3 label-content">{{ form_label(form.nom, 'Titre * :') }}</div>
+                                                <div class="col-xl-9">{{ form_widget(form.nom) }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group row align-items-start mb-0">
+                                                <div class="col-xl-3 label-content">{{ form_label(form.nom, 'Description :') }}</div>
+                                                <div class="col-xl-9">{{ form_widget(form.description) }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="groups-btn justify-content-end text-right">
+                                        <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Ajouter</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+        });
+    </script>
+{% endblock %}

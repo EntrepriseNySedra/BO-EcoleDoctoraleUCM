@@ -1,0 +1,147 @@
+{% extends layout_frontend %}
+{% block title %}Candidatures{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/buttons.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/libs/datatable/DT_bootstrap.css') }}"/>
+    <style>
+        .dt-buttons button {
+            color: #f2f2f2;
+            /*font-size: 12px;*/
+            border-radius: 4px;
+            /*border: 1px solid #64c3c2 !important;*/
+            background: #282b2b;
+        }
+
+        .dt-buttons button:hover {
+            color: #f2f2f2;
+            /*font-size: 12px;*/
+            border-radius: 4px !important;
+            /*border: 1px solid #64c3c2 !important;*/
+            background: #282b2b !important;
+        }
+
+        .dt-buttons {
+            /*position: absolute!important;*/
+            left: 50%;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Candidatures</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/training/banner-training.png') }}" alt="Candidatures">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Détail candidature</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <section class="listNotes-content content richText">
+                    <!-- content -->
+                    <div class="title-group">
+                        <p class="sup-title">Scolarité</p>
+                        <h2 class="title-bloc">Gestion des notes de "{{ candidate.fullName }}"</h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-bloc">
+                                <form id="filter-form" method="post">
+                                    {% if matieresNotes|length > 0 %}
+                                        {{ form_start(form, {'attr': {'class': 'row'}}) }}
+                                        {{ form_row(form._token) }}
+                                        <input type="hidden" id="c" name="c" value="{{ c }}" />
+                                        <input type="hidden" id="m" name="m" value="{{ m }}" />
+                                        <input type="hidden" id="p" name="p" value="{{ p }}" />
+                                        <div class="listNotes-bloc">
+                                            {% for k, item in matieresNotes %}
+                                            <div class="{% if k > 0 %}m-t-0{% endif %} form-group row">
+                                                <label class="control-label text-right col-md-6" for="firstName">{{ item.matiere_libelle }} :</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" name="note_{{ item.concours_candidature_id ~ '_' ~ item.concours_matiere_id ~ '_' ~ item.concours_id }}" value="{{ item.note }}" class="text-right" />
+                                                    <span class="coefficient"> / 20</span>
+                                                </div>
+                                            </div>
+                                            
+                                            {% endfor %}
+                                            {% if concours.resultStatut == constant('App\\Entity\\Concours::STATUS_CREATED') %}
+                                            <div class="groups-btn justify-content-center">
+                                                <button type="submit" class="btn btn-parimary btn-connexion btn-save" type="button" name="Enregsitrer">Enregistrer</button>
+                                                <a class="btn btn-parimary btn-connexion btn-cancel m-l-10" type="button" name="Enregistrer" href="{{ path('front_concours_candidates', { 'c' : c, 'p' : p, 'm' : m }) }}">
+                                                    <span type="button" >Annuler</span>
+                                                </a>
+                                            </div>
+                                            {% else %}
+                                                <div class="groups-btn justify-content-center">
+                                                    <a class="btn btn-parimary btn-connexion btn-cancel m-l-10" type="button" name="Enregistrer" href="{{ path('front_concours_candidates', { 'c' : c, 'p' : p, 'm' : m }) }}">
+                                                        <span type="button">OK</span>
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        {{ form_end(form, {'render_rest': false}) }}
+                                    {% else %}
+                                        <p class="alert alert-secondary text-center" role="alert">
+                                            Aucune matiére engregistrée pour le concours <strong>"{{ concours.libelle }}"</strong> de la mention <strong>"{{ mention.nom }}"</strong>
+                                        </p>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                let m = $('#mention :selected').val();
+                let c = $('#concours :selected').val();
+                $('#mention').on('change', function () {
+                    window.location.href = "{{ path('front_concours_candidates') }}" + "?m=" + $(this).val() + "&c=" + c;
+                })
+                $('#concours').on('change', function () {
+                    window.location.href = "{{ path('front_concours_candidates') }}" + "?m=" + m + "&c=" + $(this).val();
+                })
+            });
+
+        } )( jQuery );
+    </script>
+{% endblock %}
+

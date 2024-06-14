@@ -1,0 +1,44 @@
+{% extends layout_backend %}
+{% set menuUIElements = true %}
+{% set menuUIElementsFormSummernote = true %}
+{% block pageicon %}
+    pe-7s-note2
+{% endblock %}
+{% block title %}{{ parent() }}
+    Forms
+{% endblock %}
+{% block pagetitle %}
+    Summernote
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Summernote</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <textarea id="summernote">
+                            <h3>Lorem Ipsum is simply</h3>
+                            dummy text of the printing and typesetting industry. <strong>Lorem Ipsum has been the industry's</strong> standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
+                            typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with
+                            <br/>
+                            <br/>
+                            <ul>
+                                <li>Remaining essentially unchanged</li>
+                                <li>Make a type specimen book</li>
+                                <li>Unknown printer</li>
+                            </ul>
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

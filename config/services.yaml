@@ -1,0 +1,372 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+imports:
+    - { resource: parameters.yaml }
+
+parameters:
+    site:
+        name: 'UCM'
+        domain: 'ucm.mg'
+        contact_email: 'contact@ucm.mg'
+    article_directory  : '%kernel.project_dir%/public/uploads/article'
+    actualite_directory: '%kernel.project_dir%/public/uploads/actualite'
+    opportunite_directory: '%kernel.project_dir%/public/uploads/opportunite'
+    document_directory : '%kernel.project_dir%/public/uploads/document'
+    mention_directory  : '%kernel.project_dir%/public/uploads/mention'
+    thumbs_directory   : '%kernel.project_dir%/public/uploads/thumbs'
+    cours_directory    : '%kernel.project_dir%/public/uploads/cours'
+    upload_directory: '%kernel.project_dir%/public/uploads'
+    upload_directory_equipement: '%kernel.project_dir%/public/uploads/equipement'
+    mailer:
+        smtp_host: 'smtp.gmail.com'
+        smtp_port: 587
+        smtp_cert: 'tls'
+        smtp_username: "ucm.sender@gmail.com"
+        smtp_password: "hjkrgarssxrndbuo"
+    delivery_addresses: ''
+    concours_directory    : '%kernel.project_dir%/public/uploads/concours'
+    enseignants_directory : '%kernel.project_dir%/public/uploads/enseignant'
+    enseignants_vacation_directory : '%kernel.project_dir%/public/uploads/enseignant/vacation'
+    demande_directory     : '%kernel.project_dir%/public/uploads/demande'
+    students_directory    : '%kernel.project_dir%/public/uploads/etudiant'
+    students_ecolage_scan    : '%kernel.project_dir%/public/uploads/etudiant/ecolage/scan'
+    students_absence_scan    : '%kernel.project_dir%/public/uploads/etudiant/absence/scan'
+
+    students_cours    : '%kernel.project_dir%/public/uploads/etudiant/cours'
+
+    vacation_desc_directory       : '%kernel.project_dir%/public/uploads/assistant/vacation/description'
+    vacation_export_directory       : '%kernel.project_dir%/public/uploads/vacation/export'
+    piece_demande_diplome_directory : '%kernel.project_dir%/public/uploads/demande-diplôme'
+    inscription_export_directory : '%kernel.project_dir%/public/uploads/inscription'
+    ecolage_export_directory : '%kernel.project_dir%/public/uploads/ecolage'
+    absence_justification_directory : '%kernel.project_dir%/public/uploads/absence/justification'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    App\Manager\ProfilManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Profil'
+
+    App\Manager\RoleManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Roles'
+
+    App\Manager\RubriqueManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Rubrique'
+
+    App\Manager\ActualiteManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Actualite'
+
+    App\Manager\ArticleManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Article'
+
+    App\Manager\DocumentManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Document'
+
+    App\Manager\MediasManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Medias'
+
+    App\Manager\DepartementManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Departement'
+
+    App\Manager\NiveauManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Niveau'
+
+    App\Manager\MentionManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Mention'
+
+    App\Manager\ParcoursManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Parcours'
+
+    App\Manager\ProgrammeManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Programme'
+
+
+    App\Manager\SecteurManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Secteur'
+
+    App\Manager\SemestreManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Semestre'
+
+    App\Manager\UniteEnseignementsManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\UniteEnseignements'
+
+    App\Manager\MatiereManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Matiere'
+
+    App\Manager\ConcoursManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Concours'
+
+    App\Manager\ConcoursMaitereManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\ConcoursMatiere'
+
+    App\Manager\ConcoursCandidatureManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\ConcoursCandidature'
+
+    App\Manager\CandidatureHistoriqueManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\CandidatureHistorique'
+
+    App\Manager\EtudiantManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Etudiant'
+
+    App\Manager\CoursManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Cours'
+
+    App\Manager\CoursMediaManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\CoursMedia'
+
+    App\Manager\AbsencesManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Absences'
+
+    App\Manager\ExamensManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Examens'
+
+    App\Manager\NotesManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Notes'
+            
+    App\Manager\EmploiDuTempsManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\EmploiDuTemps'
+
+    App\Manager\SallesManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Salles'
+
+    App\Manager\CalendrierUniversitaireManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\CalendrierUniversitaire'
+
+    App\Manager\DemandeDocManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\DemandeDoc'
+
+    App\Manager\UserManager:
+        public: true
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\User'
+
+    App\Manager\EnseignantManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Enseignant'
+
+    App\Manager\EnseignantMentionManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\EnseignantMention'
+
+    App\Manager\EvenementManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Evenement'
+            
+    App\Manager\EnseignantMatiereManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\EnseignantMatiere'
+
+    App\Manager\ConcoursNotesManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\ConcoursNotes'
+
+    App\Manager\CivilityManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Civility'
+
+    App\Manager\AnneeUniversitaireManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\AnneeUniversitaire'
+    
+    App\Manager\InscriptionManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Inscription'
+
+    App\Manager\ConcoursMatiereManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\ConcoursMatiere'
+
+    App\Manager\ConcoursEmploiDuTempsManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\ConcoursEmploiDuTemps'
+    App\Manager\BatimentManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Batiment'
+    App\Manager\FichePresenceEnseignantManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\FichePresenceEnseignant'
+    App\Manager\CollegeYearManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\CollegeYear'
+
+    App\Manager\FichePresenceEnseignantHistoriqueManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\FichePresenceEnseignantHistorique'
+
+    App\Manager\DemandeDocHistoriqueManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\DemandeDocHistorique'
+
+    App\Manager\CalendrierSoutenanceManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\CalendrierSoutenance'
+
+    App\Manager\CalendrierSoutenanceHistoriqueManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\CalendrierSoutenanceHistorique'
+
+    App\Manager\CalendrierExamenManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\CalendrierExamen'
+
+    App\Manager\CalendrierExamenHistoriqueManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\CalendrierExamenHistorique'
+
+    App\Manager\ExtraNotesManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\ExtraNote'
+
+    App\Manager\ExtraNoteHistoriqueManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\ExtraNoteHistorique'
+    App\Manager\FraisScolariteManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\FraisScolarite'
+    App\Manager\CalendrierPaiementManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\CalendrierPaiement'
+    App\Manager\TypePrestationManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\TypePrestation'
+    App\Manager\PrestationManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Prestation'
+    App\Manager\PaiementHistoryManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\PaiementHistory'
+    App\Manager\EcolageManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\Ecolage'
+    App\Manager\ConcoursCentreManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\ConcoursCentre'
+    App\Manager\BankCompteManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\BankCompte'
+    App\Manager\CalendrierExamenSurveillanceManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\CalendrierExamenSurveillance'
+    App\Manager\ConcoursConfigManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - 'App\Entity\ConcoursConfig'
+    App\Manager\CoursSectionManager:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'

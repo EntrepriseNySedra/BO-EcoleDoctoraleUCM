@@ -1,0 +1,69 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_bank_compte_new') %}
+{% if bankCompte.id %}
+    {% set action = path('admin_bank_compte_edit', { id: bankCompte.id }) %}
+{% endif %}
+<section class="content">
+    <form id="niveau-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if bankCompte.id %}
+                            <h4>Modification</h4>
+                        {% else %}
+                            <h4>Ajout</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(form) }}
+                            {{ form_row(form._token) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.number, 'Numéro *') }}
+                            {{ form_widget(form.number, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.resource, 'Ressource *') }}
+                            {{ form_widget(form.resource, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.mention, 'Mention *') }}
+                            {{ form_widget(form.mention, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.niveau, 'Niveau') }}
+                            {{ form_widget(form.niveau) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.parcours, 'Parcours') }}
+                            {{ form_widget(form.parcours) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if bankCompte.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</form>

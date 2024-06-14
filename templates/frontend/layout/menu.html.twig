@@ -1,0 +1,404 @@
+<header class="header-page">
+        <!-- topbar black -->
+        <section class="topBar">
+            <div class="container">
+                <p class="vousEtes">
+                    <span class="labeled">Vous êtes :</span>
+                    {% set urlProfileHome = "" %}
+                    {% if app.user %}
+                        {#{ dump(app.user.profil.name) }#}
+
+                        {% if (app.user.profil.name | upper) == "ETUDIANT" %}
+                            {% set urlProfileHome = path('front_student_classes') %}
+                        {% endif %}
+
+                        {% if (app.user.profil.name | upper) == "ENSEIGNANT" %}
+                            {% set urlProfileHome = path('frontend_teacher_index') %}
+                        {% endif %}
+
+                        {% if (app.user.profil.name | upper) == "ASSISTANT" %}
+                            {% set urlProfileHome = path('frontend_assistant_index') %}
+                        {% endif %}
+
+                        {% if (app.user.profil.name | upper) == "SECRETARIAT" or (app.user.profil.name | upper) == "SUPER SRS" %}
+                            {% set urlProfileHome = path('front_scolarite_candidature') %}
+                        {% endif %}
+
+                        {% if (app.user.profil.name | upper) == "ADMINISTRATEUR" %}
+                            {% set urlProfileHome = path('admin_dashboard') %}
+                        {% endif %}
+
+                        <a href="{{ urlProfileHome }}" title="{{ app.user.fullName }}">{{ app.user.fullName }}</a>
+                        <a href="{{ path('app_logout') }}" title="Deconnexion">Deconnexion</a>
+                    {% else %}
+                        <a href="{{ path('front_student_login') }}" title="Inscription">Inscription</a>
+                        <a href="{{ path('front_student_login') }}" title="Étudiant">Étudiant</a>
+                        <a href="{{ path('front_teacher_login') }}" title="Enseignant">Enseignant</a>
+                        <a href="{{ path('front_pat_login') }}" title="Assistant">PAT</a>
+                        <a href="{{ path('info_concours_pour_candidature') }}" title="Assistant">candidat concours</a>
+                    {% endif %}
+                </p>
+            </div>
+        </section> <!-- /topbar black -->
+
+        <!-- header main-->
+        <div class="logo-bloc">
+            <div class="container">
+                {% if not app.user %}
+                    <div class="ml-auto" style="float: right; margin-top: 4%">
+                        <a href="{{ path('front_concours_resultat_site') }}" class="btn btn-danger btn-lg btn-ripple">Résultat concours 2023-2024</a>
+                    </div>
+                {% endif %}
+
+
+                <a class="logo"  href="/" title="UCM">
+                    <figure class="logo-img" href="/" title="UCM">
+                        <img src="{{ asset('/assets/images/design/ucm_logo_redbg.png') }}" alt="UCM">
+                    </figure>
+                    <div class="slogan">
+                        <p class="logo-slogan" style="display: none;">UNIVERSITÉ CATHOLIQUE <br>DE MADAGASCAR</p>
+                        <p class="logo-slogan-2">
+                            <span class="big_text">UCM</span>
+                            <span class="red_text">UNIVERSITÉ <br> CATHOLIQUE</span>
+                            <span class="grey_text">DE MADAGASCAR</span>
+                        </p>
+                    </div>
+                     
+                    
+                </a>
+               
+            </div>
+            
+        </div>
+        {% if app.user is null %}
+            <section class="header-main">
+                <div class="container">
+                    <!-- main menu -->
+                    <section class="navbar navbar-expand-lg main-menu">
+                        <!-- mega menu -->
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse js-navbar-collapse">
+                            {% set homeIsActive = null %}
+                            {% set formationIsActive = null %}
+                            {% if app.request.get('_route') == 'home' or app.request.get('_route') == 'details_actualite' or app.request.get('_route') == 'details_article'%}
+                                {% set homeIsActive = 'active' %}
+                            {% endif %}
+                            {% if app.request.get('_route') == 'home_formation' or app.request.get('_route') == 'details_formation'%}
+                                {% set formationIsActive = 'active' %}
+                            {% endif %}
+                            <ul class="nav ">
+                                <li class="dropdown mega-dropdown">
+                                    <a href="/" title="Accueil" class="{{ homeIsActive }}">Accueil</a>
+                                    {% if toSubMenus['home'] is defined %}
+                                        {% if(toSubMenus['home'] | length > 0) %}
+                                        <div class="dropdown-menu mega-dropdown-menu">
+                                            <div class="dropdown-content">
+                                                <ul>
+                                                {% for key, rubrique in toSubMenus['home'] %}
+                                                    {% if (key%4 == 0) %}
+                                                        </ul><ul class="dropdown-list">
+                                                    {% endif %}
+                                                    {%  set param = null %}
+
+                                                    {% if rubrique.slug is not empty %}
+                                                        {%  set param = path('details_article', { slug: rubrique.slug })  %}
+                                                    {% endif %}
+
+                                                    <li><a href="{{ param }}" title="{{rubrique.title}}">{{rubrique.title}}</a></li>
+                                                {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </li>
+                                <li class="dropdown mega-dropdown">
+                                    <a href="/formation" title="Formation" class="{{ formationIsActive }}">Formation</a>
+                                    <div class="dropdown-menu mega-dropdown-menu">
+                                        <div class="dropdown-content">
+                                            {% if toSubMenus['formation'] is defined %}
+                                                {% if(toSubMenus['formation'] | length > 0) %}
+                                                    <ul>
+                                                    {% for key, mention in toSubMenus['formation'] %}
+                                                        {% if (key%4 == 0) %}
+                                                            </ul><ul class="dropdown-list">
+                                                        {% endif %}
+                                                        {%  set param = null %}
+                                                        {% if mention.slug is not empty %}
+                                                            {%  set param = path('details_formation', { slug: mention.slug })  %}
+                                                        {% endif %}
+                                                        <li><a href="{{ param }}" title="{{mention.nom}}">{{mention.nom}}</a></li>
+                                                    {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="dropdown mega-dropdown">
+                                    <a href="#" title="Recherche">Recherche</a>
+                                    {% if toSubMenus['recherche'] is defined %}
+                                        {% if(toSubMenus['recherche'] | length > 0) %}
+                                        <div class="dropdown-menu mega-dropdown-menu">
+                                            <div class="dropdown-content">
+                                                <ul>
+                                                    {% for key, rubrique in toSubMenus['recherche'] %}
+                                                        {% if (key%4 == 0) %}
+                                                            </ul><ul class="dropdown-list">
+                                                        {% endif %}
+                                                        {%  set param = null %}
+                                                        {% if rubrique.slug is not empty %}
+                                                            {%  set param = path('recherche_article_list', { slug: rubrique.slug })  %}
+                                                        {% endif %}
+                                                        <li><a href="{{ param }}" title="{{rubrique.title}}">{{rubrique.title}}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </li>
+                                <li class="dropdown mega-dropdown">
+                                    <a href="#" title="HISE PSQ II">HISE & PSQ II</a>
+
+
+                                    {% if toSubMenus['hise'] is defined %}
+                                        {% if(toSubMenus['hise'] | length > 0) %}
+                                        <div class="dropdown-menu mega-dropdown-menu">
+                                            <div class="dropdown-content">
+                                                <ul>
+                                                    {% for key, rubrique in toSubMenus['hise'] %}
+                                                        {% if (key%4 == 0) %}
+                                                            </ul><ul class="dropdown-list">
+                                                        {% endif %}
+                                                        {%  set param = null %}
+                                                        {% if rubrique.slug is not empty %}
+                                                            {%  set param = path('hise_article_list', { slug: rubrique.slug })  %}
+                                                        {% endif %}
+                                                        <li><a href="{{ param }}" title="{{rubrique.title}}">{{rubrique.title}}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    {% endif %}
+
+
+
+                                </li>
+                                <li class="dropdown mega-dropdown">
+                                    <a href="#" title="Actualités & events">ACTUS & EVENTS</a>
+
+                                    <div class="dropdown-menu mega-dropdown-menu">
+                                        <div class="dropdown-content">
+                                            {% if toSubMenus['actus'] is defined %}
+                                                {% if(toSubMenus['actus'] | length > 0) %}
+                                                    <ul>
+                                                    {% for key, actus in toSubMenus['actus'] %}
+                                                        {% if (key%4 == 0) %}
+                                                            </ul><ul class="dropdown-list">
+                                                        {% endif %}
+                                                        {%  set param = null %}
+                                                        {% if actus.slug is not empty %}
+                                                            {%  set param = path('details_actualite', { slug: actus.slug })  %}
+                                                        {% endif %}
+                                                        {% if (key == 0) %}
+                                                        <li><a href="{{ path('evenement') }}" title="Les évenements">Les événements</a></li>
+                                                        {% endif %}
+                                                        <li><a href="{{ param }}" title="{{actus.title}}">{{actus.title}}</a></li>
+                                                    {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                </li>
+                                 <li class="dropdown mega-dropdown">
+                                    <a href="https://bibliotheque.ucm.mg/opac_css/index.php" title="Bibliothèque">Bibliothèque</a>
+
+
+                                    {% if toSubMenus['library'] is defined %}
+                                        {% if(toSubMenus['library'] | length > 0) %}
+                                        <div class="dropdown-menu mega-dropdown-menu">
+                                            <div class="dropdown-content">
+                                                <ul>
+                                                    {% for key, rubrique in toSubMenus['library'] %}
+                                                        {% if (key%4 == 0) %}
+                                                            </ul><ul class="dropdown-list">
+                                                        {% endif %}
+                                                        {%  set param = null %}
+                                                        {% if rubrique.slug is not empty %}
+                                                            {%  set param = path('library_article_list', { slug: rubrique.slug })  %}
+                                                        {% endif %}
+                                                        <li><a href="{{ param }}" title="{{rubrique.title}}">{{rubrique.title}}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- mega menu -->
+                    </section><!-- /main menu -->
+                    <div class="right-bloc">
+                        <div class="search-bloc">
+                            <form id="searchForm">
+                                <div class="searchField">
+                                    <input type="text" class="form-control" placeholder="Votre recherche..." >
+                                    <button class="btnSearch"><i class="iconucm-loupe"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                         
+                            <nav class="extra-menu">                            
+                                <ul class="nav">
+                                    <li>
+                                        <!-- <a href="https://formations.auf.org/home/universite-porteuse/universite-catholique-de-madagascar/" title="FOD">FOAD</a> -->
+                                        <a href="https://foad.ucm.mg/" title="FOD">FOAD</a>
+                                    </li>
+                                    <li class="dropdown mega-dropdown">
+                                        <a href="/campus" title="Campus">Campus</a>
+                                        <div class="dropdown-menu mega-dropdown-menu">
+                                            <div class="dropdown-content">
+                                                {% if toSubMenus['campus'] is defined %}
+                                                    {% if(toSubMenus['campus'] | length > 0) %}
+                                                        <ul>
+                                                        {% for key, rubrique in toSubMenus['campus'] %}
+                                                            {% if (key%4 == 0) %}
+                                                                </ul><ul class="dropdown-list">
+                                                            {% endif %}
+                                                            {%  set param = null %}
+                                                            {% if rubrique.slug is not empty %}
+                                                                {%  set param = path('list_article_campus', { slug: rubrique.slug })  %}
+                                                            {% endif %}
+                                                            <li><a href="{{ param }}" title="{{rubrique.title}}">{{rubrique.title}}</a></li>
+                                                        {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a href="" title="Alumni">Alumni</a>
+                                    </li>
+                                    <li>
+                                        <a href="" title="Galerie Photos">Galerie Photos</a>
+                                    </li>
+                                   
+                                     <li class="dropdown mega-dropdown">
+                                    <a href="#" title="Opportunité">Opportunité</a>
+
+                                    <div class="dropdown-menu mega-dropdown-menu">
+                                        <div class="dropdown-content">
+                                            {% if toSubMenus['opportunite'] is defined %}
+                                                {% if(toSubMenus['opportunite'] | length > 0) %}
+                                                    <ul>
+                                                    {% for key, opportunite in toSubMenus['opportunite'] %}
+                                                        {% if (key%4 == 0) %}
+                                                            </ul><ul class="dropdown-list">
+                                                        {% endif %}
+                                                        {%  set param = null %}
+                                                        {% if opportunite.slug is not empty %}
+                                                            {%  set param = path('details_opportunite', { slug: opportunite.slug })  %}
+                                                        {% endif %}
+                                                        {% if (key == 0) %}
+                                                        <li><a href="{{ path('evenement') }}" title="Appel d'offre ">Appel d'offre </a></li>
+                                                        {% endif %}
+                                                        <li><a href="{{ param }}" title="{{opportunite.title}}">{{opportunite.title}}</a></li>
+                                                    {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                </li>
+                                    <li>
+                                        <a href="https://moodle.ucm.mg/" title="Moodles">Moodles</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://ucm.educassist.mg/" title="ENT">ENT</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://wm.simafri.com/aser31" title="WEBMAIL">Webmail</a>
+                                    </li>
+                                </ul>                                
+                            </nav>
+                        
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+
+        {% if app.user and app.user.isStudent == true %}
+            <section class="header-main">
+                <div class="container">
+                    <!-- main menu -->
+                    <section class="navbar navbar-expand-lg main-menu">
+                        <!-- mega menu -->
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse js-navbar-collapse">
+                            <ul class="nav ">
+                                <li class="item">
+                                    <a href="/etudiant/mon-compte" title="Mon profil">Mon profil</a>
+                                </li>
+                                <li class="item">
+                                    <a href="#" title="Messages">Mes messages</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- mega menu -->
+                    </section><!-- /main menu -->
+                </div>
+            </section>
+        {% endif %}
+        {% if app.user and (app.user.isTeacher == true or app.user.isMentionHead == true or app.user.isAssistant) %}
+            <section class="header-main">
+                <div class="container">
+                    <!-- main menu -->
+                    <section class="navbar navbar-expand-lg main-menu">
+                        <!-- mega menu -->
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse js-navbar-collapse">
+                            <ul class="nav ">
+                                <li class="item">
+                                    <a 
+                                        {% if app.user.isTeacher %}
+                                            href="{{ path('front_teacher_me') }}" 
+                                        {% endif %}
+                                        {% if app.user.isMentionHead %}
+                                            href="{{ path('front_chefmention_me') }}" 
+                                        {% endif %}
+                                        {% if app.user.isAssistant %}
+                                            href="{{ path('front_assistant_me') }}" 
+                                        {% endif %}
+                                    title="Mon profil">Mon profil</a>
+                                </li>
+                                <li class="item">
+                                    <a href="#" title="Messages">Mes messages</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- mega menu -->
+                    </section><!-- /main menu -->
+                </div>
+            </section>
+        {% endif %}
+         <!-- /header main-->
+    </header> <!-- /end header -->
+
+ 
+

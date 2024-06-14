@@ -1,0 +1,225 @@
+
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Espace étudiant</h1>
+
+    <!-- big slider banner authentification espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="/formation" title="Formation">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Mes cours</span></li>
+        </ol>
+    </nav><!-- breadcrumb -->
+
+    <div class="main-contentPage studentSpace-container">
+        <div class="container">
+            <!-- aside Right -->
+            <aside class="asideRight asideSticky">
+            </aside>
+            <!-- /aside Right -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-training" id="mainBloc">
+
+                <!-- main content training -->
+                <section class="trainingDetail-bloc">
+                    <aside class="asideLeft filter-content">
+                        <nav class="formation-filter-accordion" id="filterAccordion">
+                            <a class="nav-Link" href="" title="Mes cours">Mes cours</a>
+                            <a class="nav-Link" href="" title="Mon profil">Mon profil</a>
+                        </nav>
+                    </aside>
+                    <div class="main-bloc">
+                        <div class="title-group">
+                            <p class="sup-title">Actualité</p>
+                            <h2 class="title-bloc">Philosophie</h2>
+                        </div>
+
+                        <!-- content actualites -->
+                        <section class="formation-actus-content richText">
+                            <figure>
+                                <img src="{{ asset('/assets/images/data/training/photo-actu-training.png') }}" alt="">
+                            </figure>
+                            <div class="intro-text">
+                                <p>Saraceni tamen nec amici nobis umquam nec hostes optandi, ultro citroque discursantes
+                                    quicquid inveniri poterat momento temporis parvi vastabant milvorum rapacium
+                                    similes, qui si praedam dispexerint celsius, volatu rapiunt celeri, aut nisi
+                                    impetraverint, non inmorantur.</p>
+                            </div>
+                            <h3>Fuitura sine respectu salutis in ferrum</h3>
+                            <p>
+                                Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                                Vestibulum rutrum consectetur massa. Integer aliquam odio in blandit ultrices. Fusce
+                                tincidunt pretium nunc, vitae feugiat purus viverra non. Nulla facilisi. Lorem ipsum dolor
+                                sit amet, consectetur adipiscing elit. Pellentesque porta magna mauris. Quisque quis lectus
+                                placerat odio dignissim consequat sed a mi. Neque tamen exiluit quisquam nec permissus est
+                                congredi. formidabatur enim flagrans vesania manus et superior numero et ruitura sine
+                                respectu salutis in ferrum :
+                            </p>
+                            <ul>
+                                <li>Morbi lacinia velit</li>
+                                <li>Sed interdum lobortis.</li>
+                                <li>Etiam pharetra leo a laoreet mattis.</li>
+                            </ul>
+                            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
+                                himenaeos. Vestibulum rutrum consectetur massa. Integer aliquam odio in blandit
+                                ultrices. Fusce tincidunt pretium nunc, vitae feugiat purus viverra non. Nulla facilisi.
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque porta magna
+                                mauris. Quisque quis lectus placerat odio dignissim consequat sed a mi. Nam ut fringilla
+                                nunc, at suscipit felis. Suspendisse id rhoncus magna, vitae porta massa. Aenean sed
+                                ante a eros fermentum ullamcorper at ac dolor. Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Aenean condimentum faucibus augue non aliquam. Praesent augue justo,
+                                tincidunt in est eu, fringilla tempor ipsum. Maecenas volutpat semper libero, Lien on
+                                lien off ante ultrices sed.</p>
+                            <h3>Fuitura sine respectu salutis in ferrum</h3>
+                            <ol>
+                                <li>Mauris sed nunc quis est fermentum pretium</li>
+                                <li>Sed sed turpis ac velit mollis molestie</li>
+                                <li>Nulla tempor malesuada justo quis volutpat</li>
+                            </ol>
+                            <dl>
+                                <dt>1- Mauris sed nunc quis est fermentum pretium</dt>
+                                <dd>
+                                    <cite>“ Donec egestas eros tincidunt vehicula ultrices. Morbi dignissim eros ac risus
+                                        efficitur, eget molestie quam porttitor. Nam vehicula nulla malesuada ligula laoreet
+                                        tempor. Pellentesque vestibulum dolor massa, a ornare ipsum auctor in. Vivamus convallis
+                                        aliquam lorem, nec mollis sem faucibus id. Fusce sodales a magna in dapibus. Integer ac
+                                        tempus nunc. Mauris placerat quam et posuere auctor ”.</cite>
+                                </dd>
+                                <dt>2- Sed sed turpis ac velit mollis molestie</dt>
+                                <dd>
+                                    <p>Suspendisse potenti. Morbi semper urna sed tortor posuere vestibulum. Donec lacus
+                                        neque, interdum eget gravida nec, vestibulum id quam. Integer euismod
+                                        sollicitudin lacus, sit amet sagittis tortor posuere at.
+                                    </p>
+                                    <div class="video-responsive">
+                                        <iframe width="620" height="405" src="https://www.youtube.com/embed/sPvqo6QliaY"
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen></iframe>
+                                    </div>
+                                </dd>
+                                <dt>3- Mauris sed nunc quis est fermentum pretium</dt>
+                                <dd>
+                                    <p>Suspendisse potenti. Morbi semper urna sed tortor posuere vestibulum. Donec lacus
+                                        neque, interdum eget gravida nec, vestibulum id quam. Integer euismod
+                                        sollicitudin lacus, sit amet sagittis tortor posuere at. Quisque dictum augue
+                                        viverra vestibulum eleifend. Nam in orci ut urna dictum lobortis. Nulla lobortis
+                                        felis sit amet nunc volutpat, ut sagittis dui ullamcorper. </p>
+                                    <cite>“ Donec egestas eros tincidunt vehicula ultrices. Morbi dignissim eros ac
+                                        risus efficitur, eget molestie quam porttitor. Nam vehicula nulla malesuada
+                                        ligula laoreet tempor. Pellentesque vestibulum dolor massa, a ornare ipsum
+                                        auctor in. Vivamus convallis aliquam lorem, nec mollis sem faucibus id. Fusce
+                                        sodales a magna in dapibus. Integer ac tempus nunc. Mauris placerat quam et
+                                        posuere auctor ”.</cite>
+                                </dd>
+                                <dt>4- Sed sed turpis ac velit mollis molestie</dt>
+                                <dd>
+                                    <p>Suspendisse potenti. Morbi semper urna sed tortor posuere vestibulum. Donec lacus
+                                        neque, interdum eget gravida nec, vestibulum id quam. Integer euismod sollicitudin
+                                        lacus, sit amet sagittis tortor posuere at.</p>
+                                    <blockquote>
+                                        <p>Suspendisse potenti. Morbi semper urna sed tortor posuere vestibulum. Donec
+                                            lacus neque, interdum eget gravida nec, vestibulum id quam. Integer euismod
+                                            sollicitudin lacus, sit amet sagittis tortor posuere at. Quisque dictum
+                                            augue viverra vestibulum eleifend. Nam in orci ut urna dictum lobortis.
+                                            Nulla lobortis felis sit amet nunc volutpat, ut sagittis dui ullamcorper.
+                                            Mauris sed nunc quis est fermentum pretium. Pellentesque non varius tellus,
+                                            eu iaculis ante. Praesent sapien ligula, luctus ut ligula a, loboen
+                                            vulputate, varius nunc quis, hendrerit nulla.</p>
+                                    </blockquote>
+                                    <cite class="author"><strong>Sata RAMIARAMANANA</strong><br><cite>Professeur</cite></cite>
+                                </dd>
+                            </dl>
+
+                            <div class="souce-bloc">
+                                <p><strong> Sources</strong> : lorem ipsum dolore</p>
+                                <ul class="list-link">
+                                    <li>
+                                        <a
+                                                href="http://www.midi-madagasikara.mg/covid-19/2020/04/21/andry-rajoelina-ceremonie-de-lancement-officiel-du-covid-organics/"
+                                                target="_blank"
+                                                title="">http://www.midi-madagasikara.mg/covid-19/2020/04/21/andry-rajoelina-ceremonie-de-lancement-officiel-du-covid-organics/
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://lexpress.mg/category/economie/"
+                                           target="_blank"
+                                           title="">https://lexpress.mg/category/economie/
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="download-article-bloc">
+                                <a href="" class="btn-download"><span>Télécharger l'article</span><i class="iconucm-download"></i></a>
+                            </div>
+                            <section class="photoGallery-bloc">
+                                <div class="swiper-container swiperGallery">
+                                    <div class="swiper-wrapper">
+                                        <div class="item">
+                                            <a href="javascript:#" title="photo 1">
+                                                <figure class="bigImg">
+                                                    <img src="{{ asset('/assets/images/design/gallery-photo-1.png') }}" alt="gallery-photo-1">
+                                                </figure>
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                    <div class="swiper-pagination"></div>
+                                </div>
+                            </section>
+                        </section>
+                        <!-- /content actualites -->
+                        <!-- /tabs and swipe system -->
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                $('#form-login').submit(function (e) {
+                    e.preventDefault();
+
+                    // let data = JSON.stringify({email: email, password: password, _csrf_token:token});
+                    $.ajax({
+                        type:    'POST',
+                        url:     '{{ path("app_login") }}',
+                        contentType: "application/json",
+                        dataType: 'json',
+                        data:    $('form#form-login').serialize(),
+                        success: function (data) {
+                            return false;
+                        }
+                    });
+                });
+            });
+
+        } )( jQuery );
+    </script>
+{% endblock %}
+

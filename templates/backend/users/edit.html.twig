@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% set menuUsers = true %}
+{% set menuUsersAdd = true %}
+{% block pageicon %}
+    pe-7s-browser
+{% endblock %}
+{% block title %}{{ parent() }}
+    Création d'un utilisateur
+{% endblock %}
+{% block pagetitle %}
+    Création d'un utilisateur
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/users/_form.html.twig') }}
+    <a href="{{ path('admin_users_list') }}">back to list</a>
+{% endblock %}

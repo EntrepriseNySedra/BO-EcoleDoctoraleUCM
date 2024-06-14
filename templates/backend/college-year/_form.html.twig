@@ -1,0 +1,68 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_college_year_new') %}
+{% if collegeYear.id %}
+    {% set action = path('admin_college_year_edit', { id: collegeYear.id }) %}
+{% endif %}
+<section class="content">
+    <form id="college-year-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if collegeYear.id %}
+                            <h4>Modification année universitaire</h4>
+                        {% else %}
+                            <h4>Ajout année universitaire</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(form) }}
+                            {{ form_row(form._token) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.libelle, 'Libelle *') }}
+                            {{ form_widget(form.libelle, {'attr':{'required':'required'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.annee, 'Année *') }}
+                            {{ form_widget(form.annee, {'attr':{'required':'required'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.dateDebut, 'Date de début') }}
+                            {{ form_widget(form.dateDebut) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.dateFin, 'Date fin') }}
+                            {{ form_widget(form.dateFin) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if collegeYear.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</form>

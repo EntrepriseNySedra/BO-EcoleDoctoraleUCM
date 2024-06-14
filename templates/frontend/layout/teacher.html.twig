@@ -1,0 +1,175 @@
+{# templates/base.html.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% if fpeFichePath is not defined %}
+        {% set fpeFichePath = 'front_chefmention_presence_enseignant_matiere_fiche' %}
+    {% endif %}
+    {% if fpeEditPath is not defined %}
+        {% set fpeEditPath = 'front_chefmention_presence_enseignant_edit' %}
+    {% endif %}
+    {% if workspaceTitle is not defined %}
+        {% set workspaceTitle = 'Chef de mention' %}
+    {% endif %}
+    {% if workspacePath is not defined %}
+        {% set workspacePath = 'front_chefmention_presence_enseignant_index' %}
+    {% endif %}
+    {% if noteIndex is not defined %}
+        {% set noteIndex = 'front_cm_enseignant' %}
+    {% endif %}
+    {% if noteEdit is not defined %}
+        {% set noteEdit = 'front_cm_manage_notes' %}
+    {% endif %}
+    {% if calendarIndex is not defined %}
+        {% set calendarIndex = 'front_cm_examen_calendar_list' %}
+    {% endif %}
+    {% if thesisCalendarIndex is not defined %}
+        {% set thesisCalendarIndex = 'front_cm_thesis_calendar_list' %}
+    {% endif %}
+    {% if extraNoteIndex is not defined %}
+        {% set extraNoteIndex = 'front_cm_extranote_list' %}
+    {% endif %}
+    {% if extraNoteEdit is not defined %}
+        {% set extraNoteEdit = 'front_cm_extranote_edit' %}
+    {% endif %}
+
+    <title>{% block title %}UCM{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block stylesheets %}
+    {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> #}
+    <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/fontawesome.min.css') }}">
+    
+    <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/material.indigo-pink.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/customSelectBox.css') }}">
+
+    {# <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/swiper-bundle.min.css') }}"> #}
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/css/swiper.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/custom.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('/assets/css/bootstrap.min.css') }}">
+
+    <!-- <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
+
+    {% endblock %}
+</head>
+
+<body>
+    {{ render(controller('App\\Controller\\Frontend\\MenusController::index')) }}
+    {% block content %}
+    {% endblock %}
+     <!-- AJAX SPINNER -->
+        <div class="container-spinner">
+            <i id="ajaxspinner" class="fas fa-spinner fa-spin fa-3x fa-fw hidden"></i>
+        </div>
+    <!-- END AJAX SPINNER -->
+    <!-- footer -->
+    <footer class="footer" id="footer">
+        <!-- footer link -->
+        <div class="footer-link">
+            <div class="container">
+                <nav class="content-link">
+                    <div class="adresse-footer">
+                        <a class="logo"  href="/" title="UCM">
+                            <figure class="logo-img" href="/" title="UCM">
+                                <img src="{{ asset('/assets/images/design/ucm_logo-bdr-white.svg') }}" alt="UCM">
+                            </figure>
+                            <p class="logo-slogan">UNIVERSITÉ<br> CATHOLIQUE<br> DE MADAGASCAR</p>
+                        </a>
+                        <div class="adresse-text">
+                            <p class="adresse">Ambatoroka</p>
+                            <p class="adresse">Antananarivo 101 Madagascar</p>
+                            <p class="phone">Tél: +261 20.22.340.07</p>
+                            <p class="mail">Email: ucm@ucm.mg</p>
+                        </div>
+                    </div>
+                    <ul class="group-link right-link">
+                        <li><a href="" title="Mentions légales">Mentions légales</a></li>
+                        <li><a href="" title="Accessibilité">Accessibilité</a></li>
+                        <li><a href="" title="FAQ">FAQ</a></li>
+                        <li><a href="" title="Plan du site">Plan du site</a></li>
+                        <li><a href="" title="Contacts">Contacts</a></li>
+                    </ul>
+                    <ul class="group-link right-link">
+                        <li><a href="" title="Facebook">Facebook</a></li>
+                        <li><a href="" title="Instagram">Instagram</a></li>
+                        <li><a href="" title="Youtube">Youtube</a></li>
+                    </ul>
+                    <div class="newsletter-footer">
+                        <h2>NEWSLETTER</h2>
+                        <h3>Université Catholique <br>de Madagascar</h3>
+                        <div class="form-bloc">
+                            <form action="" id="newslleter-form">
+                                <p>Restez informé de toutes les actualités nous concernant en vous inscrivant à notre newsletter.</p>
+                                <div class="fieldset">
+                                    <input type="text" placeholder="Saisissez votre adresse e-mail" id="user-mail-newsleter">
+                                    <button class="submit-bn" id="send-newsleter"><span>S'inscrire</span></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div><!-- /footer link -->
+
+        <!-- footer copyright -->
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="copyRight">&copy; 2021 UCM - Ttous droits réservés</p>
+                <p class="legacy">L'utilisation de ce site entraine l'acceptation des <a href="" title="Conditions générales d'Utilisation">Conditions générales d'Utilisation</a> et des <a href="" title="Cookies">Cookies</a></p>
+            </div>
+        </div>
+        <!-- /footer copyright -->
+
+        <!-- footer identity -->
+        {# <div class="footer-identity">
+            <div class="container">
+                <ul class="resolist">
+                    <li><a href="" title="Facebook"><i class="iconucm-facebook"></i></a></li>
+                    <li><a href="" title="Instagram"><i class="iconucm-instagram"></i></a></li>
+                    <li><a href="" title="Linkedin"><i class="iconucm-linkedin"></i></a></li>
+                    <li><a href="" title="Twiiter"><i class="iconucm-twitter"></i></a></li>
+                    <li><a href="" title="Youtube"><i class="iconucm-youtube"></i></a></li>
+                </ul>
+                <p class="copyRight">&copy; 2021 UCM - Ttous droits réservés</p>
+
+                <p class="legacy">L'utilisation de ce site entraine l'acceptation des <a href=""
+                        title="Conditions générales d'Utilisation">Conditions générales d'Utilisation</a> et des <a
+                        href="" title="Cookies">Cookies</a>
+                </p>
+            </div>
+        </div> #}
+        <!-- /footer identity -->
+    </footer>
+    <!-- /end footer -->
+
+
+    {% block scripts %}
+    <script src="{{ asset('/assets/js/library/jquery.min.js') }}"></script>
+    <script src="{{ asset('/assets/js/library/hammer.js') }}"></script>
+    <script src="{{ asset('/assets/js/library/material.min.js') }}"></script>
+    <script src="{{ asset('/assets/js/library/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('/assets/js/library/SelectBox.js') }}"></script>
+    <script src="{{ asset('/assets/js/library/jScrollPane.js') }}"></script>
+    <script src="{{ asset('/assets/js/library/packery.pkgd.min.js') }}"></script>
+
+    <script src="{{ asset('/assets/js/library/swiper-bundle.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/js/swiper.min.js"></script>
+    <script src="{{ asset('/assets/js/library/jquery.mousewheel.js') }}"></script> 
+
+    <script src="//code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="//stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <!-- <script src="{{ asset('/assets/js/library/bootstrap.min.js') }}"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
+    
+    <script src="{{ asset('/assets/js/common.js') }}"></script>
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,219 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+    <style>
+        .bg-red {
+            background: #E5343D !important;
+        }
+        .richText ul li::before {
+            background-color: #ffffff !important;
+        }
+    </style>
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Cours</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>   
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace enseignant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Cours</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Enseignant > cours</p>
+                    <h2>{{ matiere.uniteEnseignements.mention.nom }}/{{ matiere.uniteEnseignements.niveau.libelle }}/{{ matiere.uniteEnseignements.libelle }}/{{ matiere.nom }}</h2>
+                    &nbsp;
+                </div>
+                
+                <!-- content cours -->
+                <section class="cours-content richText">
+                    <div class="list-group">
+
+                     <h3 class="text-danger syllabus-toggle" style="text-align: center">Modifier Syllabus:  <span class="fa fa-edit"></span></h3>
+                    
+                      <div id="syllabus-modifiable" style="display: none;">
+                    <div class="form-bloc form-inline">
+                        <div class="card">
+                            <div class="card-body">
+                                <p>Volume horaire: {{ matiere.volumeHoraireTotal }} h</p>
+                                
+                                <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{ path('front_teacher_cours', {id: matiere.id }) }}">
+                                    <!-- input hidden -->
+                                    {{ form_errors(form) }}
+                                    {{ form_row(form._token) }}
+
+                                
+
+                                    <div class="groups-btn justify-content-end text-right mb-2">
+                                        <button type="submit" class="btn btn-danger" id="btn-submit-product-form">Sauvegarder</button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group row align-items-start mb-0">
+                                                <div class="col">{{ form_widget(form.syllabus) }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="syllabus-non-modifiable">
+                   <div class="form-bloc form-inline">
+                        <div class="card">
+                            <div class="card-body">
+                                <p>Volume horaire: {{ matiere.volumeHoraireTotal }} h</p>
+                                <h3 class="text-danger">Syllabus</h3>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group row align-items-start mb-0">
+                                            <div class="col">{{ form.syllabus.vars.value|raw }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                &nbsp;
+               
+               <h1 class="text-danger" style="text-align: center">Les Chapitres :  <span class=""></span></h1>
+
+                     {% for item in cours %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.libelle }}</h5>
+                                 <a href="{{ path('front_teacher_cours_etudiant_doc', {id: item.id}) }}">{{item.etudiantDocuments | length }} documents</a>
+                                <div class="d-flex">
+                                    <a href="{{ path('front_teacher_show_cours', {id: item.id })}}" class="btn btn-sm bg-dark text-white mr-3" title="Afficher"><span class="fa fa-eye"></span></a>
+                                    &nbsp; <a href="{{ path('front_teacher_edit_cours', {matiere_id: matiere.id, cours_id: item.id })}}" class="btn btn-sm bg-dark text-white mr-10" title="Modifier"><span class="fa fa-edit"></span></a>
+                                    <form id="delete-form-{{ item.id }}" method="POST" action="{{ path('front_teacher_delete_cours', { id: item.id }) }}" style="display:inline-block;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}" />
+                                        &nbsp; <button class="btn btn-sm bg-red text-white" onclick="javascript:deleteElement('{{ item.id }}');" title="Supprimer"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                    </form>
+                                </div>
+
+                                <p class="card-text">{{ item.description | raw }}</p>
+                                {% for media in item.coursMedia %}
+                                    {% if media.id %}
+                                        <a href="{{ path('teacher_download_classes', { id: media.id }) }}" class="btn btn-sm btn-outline-secondary mb-2">
+                                            {% if media.type == 'pdf' %}
+                                                <span class="fa fa-file-pdf text-danger"></span>
+                                            {% elseif media.type == 'doc' or media.type == 'vnd.openxmlformats-officedocument.wordprocessingml.document' %}
+                                                <span class="fa fa-file-word text-info"></span>
+                                            {% elseif media.type == 'audio' %}
+                                                <span class="fa fa-file-audio text-warning"></span>
+                                            {% else %}
+                                                <span class="fa fa-file text-danger"></span>
+                                            {% endif %}
+                                            {{ media.path }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <!-- Sous-card pour les sections associées à la cours -->
+                                {% for section in item.section %}
+                                    <div class="card mt-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ section.nom }}</h5>
+                                            <p class="card-text">{{ section.description }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                               
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% if cours.getTotalItemCount() > cours.getItemNumberPerPage() %}
+                        <div class="card mt-3">
+                            <div class="card-body text-center">
+                                <div class="pagination">
+                                    {{ knp_pagination_render(cours) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+
+                    
+               
+                        <div class="item text-right mt-1">
+                            <div class="row align-items-center">
+                                <div class="wrap-btn">
+                                    <a href="{{ path('front_teacher_add_cours', {id: matiere.id })}}" class="btn btn-sm btn-primary">AJOUTER</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+
+        function deleteElement(id) {
+            if (confirm('Etes-vous sûr de vouloir supprimer cet element ?')) {
+                $("#delete-form-"+id).submit();
+            }
+        }
+
+        (function ($) {
+            $(document).ready(function () {
+                $('#anneeUniv').change((e) => {
+                    const anneeUnivId = e.target.value;
+
+                    window.location.href = "{{ path('front_teacher_cours', {id: matiere.id}) }}?au=" + anneeUnivId
+                });
+            });
+           $('.syllabus-toggle').on('click', function () {
+                    $('#syllabus-modifiable, #syllabus-non-modifiable').toggle();
+                });
+
+        })(jQuery);
+
+  
+
+    </script>
+
+  
+    </script>
+{% endblock %}
+
+

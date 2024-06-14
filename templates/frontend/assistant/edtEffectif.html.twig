@@ -1,0 +1,16 @@
+{% if niveauId == "-- Séléctionner --" %}
+    <div class="row">
+        <div class="alert alert-danger" role="alert"> Merci de renseigner le niveaux </div>
+    </div>
+{% else %}
+    <div class="alert alert-info" role="alert">
+        Total des efféctifs des étudiants pour ce niveau : <a href="#" class="alert-link"> {{ effectifs }} </a>
+    </div>
+{% endif %}
+{% block scripts %}
+<script>
+    (function ($) {
+        
+    })(jQuery);
+</script>
+{% endblock %}

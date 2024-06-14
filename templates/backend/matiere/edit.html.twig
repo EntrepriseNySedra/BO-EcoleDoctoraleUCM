@@ -1,0 +1,106 @@
+{% extends layout_backend %}
+{% block title %}Matière::Modification{% endblock %}
+
+{% set menuFormation = true %}
+{% set menuFormationMatiereAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Matière
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/matiere/_form.html.twig') }}
+     <a href="{{ path('admin_rf_matiere_liste') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function getUniteEnseignements() {
+
+            mentionId   = $('#matiere_ue_mention').val();
+            parcoursId  = $('#matiere_ue_parcours').val();
+            niveauId    = $('#matiere_ue_niveau').val();
+            semestreId  = $('#matiere_ue_semestre').val();
+
+            $.ajax({
+                    method: "GET",
+                    url: "/admin/formation/matiere/unite_enseignements",
+                    data: { 
+                        mention_id  : mentionId,
+                        parcours_id : parcoursId,
+                        niveau_id   : niveauId,
+                        semestre_id : semestreId
+                    }
+                }).done(
+                    function(html){
+                        $('#matiere_uniteEnseignements').html(html);
+                    } 
+                )
+        }
+
+        function getParcours() {
+
+            mentionId   = $('#matiere_ue_mention').val();
+            niveauId    = $('#matiere_ue_niveau').val();
+            
+            $.ajax({
+                    method: "GET",
+                    url: "/admin/formation/unite_enseignements/mention/" + mentionId + "/parcours",
+                    data: { 
+                        mention_id  : mentionId,
+                        niveau_id   : niveauId,
+                    }
+                }).done(
+                    function(html){
+                        $('#matiere_ue_parcours').html(html);
+                    } 
+                )
+        }
+
+        $(document).ready(function () {
+            $('#matiere_ue_mention').bind('change', function(){
+                mentionId = $(this).val();
+                $.ajax({
+                    method: "GET",
+                    url: "/admin/formation/unite_enseignements/mention/" + mentionId + "/parcours",
+                    data: { mention_id: mentionId}
+                }).done(
+                    function(html){
+                        $('#matiere_ue_parcours').html(html);
+                    } 
+                )
+                getParcours();
+                getUniteEnseignements();
+            });
+
+            $('#matiere_ue_parcours').bind('change', function(){
+                getUniteEnseignements();
+            });
+
+            $('#matiere_ue_niveau').bind('change', function(){
+                niveauId = $(this).val();
+                $.ajax({
+                    method: "GET",
+                    url: "/admin/formation/unite_enseignement/niveau/" + niveauId + "/semestres",
+                    data: { niveau_id: niveauId}
+                }).done(
+                    function(html){
+                        $('#matiere_ue_semestre').html(html);
+                    } 
+                )
+                getParcours();
+                getUniteEnseignements();
+            });
+
+            $('#matiere_ue_semestre').bind('change', function(){
+                getUniteEnseignements();
+            });
+
+        });
+    </script>
+{% endblock %}

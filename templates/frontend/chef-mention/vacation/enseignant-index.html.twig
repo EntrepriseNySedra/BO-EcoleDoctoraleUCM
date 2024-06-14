@@ -1,0 +1,172 @@
+{% extends layout_frontend %}
+{% block title %}Vacation enseignant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Vacation enseignant</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace chef de mention</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace chef de mention</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Vacation enseignant</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/chef-mention/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">chef de mention</p>
+                    <h2 class="title-bloc">Vacation</h2>
+                </div>
+                <div class="row">
+                    <p>{{ enseignant.firstName }} {{ enseignant.lastName }}</p>
+                    <p>{% if calPaiment is defined %}{{ calPaiement.libelle }}{% endif %}</p>
+                </div>
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="table-responsive table-wrapper">
+                        {% if fPresenceEnseignants is defined and fPresenceEnseignants | length > 0 %}
+                            <table class="table table-bordered table-hover list-data">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Cours</th>
+                                        <th class="text-center">Date</th>
+                                        <th class="text-center">Heure</th>
+                                        <th class="text-center">Salle</th>
+                                        <th class="text-center">Tronc commun</th>
+                                        <th class="text-center">Heures effectuées</th>
+                                        <th class="text-center">Montant</th>
+                                        <th class="text-center">Impot</th>
+                                        <th class="text-center">NET</th>
+                                        <th class="text-center">Etat</th>
+                                        <th class="text-center">Statut</th>
+                                        <th class="action_col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set totalHT = 0 %}
+                                    {% set totalImpot = 0 %}
+                                    {% set totalNET = 0 %}
+                                    {% for presence in fPresenceEnseignants %}
+                                        {% set montantTTC = presence.montantHT / 0.98 %}
+                                        {% set montantImpot = montantTTC * 0.02 %}
+                                        <tr class="middle-align">
+                                            <td class="text-center w-25">
+                                                {{ presence.mCode }} - {{ presence.matiere }}<br>
+                                                {{ presence.classList | raw }}
+                                            </td>
+                                            <td class="text-center w-5">{{ presence.date_schedule | date('d/m/Y') }}</td>
+                                            <td class="text-center w-15">{{ presence.start_time | date('h:i') }} - {{ presence.end_time | date('h:i') }}</td>
+                                            <td class="text-center w-5">{{ presence.salle }}</td>
+                                            <td class="text-center w-5">{{ presence.troncCommun }}</td>
+                                            <td class="text-center w-10">{{ presence.heure }}</td>
+                                            <td class="text-center w-10">{{ montantTTC | number_format(2, '.', ' ') }}</td>
+                                            <td class="text-center w-10">{{ montantImpot | number_format(2, '.', ' ') }}</td>
+                                            <td class="text-center w-10">{{ presence.montantHT | number_format(2, '.', ' ') }}</td>
+                                            {{ include('frontend/chef-mention/vacation/_statut_partial.html.twig') }}
+                                            <td class="action_col w-50">
+                                                {% if presence.statut == profilListStatut %}
+                                                    <label>Valider</label>
+                                                    <input type="checkbox" name="presence[]" value="{{ presence.edtId }}">
+                                                {% else %}
+                                                    {% if presence.statut == profilNextStatut %}
+                                                        <label>Annuler</label>
+                                                        <input type="checkbox" name="presence[]" value="{{ presence.edtId }}">
+                                                    {% else %}
+                                                        {% if presence.statut == profilPrevStatut %}
+                                                            <label>En attente</label>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% set totalHT = totalHT + montantTTC %}
+                                        {% set totalImpot = totalImpot + montantImpot %}
+                                        {% set totalNET = totalNET + presence.montantHT %}
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="6" align="center">Total</td>
+                                        <td align="center">{{ totalHT | number_format(2, '.', ' ') }}</td>
+                                        <td>{{ totalImpot | number_format(2, '.', ' ') }}</td>
+                                        <td>{{ totalNET | number_format(2, '.', ' ') }}</td>
+                                        <td align="center" colspan="4">
+                                            <label>Tout coché</label>
+                                            <input type="checkbox" name="checkall" id="checkall">
+                                            <button type="button" class="btn" id="submit_form">Executer</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </div>
+
+                    <div class="groups-btn justify-content-end mt-0">
+                        <a href="{{ path(vacationPath) }}?c={{ c }}&m={{ m }}" class="btn btn-primary">RETOUR</a>
+                    </div>
+                 
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { 
+                $('#checkall').click(function(){
+                    $( "input:checkbox" ).prop('checked', this.checked);
+                });
+                $('#submit_form').bind('click', function(){
+                    presenceIds = $('input[name="presence[]"]').map(
+                            function() {
+                                if($(this).prop("checked"))
+                                    return $(this).val() ;
+                            }
+                        ).get();
+                    $.ajax({
+                        method: "POST",
+                        url: "{{ path(vacationValidationPath) }}",
+                        data: {
+                            presence : presenceIds
+                        }
+                    }).done(
+                        function(html){
+                             window.location.href = "{{ path(vacationPath) }}?c={{ c }}&m={{ m }}";
+                        }
+                    );                    
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

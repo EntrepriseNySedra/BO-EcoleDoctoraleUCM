@@ -1,0 +1,97 @@
+{% extends layout_frontend %}
+{% block title %}{{actualite.title}} | UCM{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Actualité</h1>
+
+    <!-- big slider banner home -->
+    <section class="banner banner-training">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{asset("uploads/actualite/")~ actualite.uuid~"/1073-"~ actualite.path}}">
+            </figure>
+            <div class="desc">
+                
+            </div>
+        </div>
+    </section> <!-- /big slider banner home -->
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="/" title="Actualité">Actualité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>{{actualite.title}}</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    
+    <div class="main-contentPage actus-container">
+        <div class="container">
+            <!-- aside Right -->
+            <aside class="asideRight asideSticky">
+                <!-- aside Right actuality-->
+                {{ include('frontend/layoutactus/_actus.html.twig') }}
+            </aside>
+            <!-- /aside Right -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-training" id="mainBloc">
+                <!-- main content training -->
+                <section class="trainingDetail-bloc actuDetail-bloc">
+                    <div class="main-bloc">
+                        <div class="top-titre">
+                            <div class="title-group">
+                                <p class="sup-title">Actualité</p>
+                                <h2 class="title-bloc">{{actualite.title}}</h2>
+                                <!-- <h2 class="title-bloc">{{actualite.description}}</h2> -->
+                            </div>
+                        </div>
+                        
+                        <div class="date-pub">
+                            Publié le: {{ actualite.createdAt | date('d/m/Y') }}
+                        </div>
+                        
+                        <div class="tag-list">
+                            {% if(derniereActus | length > 0) %}
+                            {% for actualite in derniereActus %}
+                                <div class="item-actu">
+                                    {%  set param = null %}
+                                    {% if actualite.slug is not empty %}
+                                        {%  set param = path('details_actualite', { slug: actualite.slug })  %}
+                                    {% endif %}
+                                    <a href="{{ param }}" title="{{ actualite.title }}">{{ actualite.title }}</a>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+
+                        <!-- tabs and swipe system -->
+                        <section class="actus-content richText">
+                            {{actualite.detail|raw}}
+                        </section>
+                        <!-- /tabs and swipe system -->
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+
+        <section class="offres-bloc">
+            <figure class="backgroundImg">
+                <img src="{{ asset('/assets/images/data/training/banner-economics-management.png') }}" alt="Training Background">
+            </figure>
+            <div class="content-text">
+                <div class="container">
+                    <h2 class="offres-title">Intéressé ?</h2>
+                    <h3 class="sub-title">Alors, n'hésitez pas à nous envoyer votre dossier, à bientôt !</h3>
+                    <p class="group-btns">
+                        <a class="btn-primary" href="/concours/candidature" title="Candidature spontanée">Candidature spontanée</a>
+                        <a class="btn-primary" href="/formation" title="Consultez nos offres">Consultez nos offres</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('OpportuniteBourse_add') %}
+{% if OpportuniteBourse.id %}
+    {% set action = path('OpportuniteBourse_edit', { id: OpportuniteBourse.id }) %}
+{% endif %}
+<section class="content">
+    <form id="actualite-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Ajouter des Opportunites</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Opportunite: informations principales</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                            
+                        <div class="form-group">
+                            {{ form_label(form.name, 'Nom') }}
+                            {{ form_widget(form.name) }}
+                        </div>
+
+                         <div class="form-group">
+                            {{ form_label(form.bourse, 'Bourse') }}
+                            {{ form_widget(form.bourse) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.delais, 'Delais') }}
+                            {{ form_widget(form.delais) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.critere, 'Critere') }}
+                            {{ form_widget(form.critere) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.montant, 'Montant') }}
+                            {{ form_widget(form.montant) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.image, 'Image') }}
+                            {{ form_widget(form.image) }}
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-actualite-form">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+</section>

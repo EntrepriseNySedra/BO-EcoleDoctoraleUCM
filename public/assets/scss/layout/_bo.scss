@@ -1,0 +1,116 @@
+.main-header {
+    .logo {
+        display: flex;
+        align-items: center;
+        line-height: normal;
+        justify-content: center;
+        .wrapper-logo {
+            display: inherit;
+            align-items: inherit;
+            max-width: 160px;
+        }
+        .logo-img {
+            height: 40px;
+            margin: 0;
+            img {
+                width: auto;
+                height: 100%;
+            }
+        }
+        .logo-slogan {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.10;
+            margin-left: 10px;
+            text-transform: uppercase;
+            text-align: left;
+            .grey-text {
+                color: $grey333;
+            }
+        }
+    }
+}
+.view-header .header-icon {
+    color: $red;
+}
+.panel-bd .panel-heading::before {
+    border-top-color: $red;
+}
+
+.btn-primary {
+    background-color: $red;
+    border-color: $red;
+    &:hover, &:focus, &:active {
+        background-color: #C01F25;
+    }
+}
+
+.form-control {
+    &:focus {
+        border-color: $red;
+    }
+}
+
+.wrapper {
+    a {
+        color: $red;
+        &:hover {
+            color: #830814;
+        }
+    }
+    .text-success {
+        color: $red !important;
+    }
+}
+
+.sidebar-menu {
+    > li.active {
+        > a {
+            &:before {
+                background: $red;
+            }
+        }
+    }
+}
+
+.pace .pace-progress {
+    background: $red;
+}
+
+.content-header {
+    .header-icon {
+        color: $red;
+    }
+}
+
+.breadcrumb {
+    >.active {
+        color: $red;
+    }
+}
+
+.pagination {
+    > li {
+        > a {
+
+        }
+        > a, > span {
+            color: $red;
+            &:focus, &:hover {
+                color: #830814;
+            }
+        }
+        &.active {
+            > a, > span {
+                color: #fff;
+                background-color: $red;
+                border-color: $red;
+            }
+        }
+    }
+}
+.back-top {
+    background-color: $red;
+    border: 1px solid $red;
+}

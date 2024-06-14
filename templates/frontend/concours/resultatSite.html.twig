@@ -1,0 +1,236 @@
+{% extends layout_frontend %}
+{% block title %}Candidatures{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/buttons.dataTables.min.css') }}"> -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/libs/datatable/DT_bootstrap.css') }}"/>
+    <style>
+        .dt-buttons button {
+            /* color: #f2f2f2; */
+            /*font-size: 12px;*/
+            /* border-radius: 4px; */
+            /*border: 1px solid #64c3c2 !important;*/
+            /* background: #282b2b; */
+        }
+
+        .dt-buttons button:hover {
+            /* color: #f2f2f2; */
+            /*font-size: 12px;*/
+            /* border-radius: 4px !important; */
+            /*border: 1px solid #64c3c2 !important;*/
+            /* background: #282b2b !important; */
+        }
+
+        .dt-buttons {
+            /*position: absolute!important;*/
+            /* left: 50%; */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">résultat concours</h1>
+
+    <!-- big slider banner scolarité -->
+    <section class="banner banner-training">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/training/banner-training.png') }}" alt="Candidatures">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                   
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+          
+            <li class="breadcrumb-item active" aria-current="page"><span>Résultat Concours</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <!-- big slider banner home -->
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+     
+            </aside><!-- /aside Left --> 
+
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <section class="moyenne-resultat-content richText">
+                    <!-- content -->
+                    <div class="title-group">
+             
+                        <h2 class="title-bloc"> résultat concours </h2>
+                    </div>
+
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="form-filtre" method="post" autocomplete="off">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-xl-4">Mentions :</label>
+                                                <div class="form-field select-field col-xl-8">
+                                                    <select name="mention" class="form-control" id="mention">
+                                                        <option value="">--- Sélectionner ---</option>
+                                                        {% for item in mentions %}
+                                                            <option value="{{ item.id }}" {% if item.id == m %}selected{% endif %}>{{ item.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-xl-4">niveau :</label>
+                                                <div class="form-field select-field col-xl-8">
+                                                    <select class="form-control" name="niveau" id="niveau">
+                                                        <option value="">--- niveau ---</option>
+                                                        {% for item in niveau %}
+                                                            <option value="{{ item.id }}" {% if item.id == n %}selected{% endif %}>{{ item.libelle }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-xl-4">Parcours :</label>
+                                                <div class="form-field select-field col-xl-8">
+                                                    <select class="form-control" name="parcours" id="parcours">
+                                                        <option value="">--- Parcours ---</option>
+                                                        {% for item in parcours %}
+                                                            <option value="{{ item.id }}" {% if item.id == p %}selected{% endif %}>{{ item.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive table-wrapper" id="result"></div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('#mention').on('change', function () {
+                    const mentionId = $(this).val();
+
+                    $("#result").html('');
+                    $("#niveau").html('');
+                    $("#parcours").html('');
+
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path('front_result_ajax_get_niveau') }}",
+                        data:   {
+                            m:  mentionId
+                        }
+                    }).done(
+                        function (html) {
+                            $('#niveau').html(html);
+                        }
+                    )
+                    
+                });
+
+
+                $('#niveau').on('change', function () {
+             
+                    const mentionId = $('#mention').val(),
+                    niveauId= $(this).val();
+
+                    $("#result").html('');
+                    $("#parcours").html('');
+
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path('front_result_ajax_get_parcours') }}",
+                        data:   {
+                            m:  mentionId,
+                            n: niveauId
+                        }
+                    }).done(
+                        function (html) {
+                            $('#parcours').html(html);
+                        }
+                    );
+
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path('front_result_ajax_concours') }}",
+                        data:   {
+                            m:  mentionId,
+                            n: niveauId
+                        }
+                    }).done(
+                        function (html) {
+                            $('#result').html(html);
+                        }
+                    )
+                    
+                });
+
+
+                $('#parcours').on('change', function () {
+                  
+                    const mentionId = $('#mention').val(),
+                    niveauId= $('#niveau').val(),
+                    parcoursId= $(this).val();
+
+                    $("#result").html('');
+
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path('front_result_ajax_concours') }}",
+                        data:   {
+                            m:  mentionId,
+                            n: niveauId,
+                            p: parcoursId
+                        }
+                    }).done(
+                        function (html) {
+                            $('#result').html(html);
+                        }
+                    )
+                    
+                });
+
+
+                
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}
+

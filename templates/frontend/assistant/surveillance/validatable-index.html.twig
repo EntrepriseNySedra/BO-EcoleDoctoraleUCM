@@ -1,0 +1,177 @@
+{% extends layout_frontend %}
+{% block title %}Préstation{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Préstation</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Préstation</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Assistant</p>
+                    <h2 class="title-bloc">Préstation</h2>
+                </div>
+                <div class="form-bloc filter-bloc">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="filter-form" autocomplete="off">
+                                <div class="row">                                   
+                                    <div class="form-group row">
+                                        <label class="col-lg-2">Calendrier :</label>
+                                        <div class="form-field select-field col-lg-4">
+                                            <select class="form-control" name="calendrier-paiement" id="calendrier_paiement">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for cal in calPaiements %}
+                                                    <option value="{{ cal.id }}" 
+                                                        {% if  cal.id == c %}selected{% endif %}>{{ cal.libelle }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div> <!-- /filter block -->
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="pb-2">
+                        <a href="{{ path('front_assistant_prestation_index', {c:c}) }}" class="btn btn-primary" id="btn-submit-product-form" >Retour</a>
+                    </div>
+                    <div class="table-responsive table-wrapper">
+                        {% if list is defined and list | length > 0 %}
+                        <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" role="form" >
+                            <table class="table table-bordered table-hover list-data">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Date</th>
+                                        <th class="text-center">Désignation</th>
+                                        <th class="text-center">Bénéficiaires</th>
+                                        <th class="text-center">Quantité</th>
+                                        <th class="text-center">Taux</th>
+                                        <th class="text-center">Total</th>
+                                        <th class="text-center">Impot</th>
+                                        <th class="text-center">Reste</th>
+                                        <th class="text-center">Statut</th>
+                                        <th class="text-center">En attente</th>
+                                        <th class="action_col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set totalHT = 0 %}
+                                    {% set totalImpot = 0 %}
+                                    {% set totalNET = 0 %}
+                                    {% for prestation in list %}
+                                        <tr class="middle-align">
+                                            <td class="text-center w-25">{{ prestation.date | date('d/m/Y') }} {{ gv_impot }}</td>
+                                            <td class="text-center w-25">{{ prestation.designation }}</td>
+                                            <td class="text-center w-25">{{ prestation.userName }}</td>
+                                            <td class="text-center w-25">{{ prestation.totalQte }}</td>
+                                            <td class="text-center w-25">{{ prestation.taux }}</td>
+                                            <td class="text-center w-25">{{ prestation.total }}</td>
+                                            <td class="text-center w-25">{{ prestation.impot }}</td>
+                                            <td class="text-center w-25">{{ prestation.net }}</td>
+                                            {{ include('frontend/chef-mention/prestation/_statut_partial.html.twig') }}
+                                            <td class="action_col w-50">
+                                                {% if prestation.statut == constant('App\\Services\\WorkflowStatutService::STATUS_CREATED')%}
+                                                    <label>Valider</label>
+                                                {% else %}
+                                                    <label>Annuler</label>
+                                                {% endif %}
+                                                <input type="checkbox" name="prestation[]" value="{{ prestation.prestationId }}">
+                                            </td>
+                                        </tr>
+                                        {% set totalHT = totalHT + prestation.total %}
+                                        {% set totalImpot = totalImpot + prestation.impot %}
+                                        {% set totalNET = totalNET + prestation.net %}
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="6" align="center">Total</td>
+                                        <td align="center">{{ totalHT }}</td>
+                                        <td>{{ totalImpot }}</td>
+                                        <td>{{ totalNET }}</td>
+                                        <td align="center" colspan="3">
+                                            <label>Tout coché</label>
+                                            <input type="checkbox" name="checkall">
+                                            <button type="button" class="btn" id="submit_form">Executer</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                        {% endif %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { 
+                $("#calendrier_paiement").bind('change', function(){
+                    window.location.href = "{{ path('front_assistant_me_prestation_index') }}?c=" + $(this).val();
+                });
+                $('#submit_form').bind('click', function(){
+                    prestationIds = $('input[name="prestation[]"]').map(
+                            function() {
+                                if($(this).prop("checked"))
+                                    return $(this).val() ;
+                            }
+                        ).get();
+                    $.ajax({
+                        method: "POST",
+                        url: "{{ path('front_assistant_prestation_validation') }}",
+                        data: {
+                            prestation : prestationIds
+                        }
+                    }).done(
+                        function(html){
+                             window.location.href = "{{ path('front_assistant_me_prestation_index') }}";
+                        }
+                    );                    
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}

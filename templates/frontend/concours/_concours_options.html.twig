@@ -1,0 +1,4 @@
+<option value="">--- Sélectionner ---</option>
+{% for option in concours %}
+    <option value="{{ option.id }}">{{ option.libelle }} </option>
+{% endfor %}

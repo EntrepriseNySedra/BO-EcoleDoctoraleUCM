@@ -1,0 +1,299 @@
+{% extends layout_frontend %}
+
+
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+
+    {% block content %}
+
+   <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                
+                {{ include('frontend/chef-mention/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+    
+           
+
+           <div id="content" class="container-fluid">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand topbar mb-4 static-top shadow">
+                    <div class="groups-btn justify-content-end">
+                                    
+                                 
+                    </div>  
+
+                </nav>
+                <!-- End of Topbar -->
+
+ <article> <!-- /main Bloc -->
+ <!-- statistics nombre des candidature created par centre-->
+
+                <!-- Begin Page Content -->
+
+                <div class="container-fluid">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header navbar-light bg-white py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Nombres des dépots candidatures par Centre</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                     
+                                    </div>
+                                </div>
+                                </br>
+                    
+                    <!-- Content Row -->
+                    <div class="row">
+                    {% for row in result %}
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-2">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                       
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                {{row.centreNom}}</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{row.nombreCandidatures}} candidatures</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{row.pourcentageCandidatures|number_format(2, '.', ',')}}%</div>
+                                            
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                      {% endfor %} 
+                        
+                    </div>
+                                    <div class="py-4"></div>
+
+                    <!-- Content Row -->
+
+ <!-- fin statistics nombre des candidature created par centre-->
+
+<!--  statistics nombre des candidature deja valides par centre-->
+
+                    <div class="container-fluid">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header navbar-light bg-white py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Nombres des candidatures validée par Centre</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                     
+                                    </div>
+                                </div>
+                                </br>
+                    
+                    <!-- Content Row -->
+                    <div class="row">
+                    {% for row in resultvalidated %}
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-2">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                       
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                {{row.centreNom}}</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{row.nombreCandidatures}}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                      {% endfor %} 
+                        
+                    </div>
+
+
+
+  <div class="py-4"></div>
+
+
+ <!-- statistics nombre des candidature created par Mention-->
+
+                <!-- Begin Page Content -->
+
+                <div class="container-fluid">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header navbar-light bg-white py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Nombres des dépots candidatures par Mention</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                     
+                                    </div>
+                                </div>
+                                </br>
+                    
+                    <!-- Content Row -->
+                    <div class="row">
+                    {% for row in resultByField %}
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-2">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                       
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                {{row.mentionNom}}</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{row.nombreCandidatures}} candidatures</div>
+                                            
+                                            
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                      {% endfor %} 
+                        
+                    </div>
+                                    <div class="py-4"></div>
+
+                    <!-- Content Row -->
+
+
+
+
+
+                    <!-- Content Row -->
+                    <div class="row">
+                    
+                        <!-- Content Column -->
+                        <div class="col-lg-6 mb-4">
+
+                            <!-- Project Card Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Pourcentage des Depots de Candidature Par Centre</h6>
+                                </div>
+                                <div class="card-body">
+                                {% for row in result %}
+                         
+                                    <h4 class="small font-weight-bold">{{row.centreNom}} <span
+                                            class="float-right">{{row.pourcentageCandidatures|number_format(2, '.', ',')}}%</span></h4>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+        
+        
+                                        {% if row.pourcentageCandidatures >= 0 and row.pourcentageCandidatures <= 25 %}
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" role="progressbar"
+                                                    style="width: {{ row.pourcentageCandidatures }}%;"
+                                                    aria-valuenow="{{ row.pourcentageCandidatures }}" aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        {% elseif row.pourcentageCandidatures > 25 and row.pourcentageCandidatures <= 50 %}
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                    style="width: {{ row.pourcentageCandidatures }}%;"
+                                                    aria-valuenow="{{ row.pourcentageCandidatures }}" aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        {% elseif row.pourcentageCandidatures > 50 and row.pourcentageCandidatures <= 75 %}
+                                            <div class="progress">
+                                                <div class="progress-bar bg-info" role="progressbar"
+                                                    style="width: {{ row.pourcentageCandidatures }}%;"
+                                                    aria-valuenow="{{ row.pourcentageCandidatures }}" aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        {% elseif row.pourcentageCandidatures > 75 and row.pourcentageCandidatures <= 100 %}
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar"
+                                                    style="width: {{ row.pourcentageCandidatures }}%;"
+                                                    aria-valuenow="{{ row.pourcentageCandidatures }}" aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                     
+                                    </div>
+                                   
+                                    {% endfor %}
+                                    <div class="form-bloc">
+                                
+                                    <div class="groups-btn justify-content-end">
+                                        
+                                        <a id="backButton" class="btn btn-primary m-l-10">
+                                            <span type="button" >RETOUR</span>
+                                        </a>
+                                    </div>                                
+                            </div>
+                                </div>
+                            </div>
+
+                            <!-- Color System -->
+                            
+
+                        </div>
+
+                        <div class="col-lg-6 mb-4">
+
+                            
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            
+
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+
+            
+          {% endblock %}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+    document.getElementById('backButton').addEventListener('click', function() {
+            history.back();
+        });
+       
+    </script>
+{% endblock %}

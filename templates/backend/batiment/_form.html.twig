@@ -1,0 +1,57 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_rf_batiment_new') %}
+{% if batiment.id %}
+    {% set action = path('admin_rf_batiment_edit', { id: batiment.id }) %}
+{% endif %}
+<section class="content">
+    <form id="batiment-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if batiment.id %}
+                            <h4>Modification bâtiment</h4>
+                        {% else %}
+                            <h4>Ajout batiment</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(form) }}
+                            {{ form_row(form._token) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.nom, 'Nom *') }}
+                            {{ form_widget(form.nom, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.nombreSalle, 'Nombre de salle *') }}
+                            {{ form_widget(form.nombreSalle, {'attr':{'required':'required'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if batiment.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</form>

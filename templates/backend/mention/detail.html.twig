@@ -1,0 +1,85 @@
+{% extends layout_backend %}
+{% block title %}Mention::Detail{% endblock %}
+
+{% set menuFormation = true %}
+{% set menuFormationMentionAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Mention
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="panel panel-bd ">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>{{ mention.nom }}</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="column">
+                            <label>Description</label>
+                            <p>{{ mention.description }}</p>
+                        </div>
+                        <div class="column">
+                            <label>Objectif</label>
+                            <p>{{ mention.objectif }}</p>
+                        </div>
+                        <div class="column">
+                            <label>Admission</label>
+                            <p>{{ mention.admission }}</p>
+                        </div>
+                        <div class="column">
+                            <label>Description de diplôme</label>
+                            <p>{{ mention.diplomes }}</p>
+                        </div>
+                        <div class="column">
+                            <label>Débouches</label>
+                            <p>{{ mention.debouches }}</p>
+                        </div>
+                        <hr>
+                        <div>
+                            <span>
+                                Crée le {{ mention.createdAt | date('d/m/Y') }} | 
+                                {% if mention.active == "0" %}
+                                    Desactive
+                                {% else %}
+                                    Active
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="panel panel-bd ">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Département</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <p>{{ mention.departement.nom }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="panel panel-bd ">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Image represente sur la page d'accueil</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <img alt = '{{ mention.path }}' style='height:100px' src='{{asset("uploads/mention/")~ mention.uuid~"/"~ mention.path}}'>
+                    </div>
+                </div>
+            </div>
+        </div>
+     <a href="{{ path('admin_rf_mention_liste') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

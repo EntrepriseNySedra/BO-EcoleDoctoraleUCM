@@ -1,0 +1,124 @@
+{% extends layout_teacher %}
+{% block title %}Espace assistant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Ajout Salle</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace assistant">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Ajout salle</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <!-- content ajout salle -->
+                <section class="content salle-add-content">
+                    <form id="emploi_du_temps-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="panel panel-bd">
+                                    <div class="panel-heading">
+                                        <div class="panel-title">
+                                            <h4 class="text-dark">Gestion salle</h4>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            {{ form_label(form.libelle, 'Libelle *') }}
+                                            {{ form_widget(form.libelle) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(form.status, 'Statut *') }}
+                                            {{ form_widget(form.status) }}
+                                        </div>
+
+                                        <div class="row">&nbsp;</div>
+                                        <div class="emploi_du_temps_salle_ue"></div>
+
+                                        <div class="form-group">
+                                            {{ form_errors(form) }}
+                                            {{ form_row(form._token) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="panel panel-bd">
+                                    <div class="panel-body">
+                                        <button type="submit" class="btn btn-secondary my-3" id="btn-submit-edt-form">Valider</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('#emploi_du_temps_niveaux').bind('change', function(){
+                    niveauxId = $(this).val();
+                    $.ajax({
+                        method: "GET",
+                        url: "/assistant/niveaux/ue",
+                        data: { id: niveauxId }
+                    }).done(
+                        function(html){
+                            $('#emploi_du_temps_ue').html(html);
+                            $('#emploi_du_temps_emploi_du_temps').html("");  
+                        } 
+                    )
+                });
+
+                $('#emploi_du_temps_ue').bind('change', function(){
+                    semestreId = $(this).val();
+                    $.ajax({
+                        method: "GET",
+                        url: "/assistant/salles/ue",
+                        data: { id: semestreId }
+                    }).done(
+                        function(html){
+                            $('.emploi_du_temps_salle_ue').html(html);
+                            $("#btn-submit-edt-form").removeClass("disabled");
+                        } 
+                    )
+                });
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

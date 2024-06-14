@@ -1,0 +1,87 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_rf_parcours_new') %}
+{% if parcours.id %}
+    {% set action = path('admin_rf_parcours_edit', { id:parcours.id }) %}
+{% endif %}
+<section class="content">
+    <form id="parcours-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if parcours.id %}
+                            <h4>Modificationparcours</h4>
+                        {% else %}
+                            <h4>Ajoutparcours</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(formParcours) }}
+                            {{ form_row(formParcours._token) }}
+                        </div>    
+
+                        <div class="form-group">
+                            <label class="required" for="parcours_mention">Mention *</label>
+                            <select id="parcours_mention" name="parcours[mention]" class="form-control">
+                                <option>Selectionnez</option>
+                                    {% for mention in mentions %}
+                                        <option 
+                                        {% if parcours.mention.id is defined and mention.id == parcours.mention.id %} selected {% endif %}
+                                         value="{{ mention.id }}">{{ mention.nom }}</option>
+                                    {% endfor %}
+                            </select>
+                        </div>    
+                        
+                        <div class="form-group">
+                            {{ form_label(formParcours.nom, 'Nom *') }}
+                            {{ form_widget(formParcours.nom) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formParcours.diminutif, 'Diminutif *') }}
+                            {{ form_widget(formParcours.diminutif) }}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required" for="parcours_niveau">Niveau</label>
+                            <select id="parcours_niveau" name="parcours[niveau]" class="form-control">
+                                <option>Selectionnez</option>
+                                    {% for niveau in niveaux %}
+                                        <option 
+                                        {% if parcours.niveau.id is defined and niveau.id == parcours.niveau.id %} selected {% endif %}
+                                         value="{{ niveau.id }}">{{ niveau.libelle }}</option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(formParcours.active, 'Active') }}
+                            {{ form_widget(formParcours.active) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if parcours.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% block title %}Semestre::Ajout{% endblock %}
+
+{% set menuFormation = true %}
+{% set menuFormationSemestreAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Semestre
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/semestre/_form.html.twig') }}
+     <a href="{{ path('admin_rf_semestre_liste') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

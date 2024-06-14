@@ -1,0 +1,147 @@
+{% extends layout_frontend %}
+{% block title %}Ecolage{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Ecolage</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace {% if is_granted('ROLE_COMPTABLE') %}
+                            Comptable
+                        {% elseif is_granted('ROLE_RF') %}
+                            Responsable financier
+                        {% endif %}</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace {% if is_granted('ROLE_COMPTABLE') %}
+                            Comptable
+                        {% elseif is_granted('ROLE_RF') %}
+                            Responsable financier
+                        {% endif %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Ecolage</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/comptable/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">{% if is_granted('ROLE_COMPTABLE') %}
+                            Comptable
+                        {% elseif is_granted('ROLE_RF') %}
+                            Responsable financier
+                        {% endif %}</p>
+                    <h2 class="title-bloc">Ecolage</h2>
+                </div>
+                <div class="form-bloc filter-bloc">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="filter-form" autocomplete="off">
+                                <div class="row">                                   
+                                    <div class="form-group row">
+                                        <label class="col-lg-2">Année universitaire :</label>
+                                        <div class="form-field select-field col-lg-4">
+                                            <select class="form-control" name="annee-universitaire" id="annee_universitaire">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for item in anneeUnivList %}
+                                                    <option value="{{ item.id }}" 
+                                                        {% if  item.id == a %}selected{% endif %}>{{ item.libelle }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div> <!-- /filter block -->
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="table-responsive table-wrapper">
+                        {% if list is defined and list | length > 0 %}
+                            <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" role="form" >
+                            <table class="table table-bordered table-hover list-data">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Date de paiement</th>
+                                        <th class="text-center">Mention</th>
+                                        <th class="text-center">Niveau</th>
+                                        <th class="text-center">Parcours</th>
+                                        <th class="text-center">Etudiant</th>
+                                        <th class="text-center">Référence</th>
+                                        <th class="text-center">remetant</th>
+                                        <th class="text-center">Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set total = 0 %}
+                                    {% for fraisScol in list %}
+                                        <tr class="middle-align">
+                                            <td class="text-center w-25">{{ fraisScol.datePaiement | date('d/m/Y') }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.mention.nom }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.niveau.libelle }}</td>
+                                            <td class="text-center w-25">{% if fraisScol.parcours %}{{ fraisScol.parcours }}{% endif %}</td>
+                                            <td class="text-center w-25">{{ fraisScol.etudiant.firstName }} {{ fraisScol.etudiant.lastName }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.reference }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.remitter }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.montant }}</td>
+                                        </tr>
+                                        {% set total = total + fraisScol.montant %}
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="7" align="center">Total</td>
+                                        <td align="center">{{ total }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                        {% endif %}
+                    </div>
+                    <div class="groups-btn justify-content-start my-1">
+                        <a href="{{ path('front_finance_ecolage_index') }}" class="btn btn-primary" id="btn-submit-edt-form">RETOUR</a>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { 
+                $("#annee_universitaire").bind('change', function(){
+                    window.location.href = "{{ path('front_finance_archive_index') }}?a=" + $(this).val();
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}

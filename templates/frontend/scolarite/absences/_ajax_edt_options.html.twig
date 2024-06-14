@@ -1,0 +1,6 @@
+<option value="" selected="selected">-- Emploi du temps --</option>
+{% if list is defined and list | length > 0 %}
+    {% for edt in list %}
+        <option value="{{ edt.id }}">{{ edt.matiere }} {{ edt.start_time | date('h:i') }} - {{ edt.end_time | date('h:i') }}</option>
+    {% endfor %}
+{% endif %}

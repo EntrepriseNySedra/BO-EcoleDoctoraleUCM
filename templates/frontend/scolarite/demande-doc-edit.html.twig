@@ -1,0 +1,157 @@
+{% extends layout_teacher %}
+{% block title %}Espace assistant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Edition document</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Edition document</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Scolarité</p>
+                    <h2 class="title-bloc">Edition document</h2>
+                </div>
+                <!-- content -->
+                <section class="demande-docEdit-content content">
+                    <form action="{{ path('front_scolarite_demande_doc_status') }}" id="demande-de-doc-edit" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+                        <div class="card">
+                            <div class="card-body">
+                                {% if demandeDoc is defined %}
+                                    <div class="alert alert-info info-aler-list" role="alert">
+                                        <p class="item">
+                                            <strong>Matricule:</strong><span>{{ demandeDoc.matricule }}</span>
+                                        </p>
+                                        <p class="item">
+                                            <strong>Civilité:</strong><span>{{ demandeDoc.civility }}</span>
+                                        </p>
+                                        <p class="item">
+                                            <strong>Nom:</strong><span>{{ demandeDoc.firstName }}</span>
+                                        </p>
+                                        <p class="item">
+                                            <strong>Prénom:</strong><span>{{ demandeDoc.lastName }}</span>
+                                        </p>
+                                        <p class="item">
+                                            <strong>Description:</strong><span>{{ demandeDoc.description }}</span>
+                                        </p>
+                                        <p class="item">
+                                            <strong>Quantité:</strong><span>{{ demandeDoc.quantity }}</span>
+                                        </p>
+                                        <p class="item">
+                                            <strong>Type:</strong><span>{{ demandeDoc.type.libelle }}</span>
+                                        </p>
+                                        <p class="item">
+                                            <strong>Date de création:</strong><span>{{ demandeDoc.createdAt|date('H:i:s') }}</span>
+                                        </p>
+                                        <p class="item">
+                                            <strong>Date de modification:</strong><span>{{ demandeDoc.updatedAt|date('H:i:s') }}</span>
+                                        </p>
+                                    </div>
+                                {% endif %}
+                            
+                            
+                                <div class="form-bloc">
+                                    {% if demandeDoc is defined %}
+                                        <input type="hidden" name="docId" id="id-doc" value="{{ demandeDoc.id }}" />
+                                        <!-- status -->
+                                        <div class="form-group">
+                                            <div class="form-field select-field">
+                                                <select id="status-doc" name="status" required="required" class="form-control">
+                                                    <option value="-- Séléctionnez --" selected="selected">-- Séléctionnez --</option>
+                                                    {% if demandeDoc.statut != "VALIDATED"  %}
+                                                        <option value="CREATED"     {% if demandeDoc.statut == "CREATED"  %} selected="selected" {% endif %}>Créé  </option>
+                                                        <option value="VERIFIED"    {% if demandeDoc.statut == "VERIFIED"  %} selected="selected" {% endif %}>Vérifié</option>
+                                                        <option value="REJECTED"    {% if demandeDoc.statut == "REJECTED"  %} selected="selected" {% endif %}>Rejeté</option>
+                                                    {% endif %}
+                                                    {% if demandeDoc.statut != "ARCHIVED"  %}
+                                                        <option value="VALIDATED"   {% if demandeDoc.statut == "VALIDATED"  %} selected="selected" {% endif %}>Validé</option>
+                                                    {% endif %}
+                                                    {% if demandeDoc.statut == "ARCHIVED"  %}
+                                                        <option value="ARCHIVED"    {% if demandeDoc.statut == "ARCHIVED"  %} selected="selected" {% endif %}>Archivé</option>
+                                                    {% endif %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-group">
+                                        <div class="alert alert-danger doc-required-fields" role="alert" style="display: none;"> Merci de renseigner le statut </div>
+                                    </div>
+                                
+                                    <div class="groups-btn justify-content-end m-t-20 text-right">
+                                        <button type="button" class="btn btn-primary" id="btn-submit-edt-status">Valider</button>
+                                        <a href="{{ path('front_scolarite_demande_doc_list') }}" type="button" class="btn btn-primary cancel">Annuler</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $(".doc-required-hide").hide();
+                $('#btn-submit-edt-status').bind('click', function(){
+                    docId       = $("#id-doc").val();
+                    status      = $("#status-doc").val();
+                    if(status === "-- Séléctionnez --"){
+                        $(".doc-required-fields").show();
+                    }
+                    else{
+                        $.ajax({
+                            method: "POST",
+                            url: "{{ path('front_scolarite_demande_doc_status')}}",
+                            data: {
+                                docId   :docId,
+                                status  :status,
+                            }
+                        }).done(
+                            function(html){
+                                location.href = '{{ path('front_scolarite_demande_doc_list') }}';
+                            }
+                        )
+                    }
+                });
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}

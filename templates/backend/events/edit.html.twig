@@ -1,0 +1,17 @@
+{% extends layout_backend %}
+{% block title %}Actualite::Edit{% endblock %}
+
+{% set menuEventAdd = true %}
+
+{% block pageicon %}
+    pe-7s-switch
+{% endblock %}
+{% block pagetitle %}
+    Modification évènement
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/events/_form.html.twig') }}
+    <a href="{{ path('admin_events_list') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

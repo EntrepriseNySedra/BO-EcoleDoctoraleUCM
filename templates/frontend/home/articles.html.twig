@@ -1,0 +1,209 @@
+<div class="presentation-content">
+
+    <div class="title-group">
+        <p class="sup-title">Présentation</p>
+        <h2 class="title-bloc">{{ accueil.title }}</h2>
+    </div>
+    <div class="chapo-text">
+        <p>{{ accueil.description | raw }}</p>
+    </div>
+        
+    <div class="brick-bloc">
+            <div class="grid brick-listing">
+
+                {% for index, article in articlesSatellite %}
+                    {% if index < 2 %}
+                        <div class="grid-item item type-1" >
+                            {%  set param = null %} 
+                            {% if article.slug is not empty %}
+                                {%  set param = path('details_article', { slug: article.slug })  %}
+                            {% endif %}
+                            <a href="{{ param }}" title="{{ article.title }}">
+                                <figure class="img">
+                                    <img src="{{asset("uploads/article/")~ article.uuid~"/1073-"~ article.path}}" alt="{{ article.path }}">
+                                </figure>
+                                <div class="hover-layer text">
+                                    <div class="hover-content">
+                                        {{ article.description }}
+                                    </div>
+                                </div>
+                                <div class="default-layer">
+                                    <h3 class="titre-item">{{ article.title }}</h3>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if index == 2 %}
+                        <div class="grid-item item type-2" >
+                            {%  set param = null %} 
+                            {% if article.slug is not empty %}
+                                {%  set param = path('details_article', { slug: article.slug })  %}
+                            {% endif %}
+                            <a href="{{ param }}" title="{{ article.title }}">
+                                <figure class="img">
+                                    <img src="{{asset("uploads/article/")~ article.uuid~"/1073-"~ article.path}}" alt="{{ article.path }}">
+                                </figure>
+                                <div class="hover-layer text">
+                                    <div class="hover-content">
+                                        {{ article.description }}
+                                    </div>
+                                </div>
+                                <div class="default-layer">
+                                    <h3 class="titre-item">{{ article.title }}</h3>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if index == 3 %}
+                        <div class="grid-item item type-2 second-type-2" >
+                            {%  set param = null %} 
+                            {% if article.slug is not empty %}
+                                {%  set param = path('details_article', { slug: article.slug })  %}
+                            {% endif %}
+                            <a href="{{ param }}" title="{{ article.title }}">
+                                <figure class="img">
+                                    <img src="{{asset("uploads/article/")~ article.uuid~"/1073-"~ article.path}}" alt="{{ article.path }}">
+                                </figure>
+                                <div class="hover-layer text">
+                                    <div class="hover-content">
+                                        {{ article.description }}
+                                    </div>
+                                </div>
+                                <div class="default-layer">
+                                    <h3 class="titre-item">{{ article.title }}</h3>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="grid-item item type-3">
+                    {% for index, article in articlesMiddle %}
+                    
+                            <div class="sub-item">
+                                {%  set param = null %} 
+                                {% if article.slug is not empty %}
+                                    {%  set param = path('details_article', { slug: article.slug })  %}
+                                {% endif %}
+                                <a href="{{ param }}" title="{{ article.title }}">
+                                    <figure>
+                                        <img src="{{asset("uploads/article/")~ article.uuid~"/1073-"~ article.path}}" alt="{{ article.path }}">
+                                    </figure>
+                                    <div class="desc">
+                                        <div class="titre-subitem">
+                                            <p class="icon"><i class="iconucm-transmettre"></i></p>
+                                            <h4>{{ article.title }}</h4>
+                                        </div>
+                                        <div class="text">
+                                            <div class="inner-text">
+                                                {{ article.description }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                    
+                    {% endfor %}
+                    <figure class="logo-center">
+                        <img src="{{ asset('/assets/images/data/logo-center.png') }}" alt="photo">
+                    </figure>
+                </div>
+
+
+                {% for index, article in articlesSatellite %}
+                    {% if index == 4 %}
+                        <div class="grid-item item type-2 third-type-2">
+                            {%  set param = null %} 
+                            {% if article.slug is not empty %}
+                                {%  set param = path('details_article', { slug: article.slug })  %}
+                            {% endif %}
+                            <a href="{{ param }}" title="{{ article.title }}">
+                                <figure class="img">
+                                    <img src="{{asset("uploads/article/")~ article.uuid~"/1073-"~ article.path}}" alt="{{ article.path }}">
+                                </figure>
+                                <div class="hover-layer text">
+                                    <div class="hover-content">
+                                        {{ article.description }}
+                                    </div>
+                                </div>
+                                <div class="default-layer">
+                                    <h3 class="titre-item">{{ article.title }}</h3>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if index == 5 %}
+                        <div class="grid-item item type-2 fourth-type-2">
+                            {%  set param = null %} 
+                            {% if article.slug is not empty %}
+                                {%  set param = path('details_article', { slug: article.slug })  %}
+                            {% endif %}
+                            <a href="{{ param }}" title="{{ article.title }}">
+                                <figure class="img">
+                                    <img src="{{asset("uploads/article/")~ article.uuid~"/1073-"~ article.path}}" alt="{{ article.path }}">
+                                </figure>
+                                <div class="hover-layer text">
+                                    <div class="hover-content">
+                                        {{ article.description }}
+                                    </div>
+                                </div>
+                                <div class="default-layer">
+                                    <h3 class="titre-item">{{ article.title }}</h3>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if index == 6 %}
+                        <div class="grid-item item type-1 fifth-type-2">
+                            {%  set param = null %} 
+                            {% if article.slug is not empty %}
+                                {%  set param = path('details_article', { slug: article.slug })  %}
+                            {% endif %}
+                            <a href="{{ param }}" title="{{ article.title }}">
+                                <figure class="img">
+                                    <img src="{{asset("uploads/article/")~ article.uuid~"/1073-"~ article.path}}" alt="{{ article.path }}">
+                                </figure>
+                                <div class="hover-layer text">
+                                    <div class="hover-content">
+                                        {{ article.description }}
+                                    </div>
+                                </div>
+                                <div class="default-layer">
+                                    <h3 class="titre-item">{{ article.title }}</h3>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if index == 7 %}
+                        <div class="grid-item item type-1">
+                            {%  set param = null %} 
+                            {% if article.slug is not empty %}
+                                {%  set param = path('details_article', { slug: article.slug })  %}
+                            {% endif %}
+                            <a href="{{ param }}" title="{{ article.title }}">
+                                <figure class="img">
+                                    <img src="{{asset("uploads/article/")~ article.uuid~"/1073-"~ article.path}}" alt="{{ article.path }}">
+                                </figure>
+                                <div class="hover-layer text">
+                                    <div class="hover-content">
+                                        {{ article.description }}
+                                    </div>
+                                </div>
+                                <div class="default-layer">
+                                    <h3 class="titre-item">{{ article.title }}</h3>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+                    
+                {% endfor %}
+
+            </div>
+    </div>
+
+</div>

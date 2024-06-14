@@ -1,0 +1,242 @@
+{% extends layout_frontend %}
+{% block title %}Candidatures{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/libs/datatable/buttons.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/libs/datatable/DT_bootstrap.css') }}"/>
+    <style>
+        .dt-buttons button {
+            /* color: #f2f2f2; */
+            /*font-size: 12px;*/
+            /* border-radius: 4px; */
+            /*border: 1px solid #64c3c2 !important;*/
+            /* background: #282b2b; */
+        }
+
+        .dt-buttons button:hover {
+            /* color: #f2f2f2; */
+            /*font-size: 12px;*/
+            /* border-radius: 4px !important; */
+            /*border: 1px solid #64c3c2 !important;*/
+            /* background: #282b2b !important; */
+        }
+
+        .dt-buttons {
+            /*position: absolute!important;*/
+            /* left: 50%; */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Liste des inscrits</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-training.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Les inscrits</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+
+    
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <!-- content -->
+                <section class="inscrits-content content richText">
+                    <div class="title-group">
+                        <p class="sup-title">Scolarité</p>
+                        <h2 class="title-bloc">Liste des inscrits</h2>
+                    </div>
+                    
+                    <!-- content -->
+                    <!-- filter block -->
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="filter-form" autocomplete="off">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="">Année universitaire :</label>
+                                                <div class="form-field select-field">
+                                                    <select name="annee_universitaire" class="form-control" id="anneeUniv">
+                                                        <option value="">--- Sélectionner ---</option>
+                                                        {% for item in anneeUniv %}
+                                                            <option value="{{ item.id }}" {% if item.id == a %}selected{% endif %}>{{ item.annee }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="">Mentions :</label>
+                                                <div class="form-field select-field ">
+                                                    <select name="mention" class="form-control" id="mention">
+                                                        <option value="">--- Sélectionner ---</option>
+                                                        {% for item in mentions %}
+                                                            <option value="{{ item.id }}" {% if item.id == m %}selected{% endif %}>{{ item.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="">Niveaux :</label>
+                                                <div class="form-field select-field">
+                                                    <select name="niveau" class="form-control" id="niveaux">
+                                                        <option value="">--- Sélectionner ---</option>
+                                                        {% for item in niveaux %}
+                                                            <option value="{{ item.id }}" {% if item.id == n %}selected{% endif %}>{{ item.libelle }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="">Parcours :</label>
+                                                <div class="form-field select-field">
+                                                    <select name="parcours" class="form-control" id="parcours">
+                                                        <option value="">--- Sélectionner ---</option>
+                                                        {% for item in parcours %}
+                                                            <option value="{{ item.id }}" {% if item.id == p %}selected{% endif %}>{{ item.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> <!-- /filter block -->
+
+                    <div class="table-responsive table-wrapper datatable-container mt-2">
+                        {% if inscrits|length > 0 %}
+                            <div class="dt-custom-title hidden">Etudiants {{ selectedMention }} - {{ selectedNiveau }}</div>
+                            <div class="dataTables_wrapper">
+                                <table class="table table-bordered table-hover table-advance" id="list-validated">
+                                    <thead>
+                                    <tr>
+                                        <th>Matricule</th>
+                                        <th>Nom</th>
+                                        <th>Prénom</th>
+                                        <th>Email</th>
+                                        <th class="dt-action">Date de naissance</th>
+                                        <th>Mention</th>
+                                        <th>Niveau</th>
+                                        <th>Parcours</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for key, item in inscrits %}
+                                            <tr>
+                                                <td>{{ item.immatricule }}</td>
+                                                <td>{{ item.first_name }}</td>
+                                                <td>{{ item.last_name }}</td>
+                                                <td>{{ item.email }}</td>
+                                                <td class="dt-action">{{ item.birth_date | date('d/m/Y') }}</td>
+                                                <td>{{ item.mention }}</td>
+                                                <td>{{ item.niveau }}</td>
+                                                <td>{{ item.parcours }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="row my-3">
+                                    <span class="col-1 offset-9">Total : </span>
+                                    <span class="col-2">{{ inscrits|length }}</span>
+                                </div>
+                            </div> 
+                        {% else %}
+                            <p class="alert alert-secondary text-center" role="alert"><strong>Aucun résultat</strong></p>
+                        {% endif %}
+                    </div>
+                    <div class="groups-btn justify-content-end my-1">
+                        <a href="{{ path('front_scolarite_inscrits') }}?a={{ a }}&m={{ m }}&n={{ n }}&p={{ p }}&act=export" class="btn btn-primary">Exporter</a>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                let a = $('#anneeUniv :selected').val();
+                let m = $('#mention :selected').val();
+                let n = $('#niveaux :selected').val();
+                let p = $('#parcours :selected').val();
+                $('#anneeUniv').on('change', function () {
+                    window.location.href = "{{ path('front_scolarite_inscrits') }}" + "?a=" + $(this).val() + "&m=" + m + "&n=" + n +"&p=" + p;
+                })
+                $('#mention').on('change', function () {
+                    window.location.href = "{{ path('front_scolarite_inscrits') }}" + "?m=" + $(this).val() + "&n=" + n + "&a=" + a +"&p=" + p;
+                })
+                $('#niveaux').on('change', function () {
+                    window.location.href = "{{ path('front_scolarite_inscrits') }}" + "?a=" + a + "&m=" + m + "&n=" + $(this).val() + "&p=" + p;
+                });
+                $('#parcours').on('change', function () {
+                    window.location.href = "{{ path('front_scolarite_inscrits') }}" + "?a=" + a + "&m=" + m + "&n=" + n + "&p=" + $(this).val();
+                });
+
+                var oTable = $('#list-validated').dataTable({
+                    "aLengthMenu":    [[100, 250, 500, -1], [100, 250, 500, "Tout"]],
+                    "iDisplayLength": 1000,
+                    "aoColumnDefs":   [{
+                        "bSortable": false,
+                        "aTargets":  [4]
+                    }],
+                    "paging":         false,
+                    "ordering":       false,
+                    "searching":      false,
+                    "info":           false
+                });
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}
+

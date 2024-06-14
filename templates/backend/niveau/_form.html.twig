@@ -1,0 +1,65 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_rf_niveau_new') %}
+{% if niveau.id %}
+    {% set action = path('admin_rf_niveau_edit', { id: niveau.id }) %}
+{% endif %}
+<section class="content">
+    <form id="niveau-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if niveau.id %}
+                            <h4>Modification niveau</h4>
+                        {% else %}
+                            <h4>Ajout niveau</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(formNiveau) }}
+                            {{ form_row(formNiveau._token) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formNiveau.libelle, 'Libelle *') }}
+                            {{ form_widget(formNiveau.libelle, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formNiveau.systeme, 'Systeme') }}
+                            {{ form_widget(formNiveau.systeme) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formNiveau.diplome, 'diplome') }}
+                            {{ form_widget(formNiveau.diplome) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formNiveau.code, 'code') }}
+                            {{ form_widget(formNiveau.code) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if niveau.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</form>

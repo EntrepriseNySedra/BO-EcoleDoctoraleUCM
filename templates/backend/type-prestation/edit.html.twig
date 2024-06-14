@@ -1,0 +1,28 @@
+{% extends layout_backend %}
+{% block title %}Type de préstation::Modification{% endblock %}
+
+{% set menuTypePrestation = true %}
+{% set menuTypePrestationAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Type de préstation
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/type-prestation/_form.html.twig') }}
+     <a href="{{ path('admin_type_prestation_index') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/jquery.mask.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
+{% endblock %}

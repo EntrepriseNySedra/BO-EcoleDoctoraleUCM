@@ -1,0 +1,106 @@
+
+                        {% if list is defined and list | length > 0 %}
+                      
+                            <table class="table table-bordered table-hover list-data">
+                                <thead>
+                              
+                               
+                                    <tr>
+                                        <th class="action_col">Action</th>
+                                        <th class="text-center">Mention</th>                                        
+                                        <th class="text-center">Niveau</th>
+                                        <th class="text-center">Parcours</th>
+                                        <th class="text-center">Matricule</th>
+                                        <th class="text-center">Nom</th>
+                                        <th class="text-center">Prénom</th>
+                                        <th class="text-center">remetant</th>
+                                        <th class="text-center">Date de saisie</th>
+                                        <th class="text-center">Date de versement</th>
+                                        <th class="text-center">Référence</th>
+                                        <th class="text-center">Mode de paiement</th>
+                                        <th class="text-center">Tranche</th>
+                                        <th class="text-center">Montant payé</th>
+                                        <th class="text-center">Reste</th>
+                                        <th class="action_col">Statut</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set total = 0 %}
+                                  
+                                    {% for fraisScol in list %}
+                                        <tr class="middle-align">
+                                         
+                                            <td class="action_col w-5">
+                                                <div class="wrap-btn">
+                                                    <a href="{{ path('front_scolarite_frais_show', { id: fraisScol.ecolageId}) }}" class="btn btn-secondary" title="Modifier">
+                                                        {% if fraisScol.status == constant('\\App\\Entity\\FraisScolarite::STATUS_SRS_VALIDATED') %}
+                                                            <i class="far fa-edit"></i>
+                                                        {% else %}
+                                                            <i class="far fa-eye"></i>
+                                                        {% endif %}
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td class="text-center w-25">{{ fraisScol.mention }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.niveau }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.parcours }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.immatricule }}</td>
+                                            <td class="text-left w-25">{{ fraisScol.last_name }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.first_name }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.remitter }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.date_saisie | date('d/m/Y') }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.date_paiement | date('d/m/Y') }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.reference }}</td>
+                                            <td class="text-center w-25">
+                                                {% if fraisScol.mode_paiement == constant('\\App\\Entity\\FraisScolarite::MODE_PAIEMENT_VIREMENT') %}
+                                                    <label>Virement</label>
+                                                {% endif %}
+                                                {% if fraisScol.mode_paiement == constant('\\App\\Entity\\FraisScolarite::MODE_PAIEMENT_AGENCE') %}
+                                                    <label>Chèque</label>
+                                                {% endif %}
+                                                {% if fraisScol.mode_paiement == constant('\\App\\Entity\\FraisScolarite::MODE_PAIEMENT_CAISSE') %}
+                                                    <label>Espèces</label>
+                                                {% endif %}
+                                            </td>     
+                                            <td class="text-center w-25">{{ fraisScol.montant_tranche | number_format(2, '.', ' ') }}</td>
+                                            <td class="text-center w-25">{{ fraisScol.montant | number_format(2, '.', ' ') }}</td>  
+                                            <td class="text-center w-25">{{ fraisScol.reste | number_format(2, '.', ' ') }}</td>                                            
+                                            <td class="action_col w-50">
+                                                {% if fraisScol.status == constant('\\App\\Entity\\FraisScolarite::STATUS_CREATED') %}
+                                                    <label>Valider</label>
+                                                    <input type="checkbox" name="ecolage[]" value="{{ fraisScol.ecolageId }}">
+                                                {% endif %}    
+                                                {% if fraisScol.status == constant('\\App\\Entity\\FraisScolarite::STATUS_SRS_VALIDATED') %}
+                                                    <label>Annuler</label>
+                                                    <input type="checkbox" name="ecolage[]" value="{{ fraisScol.ecolageId }}">
+                                                {% endif %}
+                                                {% if fraisScol.status == constant('\\App\\Entity\\FraisScolarite::STATUS_SRS_REFUSED') %}
+                                                    <label>Refusé</label>
+                                                {% endif %}
+                                                {% if fraisScol.status > constant('\\App\\Entity\\FraisScolarite::STATUS_SRS_VALIDATED') %}
+                                                    <label>Validé</label>
+                                                {% endif %}
+                                            </td>
+                                            
+                                        </tr>
+                                        {% set total = total + fraisScol.montant %}
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="10" align="center">Total</td>
+                                        <td align="center">{{ total | number_format(2, '.', ' ') }}</td>
+                                        <td align="center" colspan="4">
+                                            {% if st != constant('\\App\\Entity\\FraisScolarite::STATUS_SRS_REFUSED') %}
+                                                <label>Tout coché</label>
+                                                <input type="checkbox" name="checkall">
+                                                <button type="button" class="btn" id="submit_form" onclick="submitForm()">Executer</button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
+                        {% endif %}
+
+                       
+

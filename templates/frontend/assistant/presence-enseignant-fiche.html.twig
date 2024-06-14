@@ -1,0 +1,122 @@
+{% extends layout_frontend %}
+{% block title %}Fiche présence enseignants{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Présence enseignant</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Présence enseignant</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Assistant</p>
+                    <h2 class="title-bloc">Présence enseignant</h2>
+                </div>
+                <!-- content actualites -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="alert alert-info" role="alert">
+                        <label class="col-2"><strong>Domaine : </strong> </label> {{ matiere.uniteEnseignements.mention.departement.nom }}<br> 
+                        <label class="col-2"><strong>Mention : </strong> </label> {{ matiere.uniteEnseignements.mention.nom }}<br>
+                        <label class="col-2"><strong>Parcours : </strong> </label> {% if matiere.uniteEnseignements.parcours.nom is defined %}{{ matiere.uniteEnseignements.parcours.nom }} {% endif %}<br>
+                        <label class="col-2"><strong>UE : </strong> </label> {{ matiere.uniteEnseignements.libelle }} {{ matiere.uniteEnseignements.type }}<br>
+                        <label class="col-2"><strong>EC : </strong> </label> {{ matiere.nom }}<br>
+                        <label class="col-2"><strong>Crédits : </strong> </label> {{ matiere.credit }}<br>
+                        <label class="col-2"><strong>Total heures : </strong> </label> {{ matiere.volumeHoraireTotal }}<br>
+                        <label class="col-2"><strong>Enseignant : </strong> </label> {{ matiere.enseignant.firstName }} {{ matiere.enseignant.lastName }}<br>
+                    </div>
+                    <div class="table-responsive table-wrapper">
+                        {% if fPresenceEnseignants is defined and fPresenceEnseignants | length > 0 %}
+                        <table class="table table-bordered table-hover list-data">
+                            <thead>
+                                <tr>
+                                    <th     >Date</th>
+                                    <th class="text-center" width="20%">Theme abordé</th>
+                                    <th class="text-center">Heures arrivées</th>
+                                    <th class="text-center">Heures Départ</th>
+                                    <th class="text-center">Heures effectuées </th>
+                                    <th class="text-center">Heures restantes </th>
+                                    <th class="action_col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set initVht = 0 %}
+                                {% for presence in fPresenceEnseignants %}
+                                {% if initVht == 0 %}
+                                    {% set initVht = presence.vht %}
+                                {% endif%}
+                                {% set initHeureRestante = initVht - presence.heureEffectue %}
+                                <tr class="middle-align">
+                                    <td class="text-center w-15">{{ presence.date }}</td>
+                                    <td class="text-center w-15">{{ presence.theme }}</td>
+                                    <td class="text-center w-15">{{ presence.start_time | date('H:i:s') }}</td>
+                                    <td class="text-center w-15">{{ presence.end_time | date('H:i:s') }}</td>
+                                    <td class="text-center w-15">{{ presence.heureEffectue }}</td>
+                                    <td class="text-center w-15">{{ initHeureRestante }}</td>                                    
+                                    <td class="action_col w-5">
+                                        <div class="wrap-btn">
+                                            <a class="btn" href="{{ path('front_assistant_presence_enseignant_edit', { id: presence.id}) }}" title="Modifier">
+                                                <i class="far fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% set initVht = initVht - presence.heureEffectue %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                    </div>
+                    <div class="text-right m-t-20">
+                        <a href="{{ path('front_assistant_presence_enseignant_index') }}" class="btn btn-primary">
+                            <span >Retour</span>
+                        </a>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

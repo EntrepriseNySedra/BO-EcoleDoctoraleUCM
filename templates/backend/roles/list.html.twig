@@ -1,0 +1,102 @@
+{% extends layout_backend %}
+{% block title %}Actions::Liste{% endblock %}
+
+{% set menuSetting = true %}
+{% set menuSettingRoleList = true %}
+
+{% block pageicon %}
+    pe-7s-switch
+{% endblock %}
+{% block pagetitle %}
+    Liste des actions
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-bd ">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <div class="list-count">
+                            <span class="title-count-text"> TOTAL: </span><span class="title-count"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="add-btn-top-list">
+                    <a href="{{ path('admin_roles_add') }}" onclick=";">
+                        <button class="btn btn-mini btn-mini-rectif">Créer une action</button>
+                    </a>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover list-data">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Titre</th>
+                                    <th>Code</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for role in roles %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ path('admin_roles_edit', { id: role.id }) }}">{{ role.id }}</a>
+                                    </td>
+                                    <td>{{ role.name }}</td>
+                                    <td>{{ role.code }}</td>
+                                    <td style="text-align: center;">
+                                        <a href="{{ path('admin_roles_edit', { id: role.id }) }}" title="Modifier">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>
+                                        &nbsp;
+                                        {#<a onclick="javascript:deleteElement('{{ path('rubriques_remove', { id: role.id }) }}');" href="javascript:;" title="Supprimer">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </a>#}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function deleteElement(url) {
+            if (confirm('Etes-vous sûr de vouloir supprimer cet element ?')) {
+                window.location.href = url;
+            }
+        }
+        $(document).ready(function () {
+
+            $('.list-data').DataTable({
+                "pageLength": 10,
+                "order": [[ 0, "desc" ]],
+                "bProcessing": true,
+                "bFilter": true,
+                "oLanguage": {
+                    "sProcessing": "traitement...",
+                    "oPaginate": {
+                        "sPrevious": "Précédente", // This is the link to the previous role
+                        "sNext": "Suivante", // This is the link to the next role
+                    },
+                    "sSearch": "Filtrer: ",
+                    "sLengthMenu": "Afficher _MENU_ enregistrement",
+                    "sInfo": "Voir _TOTAL_ de _PAGE_ pour _PAGES_ entrées",
+                    "sInfoEmpty": "Voir 0 de 0 pour 0 entrées",
+                    "sEmptyTable": "Aucune action trouvée",
+                },
+                "footerCallback": function ( row, data, start, end, display ) {
+                    $('.title-count').html(display.length);
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

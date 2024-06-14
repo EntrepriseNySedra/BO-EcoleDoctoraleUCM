@@ -1,0 +1,185 @@
+{% extends layout_frontend %}
+{% block title %}{{mention.nom}}{% endblock %}
+{% block content %}
+<div class="main-container">
+<!-- hidden Title H1 -->
+    <h1 class="hide">Détails Formation</h1>
+
+    <!-- big slider banner formation -->
+    <section class="banner banner-training">
+        <div class="banner-container">
+            <figure class="bigImg-no">
+                <img src="{{ asset('/assets/images/data/training/banner-economics-management.png') }}" alt="Economics and Management">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h1 class="item-title text-light">{{ mention.nom }}</h1>
+                </div>
+            </div>
+        </div>
+    </section><!-- /big slider banner formation -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="/formation" title="Formation">Formation</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>{{mention.nom}}</span></li>
+          
+        </ol>
+    </nav><!-- breadcrumb -->
+
+    <div class="main-contentPage training-container">
+        <div class="container">
+            <!-- aside Right -->
+            <aside class="asideRight asideSticky">
+                {{ include('frontend/formation/recherche.html.twig') }}
+                <!-- aside Right actuality-->
+                {{ include('frontend/layoutactus/_actus.html.twig') }}
+            </aside>
+            <!-- /aside Right -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-training" id="mainBloc">
+                <!-- main content training -->
+                <section class="trainingDetail-bloc">
+                    <aside class="asideLeft filter-content">
+                        <h2>formation</h2>
+                        
+                        {% set mentionEncours  = mention.slug %}
+                        {% if(mentions | length > 0) %}
+                            {% for mention in mentions %}
+                                {%  set nbParcours = mention.parcours | length %}
+                                {%  set param = null %}
+                                {%  set paramIsActive = null %}
+                                {% if mention.slug is not empty %}
+                                    {%  set param = path('details_formation', { slug: mention.slug })  %}
+                                    {% if mention.slug == mentionEncours %}
+                                        {%  set paramIsActive = 'active' %}
+                                    {% endif %}
+                                {% endif %}
+                                <nav class="formation-filter-accordion {{paramIsActive}}"  id="filterAccordion">
+                                {#% if(nbParcours == 0) %#}
+                                {% if true %}
+                                    <a class="nav-Link" href="{{ param }}" title="{{mention.nom}}">{{mention.nom}}</a>
+                                {#% else %}
+                                    <div class="accordion-item">
+                                       <a href="{{ param }}" id="theologie-link" class="accordion-button" type="button" 
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#theologie-sousRubrique-link" aria-expanded="false"
+                                            aria-controls="theologie-sousRubrique-link">
+                                           {{mention.nom}}
+                                       </a>
+                                    </div>
+                                    <div id="theologie-sousRubrique-link" class="accordion-collapse collapse" aria-labelledby="theologie-link" data-bs-parent="#filterAccordion">
+                                    {% if(mention.parcours | length > 0) %}
+                                         {% for parcour in mention.parcours %}
+                                             <p><a class="subnav-Link" href="" title="{{parcour.nom}}">{{parcour.nom}}</a></p>
+                                         {% endfor %}
+                                     {% endif %}
+                                    </div>#}
+                                {% endif %}
+                                </nav>
+                            {% endfor %}
+                        {% endif %}
+                    </aside>
+                    <div class="main-bloc">
+                      
+                        <div class="top-titre">
+                            <div class="title-group">
+                                <p class="sup-title">Formation</p>
+                                <h2 class="title-bloc">{{mention.nom}}</h2>
+                           
+                            </div>
+                            {% if concours %}
+                                <a href="/concours/candidature" class="jeminscris-bnt">Candidature concours 2023-2024</a>
+                            {% endif %}
+                            
+                        </div>
+                        
+
+                        <!-- tabs and swipe system -->
+                        <section class="contentSwipe-bloc">
+                            <main class="mdl-layout__content">
+                                <div class="mdl-tabs mdl-js-tabs">
+                                    <div class="mdl-tabs__tab-bar">
+                                        <div><a href="#tab1-panel" class="mdl-tabs__tab is-active">Description</a></div>
+                                        <div><a href="#tab2-panel" class="mdl-tabs__tab ">Objectifs de la
+                                                formation</a></div>
+                                        <div><a href="#tab3-panel" class="mdl-tabs__tab">Admission</a></div>
+                                        <div><a href="#tab4-panel" class="mdl-tabs__tab">Diplômes</a></div>
+                                        <div><a href="#tab5-panel" class="mdl-tabs__tab">Débouchés</a></div>
+                                    </div>
+
+                                    <div class="mdl-tabs__panel is-active" id="tab1-panel">
+                                        <div class="cnt">
+                                            <p>
+                                            {{mention.description|raw}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-tabs__panel" id="tab2-panel">
+                                        <div class="cnt">
+                                            <h2>{{mention.nom}}</h2>
+                                            <div class="text">
+                                                <p>
+                                                    {{mention.objectif|raw }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-tabs__panel" id="tab3-panel">
+                                        <div class="cnt">
+                                            <h2>Admission</h2>
+                                            <p>
+                                                {{mention.admission|raw}}
+                                            </p>
+                                        </div> 
+                                    </div>
+                                    <div class="mdl-tabs__panel" id="tab4-panel">
+                                        <div class="cnt">
+                                            <h2>Description des diplomes</h2>
+                                            <p>
+                                                {{mention.diplomes|raw }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-tabs__panel" id="tab5-panel">
+                                        <div class="cnt">
+                                            <h2>Débouches</h2>
+                                            <p>
+                                                {{mention.debouches|raw }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </main>
+                        </section>
+                        
+                        <!-- /tabs and swipe system -->
+
+                    </div>
+                    
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+
+        <section class="offres-bloc">
+            <figure class="backgroundImg">
+                <img src="{{ asset('/assets/images/data/training/banner-economics-management.png') }}"
+                    alt="Training Background">
+            </figure>
+            <div class="content-text">
+                <div class="container">
+                    <h2 class="offres-title">Intéressé ?</h2>
+                    <h3 class="sub-title">Alors, n'hésitez pas à nous envoyer votre dossier, à bientôt !</h3>
+                    <p class="group-btns">
+                        <a class="btn-primary" href="" title="Candidature spontanée">Candidature spontanée</a>
+                        <a class="btn-primary" href="" title="Consultez nos offres">Consultez nos offres</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

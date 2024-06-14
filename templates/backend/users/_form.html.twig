@@ -1,0 +1,94 @@
+<style>
+    .form-group legend {
+        font-size: 15px;
+    }
+    .invalid-feedback {
+        display: block;
+        color: white;
+        background-color: #E5343D;
+        border-color: #BD000A;
+    }
+</style>
+
+{% set action = path('admin_users_add') %}
+{% set showMention = "" %}
+{% if user.id %}
+    {% set action = path('admin_users_edit', { id: user.id }) %}
+{% endif %}
+<section class="content">
+    <form id="agency-new" method="POST" class="page-form-edit-new form-validation" role="form" action="{{action}}">
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+        {% if user.id %}
+            <input type="hidden" id="user_id" name="user_id" value="{{ user.id }}" />
+        {% endif %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Information concernant l'utilisateur</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_label(form.login, 'Login') }}
+                            {{ form_widget(form.login) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.plainPassword, 'Mot de passe') }}
+                            {% if user.id %}
+                                {{ form_widget(form.plainPassword) }}
+                            {% else %}
+                                {{ form_widget(form.plainPassword, { "attr": { "required": "" } }) }}
+                            {% endif %}
+                        </div>
+                        {% if user.profil is empty or (user.profil.name != constant('App\\Entity\\Profil::ENSEIGNANT') and user.profil.name != constant('App\\Entity\\Profil::ETUDIANT')) %}
+                            <div class="form-group">
+                                {{ form_widget(form.employe) }}
+                            </div>
+                        {% else %}
+                            <div class="form-group">
+                                {{ form_label(form.lastName, 'Nom') }}
+                                {{ form_widget(form.lastName) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.firstName, 'Prénom') }}
+                                {{ form_widget(form.firstName) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.email, 'Email') }}
+                                {{ form_widget(form.email) }}
+                            </div>
+                        {% endif %}
+                        <div class="form-group">
+                            {{ form_label(form.profil, 'Profil') }}
+                            {{ form_widget(form.profil) }}
+                        </div>
+                        <div class="form-group div-facultes">
+                            {{ form_label(form.faculte, 'Faculte') }}
+                            {{ form_widget(form.faculte) }}
+                        </div>
+                        <div class="form-group div-mentions">
+                            {{ form_label(form.mention, 'Mention') }}
+                            {{ form_widget(form.mention) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.status, 'Statut') }}
+                            {{ form_widget(form.status) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        <button type="button" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

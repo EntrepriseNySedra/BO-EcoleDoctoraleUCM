@@ -1,0 +1,91 @@
+{% extends layout_frontend %}
+{% block title %}Gestion salles{% endblock %}
+{% block content %}
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Gestion salles</h1>
+
+    <!-- big slider banner formation -->
+    <section class="banner banner-training">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/training/banner-training.png') }}" alt="Gestion salles">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Gestion salles</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- big slider banner home -->
+    <div class="main-container">
+        <div class="container">
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-training" id="mainBloc" style="width: 100%">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+                <div class="main-bloc">
+                    <!-- content -->
+                    <div class="title-group">
+                        <p class="sup-title">Scolarité</p>
+                        <h2 class="title-bloc">Liste salles</h2>
+                    </div>
+                    <button class="btn-dark"><a href="{{ path('front_classroom_create') }}" title="Ajouter" class="no-nunderline">Ajouter</a></button>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if classRooms|length > 0 %}
+                                {% for item in classRooms %}
+                                    <tr>
+                                        <td>{{ item.libelle }}</td>
+                                        <td>
+                                            <a href="{{ path('front_classroom_edit', { id: item.id }) }}" title="Modifier"><i class="fa fa-pencil-alt text-primary"></i></a>
+                                            {% if item.emploiDuTemps|length == 0 %}
+                                                <form id="delete-form-{{item.id}}" method="POST" action="{{ path('front_classroom_delete', { id: item.id }) }}" style="display:inline-block">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}" />
+                                                    <a class="m-l-10" onclick="javascript:deleteElement('{{ item.id }}');" href="javascript:;" title="Supprimer">
+                                                        <i class="fa fa-trash text-danger"></i>
+                                                    </a>
+                                                </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td>Aucune information</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        function updateElement(id, value) {
+            $("#action").val(value);
+            $("#validate-form-" + id).submit();
+        }
+
+        function deleteElement(id) {
+            if (confirm('Etes-vous sûr de vouloir supprimer cet element ?')) {
+                $("#delete-form-"+id).submit();
+            }
+        }
+    </script>
+{% endblock %}
+

@@ -1,0 +1,4 @@
+<option> -- Séléctionner -- </option>
+{% for matiere in matieres %}
+    <option value="{{ matiere.id }}">{{ matiere.code }} {{ matiere.nom }}</option>
+{% endfor %}

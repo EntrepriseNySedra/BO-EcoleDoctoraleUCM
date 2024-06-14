@@ -1,0 +1,134 @@
+{% extends layout_teacher %}
+{% block title %}{{ workspaceTitle }}{% endblock %}
+{% block content %}
+    <div class="main-container">
+        <!-- hidden Title H1 -->
+        <h1 class="hide">Calendrier des examens</h1>
+
+        <!-- big slider banner espace assistant -->
+        <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+            <div class="banner-container">
+                <div class="container">
+                    <div class="row">
+                        <figure class="col-12 bigImg-back">
+                            <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                        </figure>
+                    </div>
+                </div>
+                <div class="desc">
+                    <div class="container">
+                        <h2 class="main-title">Calendrier des examens</h2>
+                    </div>
+                </div>
+            </div>
+        </section> <!-- /Big slider -->
+
+        <!-- breadcrumb -->
+        <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+                <li class="breadcrumb-item active" aria-current="page"><span>Calendrier des examens</span></li>
+            </ol>
+        </nav><!-- /breadcrumb -->
+
+        <div class="main-contentPage spaceAssistant-container">
+            <div class="container container_row">
+                <!-- aside Left -->
+                <aside class="asideLeft asideSticky">
+                    {{ include('frontend/chef-mention/_menu.html.twig') }}
+                </aside> <!-- /aside Left -->
+
+                <!-- main Bloc -->
+
+                <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                    <div class="title-group">
+                        <h2 class="title-bloc">Calendrier des examens</h2>
+                    </div>
+                    <!-- content assistant -->
+                    <section class="content assistant-content richText">
+                        {% if items is defined and items | length > 0 %}
+                            <div class="table-responsive table-wrapper">
+                                <table class="table table-bordered table-hover list-data">
+                                    <thead>
+                                    <tr>
+                                        <th>Titre</th>
+                                        <th>Date</th>
+                                        <th>Département</th>
+                                        <th>Mention</th>
+                                        <th>Niveau</th>
+                                        <th>Parcours</th>
+                                        <th>Matiere</th>
+                                        <th>UE</th>
+                                        <th>Statut</th>
+                                        {% if app.request.get('_route') == 'front_cm_examen_calendar_list' %}
+                                            <th class="action_col w-7">Actions</th>
+                                        {% endif %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in items %}
+                                        <tr class="middle-align">
+                                            <td>{{ item.libelle }}</td>
+                                            <td>{{ item.dateSchedule|date('d/m/Y') ~ ' ' ~ item.startTime|date('H:i:s') ~ ' à ' ~ item.endTime|date('H:i:s') }}</td>
+                                            <td>{{ item.departement.nom }}</td>
+                                            <td>{{ item.mention.nom }}</td>
+                                            <td>{{ item.niveau.libelle }}</td>
+                                            <td>{% if item.parcours %}{{ item.parcours.nom }}{% endif %}</td>
+                                            <td>{{ item.matiere.nom }}</td>
+                                            <td>{{ item.uniteEnseignements.libelle }}</td>
+                                            <td>
+                                                {%  set libelleStatut = "" %}
+                                                {% if item.statut == "CREATED" %}
+                                                    {%  set libelleStatut = "Créé" %}
+                                                {% elseif item.statut == "CM_VERIFIED" %}
+                                                    {%  set libelleStatut = "Vérifié - Chef de mention" %}
+                                                {% elseif item.statut == "CM_VALIDATED" %}
+                                                    {%  set libelleStatut = "Validé - Chef de mention" %}
+                                                {% elseif item.statut == "CM_REJECTED" %}
+                                                    {%  set libelleStatut = "Rejeté - Chef de mention" %}
+                                                {% elseif item.statut == "DOYEN_VERIFIED" %}
+                                                    {%  set libelleStatut = "Vérifié - Doyen" %}
+                                                {% elseif item.statut == "DOYEN_VALIDATED" %}
+                                                    {%  set libelleStatut = "Validé - Doyen" %}
+                                                {% elseif item.statut == "DOYEN_REJECTED" %}
+                                                    {%  set libelleStatut = "Rejeté - Doyen" %}
+                                                {% else %}
+                                                    {%  set libelleStatut = "Validé" %}
+                                                {% endif %}
+                                                {{ libelleStatut }}
+                                            </td>
+                                            {% if app.request.get('_route') == 'front_cm_examen_calendar_list' %}
+                                                <td class="action_col w-5">
+                                                    <div class="wrap-btn">
+                                                        <a href="{{ path('front_cm_examen_calendar_edit', { id: item.id}) }}"
+                                                           class="btn btn-secondary" title="Modifier">
+                                                            <i class="far fa-edit"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p>Aucune information</p>
+                        {% endif %}
+
+                    </section>
+                </article> <!-- /main Bloc -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

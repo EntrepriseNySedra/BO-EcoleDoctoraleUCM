@@ -1,0 +1,21 @@
+{% extends layout_backend %}
+{% block title %}Media::Ajout{% endblock %}
+
+{% set menuCMS = true %}
+{% set menuMedias = true %}
+{% set menuMediasAdd = true %}
+
+{% block pageicon %}
+    pe-7s-browser
+{% endblock %}
+
+{% block pagetitle %}
+    Nouvel media
+{% endblock %}
+
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/medias/_form.html.twig') }}
+    <a href="{{ path('admin_medias_list') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

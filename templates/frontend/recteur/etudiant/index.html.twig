@@ -1,0 +1,155 @@
+{% extends layout_frontend %}
+{% block title %}Fiche présence enseignants{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Liste étudiante</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Liste étudiante</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/chef-mention/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+           
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Etudiant</p>
+                    <h2 class="title-bloc">Liste</h2>
+                </div>
+                <!-- content actualites -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="btn-wrap form-group text-right">
+                        <a href="{{ path('front_recteur_student_new') }}" class="btn btn-primary" id="btn-submit-product-form" >Ajouter</a>
+                    </div>
+                    <!-- filter block -->
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="filter-form" autocomplete="off">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-xl-3">Mentions :</label>
+                                                <div class="form-field select-field col-xl-9">
+                                                    <select name="mention" class="form-control" id="mention">
+                                                        <option value="">--- Sélectionner ---</option>
+                                                        {% for item in mentions %}
+                                                            <option value="{{ item.id }}" {% if item.id == m %} selected {% endif %}>{{ item.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-xl-3">Niveau :</label>
+                                                <div class="form-field select-field  col-xl-9">
+                                                    <select name="niveau" class="form-control" id="niveau">
+                                                        <option value="">--- Sélectionner ---</option>
+                                                        {% for item in niveaux %}
+                                                            <option value="{{ item.id }}" {% if item.id == n %} selected {% endif %}>{{ item.libelle }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-xl-3">Parcours :</label>
+                                                <div class="form-field select-field  col-xl-9">
+                                                    <select name="parcours" class="form-control" id="parcours">
+                                                        <option value="">--- Sélectionner ---</option>
+                                                        {% for item in parcours %}
+                                                            <option value="{{ item.id }}" {% if item.id == p %} selected {% endif %}>{{ item.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> <!-- /filter block -->
+
+                    {% if students is defined and students | length > 0 %}
+                    <div class="table-responsive table-wrapper datatable-container">
+                        <table class="table table-bordered table-hover table-md list-data">
+                            <thead>
+                                <tr>
+                                    <th>Immatricule</th>
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for etudiant in students %}
+                                    <tr class="middle-align">
+                                        <td>{{ etudiant.immatricule }}</td>
+                                        <td>{{ etudiant.lastName }}</td>
+                                        <td>{{ etudiant.firstName }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>    
+                    {% endif %}
+
+                </section>
+
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                
+
+                
+                $('#mention').on('change', function(){
+                    window.location.href = "{{ path('front_recteur_student_index') }}" + "?n=" + $("#niveau").val() + "&m=" + $(this).val() + "&p=" + $("#parcours").val();
+                });
+                $('#niveau').on('change', function(){
+                    window.location.href = "{{ path('front_recteur_student_index') }}" + "?n=" + $(this).val() + "&m=" + $("#mention").val() + "&p=" + $("#parcours").val();
+                });
+                $('#parcours').on('change', function(){
+                    window.location.href = "{{ path('front_recteur_student_index') }}" + "?n=" + $("#niveau").val() + "&m=" + $("#mention").val() + "&p=" + $(this).val();
+                })
+
+
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

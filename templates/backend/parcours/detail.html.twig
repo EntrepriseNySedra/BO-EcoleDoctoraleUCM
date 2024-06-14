@@ -1,0 +1,85 @@
+{% extends layout_backend %}
+{% block title %}Parcours::Detail{% endblock %}
+
+{% set menuFormation = true %}
+{% set menuFormationParcoursAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Parcours
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="panel panel-bd ">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>{{ parcours.nom }}</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="column">
+                            <label>Description</label>
+                            <p>{{ parcours.description }}</p>
+                        </div>
+                        <div class="column">
+                            <label>Objectif</label>
+                            <p>{{ parcours.objectif }}</p>
+                        </div>
+                        <div class="column">
+                            <label>Admission</label>
+                            <p>{{ parcours.admission }}</p>
+                        </div>
+                        <div class="column">
+                            <label>Description de diplôme</label>
+                            <p>{{ parcours.diplomes }}</p>
+                        </div>
+                        <div class="column">
+                            <label>Débouches</label>
+                            <p>{{ parcours.debouches }}</p>
+                        </div>
+                        <hr>
+                        <div>
+                            <span>
+                                Crée le {{ parcours.createdAt | date('d/m/Y') }} | 
+                                {% if parcours.active == "0" %}
+                                    Desactive
+                                {% else %}
+                                    Active
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="panel panel-bd ">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Département</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <p>{{ parcours.departement.nom }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="panel panel-bd ">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Image represente sur la page d'accueil</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <img alt = '{{ parcours.path }}' style='height:100px' src='{{asset("uploads/parcours/")~ parcours.uuid~"/"~ parcours.path}}'>
+                    </div>
+                </div>
+            </div>
+        </div>
+     <a href="{{ path('admin_rf_parcours_liste') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

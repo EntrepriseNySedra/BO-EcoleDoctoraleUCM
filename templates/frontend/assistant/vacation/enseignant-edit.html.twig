@@ -1,0 +1,126 @@
+{% extends layout_frontend %}
+{% block title %}Vacation enseignants{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Vacation enseignant</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Vacation enseignant</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Assistant</p>
+                    <h2 class="title-bloc">Vacation</h2>
+                </div>
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="form-bloc form-inline">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="vacation_edit" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <label class="control-label col-lg-4" for="first_inscription_form_payementRefPath">Classe : {{ edt.niveau.libelle }} {% if edt.parcours %} {{ edt.parcours.nom }} {% endif %}</label>
+                                        </div>
+                                        
+                                        <div class="col-lg-8">
+                                            <label class="control-label col-lg-12" for="first_inscription_form_payementRefPath">Matière : {{ edt.matiere.nom }}</label>
+                                        </div>
+
+                                        <div class="col-lg-8">
+                                            <label class="control-label col-lg-4" for="first_inscription_form_payementRefPath">Date : {{ edt.dateSchedule | date('d/m/Y')}}</label>
+                                        </div>
+
+                                        <div class="col-lg-8">
+                                            <label class="control-label col-lg-4" for="first_inscription_form_payementRefPath">Heure début : {{ edt.startTime | date('H:i:s')}}</label>
+                                        </div>
+
+                                        <div class="col-lg-8">
+                                            <label class="control-label col-lg-4" for="first_inscription_form_payementRefPath">Heure de fin : {{ edt.endTime | date('H:i:s')}}</label>
+                                        </div>
+
+                                        <div class="form-group col-lg-12">
+                                            <label class="control-label col-lg-4" for="first_inscription_form_payementRefPath">Description :</label>
+                                            <textarea class="col-lg-12" id="emploi_du_temps_description" name="emploi_du_temps[description]" class="form-control">{{ edt.description }}</textarea>
+                                        </div>
+
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label class="control-label col-lg-4">Scan cours :</label>
+                                                <div class="col-lg-8">
+                                                    <div class="custom-file"><input type="file" id="emploi_du_temps_descriptionPath" name="emploi_du_temps[descriptionPath]" class="custom-file-input"><label for="emploi_du_temps_descriptionPath" class="custom-file-label"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-12">
+                                            <label class="control-label col-lg-4" for="first_inscription_form_commentaire">Commentaire :</label>
+                                            <textarea class="col-lg-12" id="emploi_du_temps_commentaire" name="emploi_du_temps[commentaire]" class="form-control">{{ edt.commentaire }}</textarea>
+                                        </div>
+
+                                    </div> 
+                                    <div class="action-validate">
+                                        <div class="groups-btn justify-content-end mt-0">
+                                            <a type="button" class="btn btn-primary" href="{{ path('front_assistant_vacation_enseignant_index', {id: edt.matiere.enseignant.id}) }}">Retour</a>
+                                            {% if profilListStatut == edt.statut %}
+                                                <button type="sumbit" class="btn btn-primary" id="btn-submit-edt-form">Valider</button>
+                                            {% endif %}
+                                            {% if edt.statut == currPrestNextStatut %}
+                                                <button type="sumbit" class="btn btn-primary" id="btn-submit-edt-form">Annuler</button>
+                                            {% endif %}                                          
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

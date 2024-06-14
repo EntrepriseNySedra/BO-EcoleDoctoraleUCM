@@ -1,0 +1,23 @@
+{% if displayType == 'SELECT-BOX' %}
+    <option value="" selected="selected">-- Etudiant --</option>
+    {% if etudiants is defined and etudiants | length > 0 %}
+        {% for etd in etudiants %}
+            <option value="{{ etd.id }}">{{ etd.first_name }} {{ etd.last_name }}</option>
+        {% endfor %}
+    {% endif %}
+{% else %}
+    <div class="row my-2 text-dark">
+        <div class="col-5">NOM</div>
+        <div class="col-5">PRENOM</div>
+        <div class="col-2 text-center">Absence</div>
+        {% if etudiants is defined and etudiants | length > 0 %}
+            {% for etd in etudiants %}
+                <div class="col-5">{{ etd.last_name }}</div>
+                <div class="col-5">{{ etd.first_name }}</div>
+                <div class="col-2 text-center">
+                    <input type="checkbox" id="absence_etudiant_{{etd.id}}" name="absence[etudiant][]" value="{{ etd.id }}">
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endif %}

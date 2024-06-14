@@ -1,0 +1,131 @@
+
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Mes cours</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div> 
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path('front_student_emploi_du_temps') }}" title="Espace étudiant">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Mes cours</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/etudiant/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Espace étudiant</p>
+                    <h2 class="title-bloc">Mes cours</h2>
+                </div>
+                <!-- content mes cours -->
+                <section class="mesCours-content" >
+                    <div class="table-responsive table-wrapper">
+                        <table class="table table-bordered table-hover">
+                            <thead >
+                                <th scope="col" width="20%">Unité d'enseignement</th>
+                                <th scope="col" width="20%">EC</th>
+                                <th scope="col" width="40%">Séance</th>
+                                <th scope="col" width="20%">Auteur</th>
+                            </thead>
+                            {% for key, item in result %}
+                            <tbody>
+                                {% set initUe = "" %}
+                                {% for matiere in item["MATIERE"] %}
+                                    <tr class="middle-align">
+                                        {% if item["UE"] != initUe %}
+                                            <td rowspan="{{ item["MATIERE"] | length }}">{{ item["UE"] }}</td>
+                                        {% endif %}
+                                        <td>{{ matiere[1]}}</td>
+                                        <td>
+                                            {#% for matiere in item["MATIERE"] %#}
+                                                {% for cours in item["COURS"][matiere[0]] %}
+                                                    <div class="cell_content">
+                                                        <a class="text-danger" href="{{ path('front_student_show_cours', { id: cours[0] }) }}"> 
+                                                            {{ cours[1] }} 
+                                                            {% if (cours[2] | length) > 0 %} ({{ cours[2] | length}} documents) {% endif %}<br>
+                                                            {#% for mediaItem in cours[2] %}
+                                                                <a href="{{ path('front_download_classes', { id: mediaItem.id }) }}">
+                                                                    {% if mediaItem.type == 'pdf' %}
+                                                                        <span class="fa fa-file-pdf text-danger"></span>
+                                                                    {% elseif mediaItem.type == 'doc' or mediaItem.type == 'vnd.openxmlformats-officedocument.wordprocessingml.document' or mediaItem.type == 'docx' %}
+                                                                        <span class="fa fa-file-word text-info"></span>
+                                                                    {% elseif mediaItem.type == 'audio' or mediaItem.type == 'mp4' or mediaItem.type == 'mp3' %}
+                                                                        <span class="fa fa-file-audio text-warning"></span>
+                                                                    {% else %}
+                                                                        <span class="fa fa-file text-danger"></span>
+                                                                    {% endif %}
+                                                                </a>
+                                                                <span>{{ mediaItem.path }}</span></br>
+                                                            {% endfor %#}
+                                                        </a>
+                                                    <div>
+                                                {% endfor %}
+                                            {#% endfor %#}
+                                        </td>
+                                        <td>{{item["ENSEIGNANT"][matiere[0]]}}</td>
+                                    </tr>
+                                    {% set initUe = item["UE"] %}
+                                {% endfor %}
+                            </tbody>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                let ueEnseignement = $('#ue_enseignement :selected').val();
+                $('#ue_enseignement').on('change', function(){
+                    window.location.href = "{{ path('front_student_classes') }}" + "?u=" + $(this).val();
+                })
+                let matiere = $('#matiere :selected').val();
+                $('#matiere').on('change', function () {
+                    window.location.href = "{{ path('front_student_classes') }}" + "?u=" + ueEnseignement + "&m=" + $(this).val();
+                })
+                $('#cours').on('change', function () {
+                    window.location.href = "{{ path('front_student_classes') }}" + "?m=" + matiere + "&c=" + $(this).val();
+                })
+            });
+
+        } )( jQuery );
+    </script>
+{% endblock %}
+

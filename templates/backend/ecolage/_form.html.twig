@@ -1,0 +1,77 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_ecolage_new') %}
+{% if ecolage.id %}
+    {% set action = path('admin_ecolage_edit', { id: ecolage.id }) %}
+{% endif %}
+<section class="content">
+    <form id="niveau-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if ecolage.id %}
+                            <h4>Modification ecolage</h4>
+                        {% else %}
+                            <h4>Ajout ecolage</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(form) }}
+                            {{ form_row(form._token) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.mention, 'Mention *') }}
+                            {{ form_widget(form.mention, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.niveau, 'Niveau *') }}
+                            {{ form_widget(form.niveau, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.parcours, 'Parcours') }}
+                            {{ form_widget(form.parcours) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.semestre, 'Semestre *') }}
+                            {{ form_widget(form.semestre, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.semestre, 'Semestre *') }}
+                            {{ form_widget(form.semestre, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.montant, 'Montant *') }}
+                            {{ form_widget(form.montant, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.limit_date, 'Date limite de paiement') }}
+                            {{ form_widget(form.limit_date) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if ecolage.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</form>

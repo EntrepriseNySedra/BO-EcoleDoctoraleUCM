@@ -1,0 +1,15 @@
+{% extends layout_frontend %}
+{% block title %}Page introuvable | {{ parent() }}{% endblock %}
+{% block content %}
+    <div class="main-contentPage home-container">
+        <div class="container">
+            <article class="mainBloc mainBloc-home" id="mainBloc">
+                <!-- content bloc -->
+                <section class="decouvrir-bloc">
+                    <h2>Contenu introuvable</h2>
+                    <div>Revenir à la page d'<a style="color: #0d6efd; text-decoration: none;" href="{{ path('home') }}">accueil</a></div>
+                </section> <!-- /découvrir bloc -->
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+{% endblock %}

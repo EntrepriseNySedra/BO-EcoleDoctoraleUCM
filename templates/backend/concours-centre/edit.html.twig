@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% block title %}Centres concours::Modification{% endblock %}
+
+{% set menuConcoursCentre = true %}
+{% set menuConcoursCentreAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Centre de concours
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/concours-centre/_form.html.twig') }}
+     <a href="{{ path('admin_rf_concours_centre_index') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

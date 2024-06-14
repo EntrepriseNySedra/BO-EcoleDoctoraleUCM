@@ -1,0 +1,7 @@
+{% if defaultOpt is not defined %}
+    {% set defaultOpt = 'Parcours' %}
+{% endif %}
+<option value="">--- {{ defaultOpt }} ---</option>
+{% for item in parcours %}
+    <option value="{{ item.id }}">{{ item.nom }} - {{ item.niveau.libelle }}  </option>
+{% endfor %}

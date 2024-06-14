@@ -1,0 +1,165 @@
+{% extends layout_frontend %}
+{% block title %}Frais scolarité{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Gestion examen</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Gestion examen</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Scolarité</p>
+                    <h2 class="title-bloc">Gestion examen</h2>
+                </div>
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <!-- filter block -->
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="filter-form" autocomplete="off">
+                                    <div class="form-group row">
+                                        <label class="col-xl-3">Semestre :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="semestre" id="semestre">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for sem in semestres %}
+                                                    <option value="{{ sem.id }}" {% if s is defined and sem.id == s %}selected{% endif %}>{{ sem.libelle }} -- {{ sem.niveau.libelle }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <label class="col-xl-3">Mention :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="mention" id="mention">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for men in mentions %}
+                                                    <option value="{{ men.id }}" {% if m is defined and men.id == m %}selected{% endif %}>{{ men.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <label class="col-xl-3">Niveau :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="niveau" id="niveau">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for niv in niveaux %}
+                                                    <option value="{{ niv.id }}" {% if n is defined and niv.id == n %}selected{% endif %}>{{ niv.libelle }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <label class="col-xl-3">Parcours :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="parcours" id="parcours">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for parc in parcours %}
+                                                    <option value="{{ parc.id }}" {% if p is defined and parc.id == p %}selected{% endif %}>{{ parc.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> <!-- /filter block -->
+
+                    <div class="tab-pane fade show" id="validated" role="tabpanel" aria-labelledby="validated-tab">
+                        <div class="dt-custom-title hidden">
+                            Liste étudiants 
+                        </div>
+                        <div class="table-responsive table-wrapper">
+                            {% if fraisScolarites is defined and fraisScolarites | length > 0 %}
+                                <table class="table table-bordered table-hover list-data table-advance" id="list-validated">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Nom</th>
+                                            <th class="text-center">Prénom</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in fraisScolarites %}
+                                                {% if item.reste < 1 %}
+                                                    <tr class="middle-align">
+                                                        <td class="w-15">{{ item.last_name }}</td>
+                                                        <td class="w-15">{{ item.first_name }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { 
+                var oTable = $('#list-validated').dataTable({
+                "aLengthMenu":    [[100, 250, 500, -1], [100, 250, 500, "Tout"]],
+                    "iDisplayLength": 1000,
+                    "aoColumnDefs":   [{
+                        "bSortable": false,
+                        "aTargets":  [4]
+                    }],
+                    "paging":         false,
+                    "ordering":       false,
+                    "searching":      false,
+                    "info":           false
+                });
+
+                $('#semestre, #niveau, #mention, #parcours').bind('change', function(){
+                    _semestreId = $('#semestre').val();
+                    _parcousId  = $('#parcours').val();
+                    _niveauId   = $('#niveau').val();
+                    _mentionId  = $('#mention').val();
+                    location.href = '{{ path('front_scolarite_gestion_examen_index')}}' + "?m=" + _mentionId + "&p=" + _parcousId + "&n=" + _niveauId + "&s=" + _semestreId;
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}

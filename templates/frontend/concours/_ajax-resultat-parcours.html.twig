@@ -1,0 +1,6 @@
+<option value="" > -- Séléctionner --</option>
+{% for parc in parcours %}    
+    <option value="{{parc.parcours.id}}" >{{parc.parcours.nom }}</option>
+{% endfor %}
+
+

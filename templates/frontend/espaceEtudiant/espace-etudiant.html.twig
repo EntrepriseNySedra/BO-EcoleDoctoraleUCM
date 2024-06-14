@@ -1,0 +1,53 @@
+{% extends layout_frontend %}
+{% block title %}Espace étudiant{% endblock %}
+{% block content %}
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Espace étudiant</h1>
+
+    <!-- big slider banner authentification espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Authentification Etudiant">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Authentification</h2>
+                    <p class="sub-title">Espace étudiant</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="main-container espaceEtudiant-container">
+        <div class="container">
+            <article class="mainBloc mainBloc-espaceEtudiant" id="mainBloc">
+                <!-- breadcrumb -->
+                <nav aria-label="breadcrumb" class="breadcrumb-bloc">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="/">Espace étudiant</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><span>Accueil</span></li>
+                    </ol>
+                </nav><!-- breadcrumb -->
+
+                <!-- main content training -->
+                <section class="spaceStudyHome-bloc">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p>Lorem ipsum dolor sit amet</p>
+                        </div>
+                        <div class="col-lg-10">
+                                <p>Bli blaLorem ipsum dolor sit amet</p>
+                        </div>
+                    </div>
+                </section>
+
+                <h2>identifiez-vous</h2>
+                
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+
+   
+{% endblock %}

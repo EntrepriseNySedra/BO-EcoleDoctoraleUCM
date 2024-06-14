@@ -1,0 +1,525 @@
+<aside class="main-sidebar">
+    <!-- sidebar -->
+    <div class="sidebar">
+        <div class="user-panel text-center">
+            <div class="info">
+                <p>{{ app.user.fullName }}</p>
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+        </div>
+        <ul class="sidebar-menu">
+            
+            <li class="{% if app.request.get('_route') == 'admin_dashboard' %}active{% endif %}">
+                <a href="{{ path('admin_dashboard') }}"><i class="ti-home"></i> <span>Tableau de bord du site de l'Ecole Doctorale</span></a>
+            </li>
+
+
+
+  <!-- -------------Begin  Article ---------- -->            
+            <li  treeview">
+                <a href="{{ path('admin_rf_depatement_liste') }}">
+                    <i class="ti-bookmark-alt"></i> <span> Article </span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    
+
+                    <li class="treeview">
+                        <a href="#">
+                            <span>type</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ path('TypeArticleEcole_index') }}">Lister</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ path('TypeArticleEcole_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="treeview">
+                        <a href="#">
+                            <span>article</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ path('ArticleEcole_index') }}">Lister</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ path('ArticleEcole_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                   
+                    
+                 
+                </ul>
+            <!-- -------------End Article---------- -->
+
+
+           
+            <!-- -------------MENU EVENT---------- -->
+            <li class="treeview">
+                <a href="#">
+                    <span>Evènement</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{% if menuEventList is defined %}active{% endif %}">
+                        <a href="{{ path('EvenementEcole_index') }}">Lister</a>
+                    </li>
+                    <li class="{% if menuEventAdd is defined %}active{% endif %}">
+                        <a href="{{ path('EvenementEcole_add') }}">Ajouter</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- ------------- END EVENT---------- -->
+
+  <!-- -------------Begin  Programme ---------- -->            
+            <li  treeview">
+                <a href="{{ path('admin_rf_depatement_liste') }}">
+                    <i class="ti-bookmark-alt"></i> <span> Programme </span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    
+
+                    <li class="treeview">
+                        <a href="#">
+                            <span>Programmes</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ path('admin_programme_list') }}">Lister</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ path('admin_programmes_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                   
+                    
+                 
+                </ul>
+            <!-- -------------End Programme---------- -->
+
+             <!-- -------------Begin  bourse ---------- -->            
+            <li  treeview">
+                <a href="{{ path('admin_rf_depatement_liste') }}">
+                    <i class="ti-bookmark-alt"></i> <span> Bourse </span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    
+
+                    <li class="treeview">
+                        <a href="#">
+                            <span>Bourse</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ path('BourseDistinction_index') }}">Lister</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ path('BourseDistinction_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                   <li class="treeview">
+                        <a href="#">
+                            <span>Opportunite de Bourse</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ path('OpportuniteBourse_index') }}">Lister</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ path('OpportuniteBourse_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                 
+                </ul>
+            <!-- -------------End bourse---------- -->
+
+
+                         <!-- -------------Begin  publication et realisation ---------- -->            
+            <li  treeview">
+                <a href="{{ path('admin_rf_depatement_liste') }}">
+                    <i class="ti-bookmark-alt"></i> <span> Publication </span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    
+
+                    <li class="treeview">
+                        <a href="#">
+                            <span>Publication et realisation </span>
+                            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ path('PublicationRealisation_index') }}">Lister</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ path('PublicationRealisation_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                   <li class="treeview">
+                        <a href="#">
+                            <span>Success Storie</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ path('Success_index') }}">Lister</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ path('Success_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li class="treeview">
+                        <a href="#">
+                            <span>Temoignage</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ path('Temoignage_index') }}">Lister</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ path('Temoignage_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+                 
+                </ul>
+            <!-- -------------End bourse---------- -->
+
+
+            <!-- -------------Begin iNFRASTRUCTURE RECHERCHE---------- -->            
+            <li  treeview">
+                <a href="{{ path('admin_rf_depatement_liste') }}">
+                    <i class="ti-bookmark-alt"></i> <span>Infrastructure recherche</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="treeview">
+                        <a href="#">
+                            <span>Laboratoire</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ path('laboratoire_index') }}">Lister</a></li>
+                            <li class="{% if menuRubriquesAdd is defined %}active{% endif %}">
+                                <a href="{{ path('admin_rubriques_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="{% if menuActualites is defined  or menuActualitesList is defined  or menuActualitesAdd is defined %}active{% endif %} treeview">
+                        <a href="#">
+                            <span>Equipement de recherche</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{% if menuActualitesList is defined %}active{% endif %}">
+                                <a href="{{ path('EquipementRecherche_index') }}">Lister</a></li>
+                            <li class="{% if menuActualitesAdd is defined %}active{% endif %}">
+                                <a href="">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="{% if menuActualites is defined  or menuActualitesList is defined  or menuActualitesAdd is defined %}active{% endif %} treeview">
+                        <a href="#">
+                            <span>Ressource</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{% if menuActualitesList is defined %}active{% endif %}">
+                                <a href="{{ path('RessourceRecherche_index') }}">Lister</a></li>
+                            <li class="{% if menuActualitesAdd is defined %}active{% endif %}">
+                                <a href="{{ path('Bibliotheque_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="{% if menuArticles is defined or menuArticlesList is defined  or menuArticlesAdd is defined %}active{% endif %} treeview">
+                        <a href="#">
+                            <span>Bibliotheque</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{% if menuArticlesList is defined %}active{% endif %}">
+                                <a href="{{ path('Bibliotheque_index') }}">Lister</a></li>
+                            <li class="{% if menuArticlesAdd is defined %}active{% endif %}">
+                                <a href="{{ path('Bibliotheque_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                 
+                </ul>
+            <!-- -------------End CMS---------- -->
+
+            <!-- -------------Begin  RECHERCHE---------- -->            
+            <li  treeview">
+                <a href="{{ path('admin_rf_depatement_liste') }}">
+                    <i class="ti-bookmark-alt"></i> <span> Recherche</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="treeview">
+                        <a href="#">
+                            <span>Domaine de recherche</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ path('DomaineRecherche_index') }}">Lister</a></li>
+                            <li class="{% if menuRubriquesAdd is defined %}active{% endif %}">
+                                <a href="{{ path('admin_rubriques_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="{% if menuActualites is defined  or menuActualitesList is defined  or menuActualitesAdd is defined %}active{% endif %} treeview">
+                        <a href="#">
+                            <span>Projet de recherche</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{% if menuActualitesList is defined %}active{% endif %}">
+                                <a href="{{ path('ProjetRecherche_index') }}">Lister</a></li>
+                            <li class="{% if menuActualitesAdd is defined %}active{% endif %}">
+                                <a href="">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="{% if menuActualites is defined  or menuActualitesList is defined  or menuActualitesAdd is defined %}active{% endif %} treeview">
+                        <a href="#">
+                            <span>Subvention de recherche</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{% if menuActualitesList is defined %}active{% endif %}">
+                                <a href="{{ path('SubventionRecherche_index') }}">Lister</a></li>
+                            <li class="{% if menuActualitesAdd is defined %}active{% endif %}">
+                                <a href="{{ path('SubventionRecherche_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="{% if menuActualites is defined  or menuActualitesList is defined  or menuActualitesAdd is defined %}active{% endif %} treeview">
+                        <a href="#">
+                            <span>Partenariat</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{% if menuActualitesList is defined %}active{% endif %}">
+                                <a href="{{ path('Partenariat_index') }}">Lister</a></li>
+                            <li class="{% if menuActualitesAdd is defined %}active{% endif %}">
+                                <a href="{{ path('Partenariat_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                   
+                    
+                 
+                </ul>
+            <!-- -------------End CMS---------- -->
+
+
+
+             <!-- -------------Begin  corps professoral---------- -->            
+            <li  treeview">
+                <a href="{{ path('admin_rf_depatement_liste') }}">
+                    <i class="ti-bookmark-alt"></i> <span> Corps Professoral</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="treeview">
+                        <a href="#">
+                            <span>Domaine d'expertise</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="{{ path('DomaineExpertise_index') }}">Lister</a></li>
+                            <li class="{% if menuRubriquesAdd is defined %}active{% endif %}">
+                                <a href="{{ path('domaineexpertise_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="{% if menuActualites is defined  or menuActualitesList is defined  or menuActualitesAdd is defined %}active{% endif %} treeview">
+                        <a href="#">
+                            <span>Realisation Academique</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{% if menuActualitesList is defined %}active{% endif %}">
+                                <a href="{{ path('RealisationAcademique_index') }}">Lister</a></li>
+                            <li class="{% if menuActualitesAdd is defined %}active{% endif %}">
+                                <a href="">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="{% if menuActualites is defined  or menuActualitesList is defined  or menuActualitesAdd is defined %}active{% endif %} treeview">
+                        <a href="#">
+                            <span> Professeur </span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{% if menuActualitesList is defined %}active{% endif %}">
+                                <a href="{{ path('Professorat_index') }}">Lister</a></li>
+                            <li class="{% if menuActualitesAdd is defined %}active{% endif %}">
+                                <a href="{{ path('Professorat_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="{% if menuActualites is defined  or menuActualitesList is defined  or menuActualitesAdd is defined %}active{% endif %} treeview">
+                        <a href="#">
+                            <span>Corps Professoral</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{% if menuActualitesList is defined %}active{% endif %}">
+                                <a href="{{ path('Partenariat_index') }}">Lister</a></li>
+                            <li class="{% if menuActualitesAdd is defined %}active{% endif %}">
+                                <a href="{{ path('Partenariat_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                   
+                    
+                 
+                </ul>
+            <!-- -------------End COrps---------- -->
+
+
+
+           
+ <!-- Type utilisateur -->
+            <li class="{% if menuUsers is defined or menuEnseignant is defined %}active{% endif %} treeview">
+                <a href="">
+                    <i class="ti-user"></i> <span>Utilisateurs</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="treeview {% if menuUsersList is defined  or menuUsersAdd is defined %} active  {% endif %}">
+                        <a href="#">
+                            <span>Utilisateur</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{% if menuUsersList is defined %}active{% endif %}">
+                                <a href="{{ path('admin_users_list') }}">Lister</a>
+                            </li>
+                            <li class="{% if menuUsersAdd is defined %}active{% endif %}">
+                                <a href="{{ path('admin_users_add') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+            </li>
+            
+            
+            {#<li class="{% if menuUsers is defined %}active{% endif %} treeview">
+                <a href="">
+                    <i class="ti-user"></i> <span>Utilisateurs</span>
+                        <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{% if menuUsersList is defined %}active{% endif %}">
+                        <a href="{{ path('admin_users_list') }}">Lister</a>
+                    </li>
+                    <li class="{% if menuUsersAdd is defined %}active{% endif %}">
+                        <a href="{{ path('admin_users_add') }}">Ajouter</a>
+                    </li>
+                </ul>
+            </li>#}
+           
+
+                           
+          
+
+          
+
+          
+
+          
+
+
+
+             
+            
+            
+            
+            
+
+          
+        </ul>
+    </div> <!-- /.sidebar -->
+</aside>

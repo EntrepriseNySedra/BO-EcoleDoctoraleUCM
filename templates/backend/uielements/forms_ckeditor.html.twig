@@ -1,0 +1,34 @@
+{% extends layout_backend %}
+{% set menuUIElements = true %}
+{% set menuUIElementsFormCk = true %}
+{% block pageicon %}
+    pe-7s-note2
+{% endblock %}
+{% block title %}{{ parent() }}
+    Forms
+{% endblock %}
+{% block pagetitle %}
+    Ckeditor
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Ck Editor</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <textarea name="editor1" id="editor1" rows="10" cols="80">
+                            This is my textarea to be replaced with CKEditor.
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

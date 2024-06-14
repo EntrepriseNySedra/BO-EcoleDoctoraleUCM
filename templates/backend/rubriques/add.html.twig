@@ -1,0 +1,23 @@
+{% extends layout_backend %}
+{% block title %}Rubrique::Ajout{% endblock %}
+
+{% set menuCMS = true %}
+{% set menuRubriques = true %}
+{% set menuRubriquesAdd = true %}
+
+{% block pageicon %}
+    pe-7s-switch
+{% endblock %}
+{% block pagetitle %}
+    Nouvelle rubrique
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/rubriques/_form.html.twig') }}
+    <a href="{{ path('admin_rubriques_list') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/jquery.mask.min.js') }}"></script>
+{% endblock %}

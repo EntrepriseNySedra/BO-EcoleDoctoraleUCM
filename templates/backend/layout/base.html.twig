@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Favicon and touch icons -->
+    {% block favicon %}
+        <link rel="shortcut icon" href="{{ asset('bo/assets/dist/img/ico/favicon.png') }}" type="image/x-icon">
+        <link rel="apple-touch-icon" type="image/x-icon" href="{{ asset('bo/assets/dist/img/ico/apple-icon-57x57.png') }}">
+        <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{ asset(' assets/dist/img/ico/apple-icon-72x72.png') }}">
+        <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{{ asset('bo/assets/dist/img/ico/apple-icon-114x114.png') }}">
+        <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="{{ asset('bo/assets/dist/img/ico/apple-icon-144x144.png') }}">
+    {% endblock %}
+
+    {% block stylesheets %}
+        <!-- Start Global Mandatory Style
+        =====================================================================-->
+        <!-- jquery-ui css -->
+        <link href="{{ asset('bo/assets/plugins/jquery-ui-1.12.1/jquery-ui.min.css') }}" rel="stylesheet" type="text/css"/>
+        <!-- Bootstrap -->
+        <link href="{{ asset('bo/assets/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
+        <!-- Bootstrap rtl -->
+        <!--<link href="assets/bootstrap-rtl/bootstrap-rtl.min.css" rel="stylesheet" type="text/css"/>-->
+        <!-- Lobipanel css -->
+        <link href="{{ asset('bo/assets/plugins/lobipanel/lobipanel.min.css') }}" rel="stylesheet" type="text/css"/>
+        <!-- Pace css -->
+        <link href="{{ asset('bo/assets/plugins/pace/flash.css') }}" rel="stylesheet" type="text/css"/>
+        <!-- Font Awesome -->
+        <link href="{{ asset('bo/assets/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css"/>
+        <!-- Pe-icon -->
+        <link href="{{ asset('bo/assets/pe-icon-7-stroke/css/pe-icon-7-stroke.css') }}" rel="stylesheet" type="text/css"/>
+        <!-- Themify icons -->
+        <link href="{{ asset('bo/assets/themify-icons/themify-icons.css') }}" rel="stylesheet" type="text/css"/>
+        <!-- dataTables css -->
+        <link href="{{ asset('bo/assets/plugins/datatables/dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
+        <!-- summernote css -->
+        <link href="{{ asset('bo/assets/plugins/summernote/summernote.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('bo/assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" type="text/css"/>
+        <!-- modals css -->
+        <link href="{{ asset('bo/assets/plugins/modals/component.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" type="text/css"/>
+        <!-- End Global Mandatory Style
+        =====================================================================-->
+        <!-- Start Theme Layout Style
+        =====================================================================-->
+        <!-- Theme style fdfdfdffd -->
+        <link href="{{ asset('bo/assets/dist/css/styleBD.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('assets/css/styles_BO.css') }}" rel="stylesheet" type="text/css"/>
+
+        <!-- Theme style rtl -->
+        <!--<link href="assets/dist/css/styleBD-rtl.css" rel="stylesheet" type="text/css"/>-->
+        <!-- End Theme Layout Style
+        =====================================================================-->
+        <!-- Toastr css -->
+        <link href="{{ asset('bo/assets/plugins/toastr/toastr.css') }}" rel="stylesheet" type="text/css"/>
+        
+        <link rel="stylesheet" href="{{asset("bo/assets/upload/file-upload-with-preview.min.css")}}">
+        <style>
+            .invalid-feedback {
+                color: red;
+            }
+            .form-error-icon {
+                background-color: red;
+            }
+        </style>
+    {% endblock %}
+    {% block javasctipts_head %}{% endblock %}
+
+</head>
+
+<body class="hold-transition fixed sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+    <!-- Header -->
+    {% include 'backend/partials/header.html.twig' %}
+    <!-- /Header -->
+    <!-- Menu -->
+    {% include 'backend/partials/sidebar.html.twig' %}
+    <!-- /Menu -->
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        {% include 'backend/partials/breadcrumb.html.twig' with {pageIcon: block('pageicon'), pageTitle: block('pagetitle'), pageTitleSmall: block('pagetitlesmall')} %}
+        {% block content %}{% endblock %}
+    </div> <!-- /.content-wrapper -->
+     <!-- AJAX SPINNER -->
+        <div class="container-spinner">
+            <i id="ajaxspinner" class="fas fa-spinner fa-spin fa-3x fa-fw hidden"></i>
+        </div>
+    <!-- END AJAX SPINNER -->
+    {% block footer %}
+        {% include 'backend/partials/footer.html.twig' %}
+    {% endblock %}
+
+</div> <!-- ./wrapper -->
+
+{% block javascripts %}
+
+    <!-- Start Core Plugins
+        =====================================================================-->
+    <!-- jQuery -->
+    <script src="{{ asset('bo/assets/plugins/jQuery/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bo/assets/js/jquery.mask.min.js') }}" type="text/javascript"></script>
+    <!-- jquery-ui -->
+    <script src="{{ asset('bo/assets/plugins/jquery-ui-1.12.1/jquery-ui.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bo/assets/plugins/jquery-ui-1.12.1/datepicker-fr.js') }}" type="text/javascript"></script>
+    <!-- Bootstrap -->
+    <script src="{{ asset('bo/assets/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <!-- lobipanel -->
+    <script src="{{ asset('bo/assets/plugins/lobipanel/lobipanel.min.js') }}" type="text/javascript"></script>
+    <!-- Pace js -->
+    <script src="{{ asset('bo/assets/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
+    <!-- SlimScroll -->
+    <script src="{{ asset('bo/assets/plugins/slimScroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
+    <!-- FastClick -->
+    <script src="{{ asset('bo/assets/plugins/fastclick/fastclick.min.js') }}" type="text/javascript"></script>
+    <!-- AdminBD frame -->
+    <script src="{{ asset('bo/assets/dist/js/frame.js') }}" type="text/javascript"></script>
+    <!-- End Core Plugins
+    =====================================================================-->
+    <!-- Start Page Lavel Plugins
+    =====================================================================-->
+    <!-- Toastr js -->
+    <script src="{{ asset('bo/assets/plugins/toastr/toastr.min.js') }}" type="text/javascript"></script>
+    <!-- Sparkline js -->
+    <script src="{{ asset('bo/assets/plugins/sparkline/sparkline.min.js') }}" type="text/javascript"></script>
+    <!-- Data maps js -->
+    <script src="{{ asset('bo/assets/plugins/datamaps/d3.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bo/assets/plugins/datamaps/topojson.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bo/assets/plugins/datamaps/datamaps.all.min.js') }}" type="text/javascript"></script>
+    <!-- Counter js -->
+    <script src="{{ asset('bo/assets/plugins/counterup/waypoints.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bo/assets/plugins/counterup/jquery.counterup.min.js') }}" type="text/javascript"></script>
+    <!-- Emojionearea -->
+    <script src="{{ asset('bo/assets/plugins/emojionearea/emojionearea.min.js') }}" type="text/javascript"></script>
+    <!-- Monthly js -->
+    <script src="{{ asset('bo/assets/plugins/monthly/monthly.js') }}" type="text/javascript"></script>
+
+    <!-- dataTables js -->
+    <script src="{{ asset('bo/assets/plugins/datatables/dataTables.min.js') }}" type="text/javascript"></script>
+    <!-- Modal js -->
+    <script src="{{ asset('bo/assets/plugins/modals/classie.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bo/assets/plugins/modals/modalEffects.js') }}" type="text/javascript"></script>
+    <!-- End Page Lavel Plugins
+    =====================================================================-->
+    <!-- Start Theme label Script
+    =====================================================================-->
+    <!-- ckeditor js -->
+    <script src="{{ asset('bo/assets/plugins/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+    <!-- summernote js -->
+    <script src="{{ asset('bo/assets/plugins/summernote/summernote.min.js') }}" type="text/javascript"></script>
+    <!-- Dashboard js -->
+    <script src="{{ asset('bo/assets/dist/js/dashboard.js') }}" type="text/javascript"></script>
+    <!-- End Theme label Script
+    =====================================================================-->
+    
+    <script src="{{asset("bo/assets/upload/file-upload-with-preview.min.js")}}"></script>
+
+    <script src="{{ asset('bo/assets/plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('bo/assets/js/notification.js') }}"></script>
+    <script src="{{ asset('bo/assets/js/app.js') }}"></script>
+    <script src="{{ asset('assets/js/library/select2.min.js') }}" type="text/javascript"/>
+    
+    <script>
+        $(document).ready(function () {
+
+            "use strict"; // Start of use strict
+
+            // notification
+            {% if app.request.get('_route') == 'dashboard' %}
+                app_notifier('Administration', "Bienvenue sur le Back Office");
+            {% endif %}
+            
+            if ($('#users_email').length > 0) {
+                $('#users_email').attr('pattern', '[A-Za-z0-9._%+-]{3,}@[a-zA-Z0-9]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})')
+            }
+            
+            if ($('#users_plainpassword_first').length > 0) {
+                if ($('#user_id').length <= 0) {
+                    $('#users_plainpassword_first').attr('required', 'required');
+                }
+                $('#users_plainpassword_first').attr('pattern', '[A-Za-z0-9]{6,}[0-9]{1,}')
+            }
+
+            {% if app.request.get('_route') == 'uielements_forms_ckeditor' %}
+                // CKEDITOR
+                // CKEDITOR.replace('pages[content]');
+                CKEDITOR.replace('editor1');
+            {% endif %}
+                if($("#article_content_header").length > 0)
+                    CKEDITOR.replace('article_content_header');
+                if($("#article_content_left").length > 0)
+                    CKEDITOR.replace('article_content_left');
+                if($("#article_content_right").length > 0)
+                    CKEDITOR.replace('article_content_right');
+                if($("#article_content_footer").length > 0)
+                    CKEDITOR.replace('article_content_footer');
+                if($("#actualite_detail").length > 0)    
+                    CKEDITOR.replace('actualite_detail');
+                if($("#article_detail").length > 0)    
+                    CKEDITOR.replace('article_detail');
+                
+                // CKEDITOR FOR MENTION IN BACKOFFICE FORMATION
+                if($("#mention_description").length > 0)    
+                    CKEDITOR.replace('mention_description');
+                if($("#mention_objectif").length > 0)    
+                    CKEDITOR.replace('mention_objectif');
+                if($("#mention_admission").length > 0)    
+                    CKEDITOR.replace('mention_admission');
+                if($("#mention_diplomes").length > 0)    
+                    CKEDITOR.replace('mention_diplomes');
+                if($("#mention_debouches").length > 0)    
+                    CKEDITOR.replace('mention_debouches');
+            {% if app.request.get('_route') == 'uielements_forms_summernote' %}
+                //summernote
+                $('#summernote').summernote({
+                    height: 300, // set editor height
+                    minHeight: null, // set minimum height of editor
+                    maxHeight: null, // set maximum height of editor
+                    focus: true                  // set focus to editable area after initializing summernote
+                });
+            {% endif %}
+            
+            if($(".custom-file-container").length > 0){
+                var upload = new FileUploadWithPreview("myupload", {
+                    ShowDeleteButtonOnImage: true,
+                    text: {
+                        chooseFile: "Selectionner une image",
+                        browse: "Parcourir...",
+                        selectedCount: "fichiers sélectionnés"
+                    }
+                });
+                $("#actualite_file_errors,#article_file_errors,#medias_file_errors").css("margin-top","25px");
+            }
+        });
+    </script>
+    
+{% endblock %}
+</body>
+</html>

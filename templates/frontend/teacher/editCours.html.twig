@@ -1,0 +1,231 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Ajout cours</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace enseignant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Ajout cours</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Enseignant</p>
+                    <h2 class="title-bloc">Ajout cours</h2>
+                </div>
+                <!-- content ajout cours -->
+                <section class="content content-list content-addCours">
+                    <div class="form-bloc form-inline">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action=" {{ path('front_teacher_edit_cours', {matiere_id: matiere.id, cours_id: cours.id })}} ">
+                                    <!-- input hidden -->
+                                    {{ form_errors(form) }}
+                                    {{ form_row(form._token) }}
+
+                                    <div id="filesProto" data-prototype="{{ form_widget(form.coursMedia.vars.prototype)|e }}"></div>
+                                    <input type="hidden" id="cours_matiere" name="cours[matiere]" value="{{ matiere.id }}">
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <label for="cours_libelle" class="col-xl-3">Matiere* :</label>
+                                                <div class="col-xl-9">
+                                                    <input type="text" id="matiere_nom" name="matiere" maxlength="255" class="form-control" readonly value="{{ matiere.nom }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3 label-content">{{ form_label(form.libelle, 'Nom* :') }}</div>
+                                                <div class="col-xl-9">{{ form_widget(form.libelle) }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group row align-items-start mb-0">
+                                                <div class="col-xl-3 label-content">{{ form_label(form.libelle, 'Description :') }}</div>
+                                                <div class="col-xl-9">{{ form_widget(form.description) }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group row mb-0" style="align-items: flex-start">
+                                                <label class="control-label col-xl-3 " for="plusInfos-stnd">Ressources :</label>
+                                                <div class="col-xl-9" id="filesBox">
+                                                    {% set pos = 0 %}
+                                                    {% for doc in form.coursMedia %}
+
+                                                        <div class="row" style="margin-bottom: 15px">
+                                                            <div class="col col-sm-1" id="jsRemove{{ pos }}" style="margin-right: 15px; display: inline;">
+                                                                <button type="button" class="btn btn-danger" onclick="removeFile($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                                            </div>
+                                                            <div class="col col-xs-11" id="jsPreview{{ pos }}" style="display: inline;">
+                                                                {% if doc.vars.value %}
+                                                                    {% if doc.vars.value.type == 'png' or doc.vars.value.type == 'jpg' or doc.vars.value.type == 'jpeg' %}
+                                                                        <img width="150px" src="{{ asset('uploads/cours/' ~ cours.id ~ '/' ~ '.' ~ doc.vars.value.path) }}" />
+                                                                    {% elseif(doc.vars.value.type == 'doc' or doc.vars.value.type == 'docx' or doc.vars.value.type == 'pdf') %}
+                                                                        {{ doc.vars.value.name }}
+                                                                    {% else %}
+                                                                        {{ doc.vars.value.path }}
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            </div>
+
+                                                            <div style="display:none">
+                                                                {{ form_widget(doc) }}
+                                                            </div>
+                                                        </div>
+
+                                                        {% set pos = pos + 1 %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group row align-items-start mt-4">
+                                                <div class="col-xl-3 label-content">{{ form_label(form.nbSequence, 'Nombre de séquences :') }}</div>
+                                                <div class="col-xl-9">{{ form_widget(form.nbSequence) }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-lg-6">
+                                            <div class="form-group row align-items-start mt-4">
+                                                <div class="col-xl-3 label-content">Section</div>
+                                                <div class="col-xl-9"><a href="{{ path('front_teacher_add_cours_section', {id: matiere.id, c_id: cours.id}) }}" type="button" class="btn btn-secondary">Ajouter</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            {% for section in cours.section %}
+                                            <div class="form-group row align-items-start mt-4">
+                                                <div class="col-xl-2 label-content"></div>
+                                                <div class="col-xl-10">
+                                                    <span class="d-block">{{ section.nom }}</span>
+                                                    <span class="d-block">{{ section.description }}</span>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="groups-btn justify-content-end text-right">
+                                        <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Valider</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+            let fileCount = '{{ form.coursMedia|length }}';
+            const removeButton = "<button type='button' class='btn btn-danger btn-xs' onclick='removeFile($(this));'><i class='fa fa-times' aria-hidden='true'></i></button>";
+
+            function removeFile(ob)
+            {
+                ob.parent().parent().remove();
+            }
+
+            function addFile(fileCount)
+            {
+                // grab the prototype template
+                let newWidget = jQuery("#filesProto").attr('data-prototype');
+                // replace the "__name__" used in the id and name of the prototype
+                newWidget = newWidget.replace(/__name__/g, fileCount);
+
+                newWidget = "<div style='display:none'>" + newWidget + "</div>";
+
+                let contentBlock = "";
+                contentBlock += "<div class='col col-sm-1' id='jsRemove" + fileCount + "' style='display: none;'>";
+                contentBlock += removeButton;
+                contentBlock += "</div>";
+
+                contentBlock += "<div class='col col-xs-11' id='jsPreview" + fileCount + "' style='display: inline;'>";
+                contentBlock += "</div>";
+
+                contentBlock += "<div class='col col-xs-12'>";
+                contentBlock += "<button type='button' id='jsBtnUpload" + fileCount + "' class='blue_btn animated'>";
+                contentBlock += "<i class='fa fa-plus'></i> {{ 'Ajouter' | trans }}";
+                contentBlock += "</button>";
+                contentBlock += "</div>";
+
+                jQuery("#filesBox").append("<div class='row'>" + contentBlock + newWidget + "</div>");
+
+                // On click => Simulate file behaviour
+                jQuery("#jsBtnUpload" + fileCount).on('click', function(e){
+                    jQuery('#cours_coursMedia_' + fileCount + '_file').trigger('click');
+                });
+
+                // Once the file is added
+                jQuery('#cours_coursMedia_' + fileCount + '_file').on('change', function() {
+
+                    // Show its name
+                    let file = jQuery(this).prop('files')[0].name;
+                    const img = jQuery('<img width="150px">');
+                    if (jQuery(this).prop('files')[0].type == 'image/png' || jQuery(this).prop('files')[0].type == 'image/jpg' || jQuery(this).prop('files')[0].type == 'image/jpeg') {
+                        file = jQuery(img).attr('src', URL.createObjectURL(jQuery(this).prop('files')[0]));
+                    }
+
+                    jQuery("#jsPreview" + fileCount).append(file);
+                    // Hide the add file button
+                    jQuery("#jsBtnUpload" + (fileCount)).parent().remove();
+                    // Show the remove file button
+                    jQuery("#jsRemove" + fileCount).css({'display':'inline', 'margin-right':'15px'});
+
+                    // Create another instance of add file button and company
+                    addFile(parseInt(fileCount)+1);
+                });
+            }
+
+            $(document).ready(function () {
+                addFile(fileCount);
+                fileCount++;
+            });
+    </script>
+{% endblock %}

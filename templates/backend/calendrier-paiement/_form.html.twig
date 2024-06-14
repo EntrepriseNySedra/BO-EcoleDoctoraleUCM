@@ -1,0 +1,66 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_calendrier_paiement_new') %}
+{% if calendrierPaiement.id %}
+    {% set action = path('admin_calendrier_paiement_edit', { id: calendrierPaiement.id }) %}
+{% endif %}
+<section class="content">
+    <form id="niveau-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if calendrierPaiement.id %}
+                            <h4>Modification</h4>
+                        {% else %}
+                            <h4>Ajout</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(form) }}
+                            {{ form_row(form._token) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.libelle, 'Libelle *') }}
+                            {{ form_widget(form.libelle, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.dateDebut, 'Date de début *') }}
+                            {{ form_widget(form.dateDebut, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.dateFin, 'Date fin *') }}
+                            {{ form_widget(form.dateFin, {'attr':{'required':'required'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.syllabus, 'Syllabus') }}
+                            {{ form_widget(form.syllabus) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if calendrierPaiement.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</form>

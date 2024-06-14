@@ -1,0 +1,169 @@
+{% extends layout_frontend %}
+{% block title %}Gestion des Activités prof{% endblock %}
+{% block content %}
+<style>
+    .container_row {
+        display: flex;
+    }
+
+    article {
+        width: 75%;
+        margin-left: auto;
+    }
+</style>
+
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Activité des enseignants</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace rvn">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Directeur PINC</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace Directeur PINC</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Activités des enseignants</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                <nav>
+                    <a class="nav-Link " href="{{ path('index') }}" title="Activité professeur">
+                                <span class="fa fa-file"></span>
+                                <span>Activité professeur </span>
+                    </a>
+                </nav>
+            </aside> <!-- /aside Left -->
+            <!-- main Bloc -->
+            <article>
+                <div class="title-group">
+                    <p class="sup-title">DIR PINC</p>
+                    <h5 class="title-bloc">Activités des enseignants</h5>
+                </div>
+                 <section class="mesCours-content" style="width: 100%">
+                    <div>
+                        
+
+                       <div class="card">
+                            <div class="card-body">
+                                <form action="{{ path('find_by_mention') }}" method="get" id="searchFormMention">
+                                    <div class="form-group">
+                                       
+                                        <select name="mention" id="mention" class="form-control">
+                                            <option value="">Sélectionnez une mention</option>
+                                            {% for mention in mentions %}
+                                                <option value="{{ mention.nom }}">{{ mention.nom }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    
+                                </form>
+                                </br>
+                                <form action="{{ path('find_by_prof') }}" method="get" id="searchForm">
+                                    <div class="form-group">
+                                       
+                                        <select name="enseignant" id="enseignant" class="form-control">
+                                            <option value="">Sélectionnez un enseignant</option>
+                                            {% for prof in profs %}
+                                                <option value="{{ prof.firstName ~ ' ' ~ prof.lastName }}">{{ prof.firstName ~ ' ' ~ prof.lastName }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                        </br>
+
+
+
+<!-- tableau -->
+                       
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col" width="20%">Unité d'enseignement</th>
+                                        <th scope="col" width="20%">Matière</th>
+                                        <th scope="col" width="40%">Cours</th>
+                                        <th scope="col" width="20%">Enseignant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for key, item in result %}
+                                        <tr>
+                                            <td rowspan="{{ item['MATIERES']|length }}">{{ item['UE'] }}</td>
+                                            {% for matiereId, matiere in item['MATIERES'] %}
+                                                {% if loop.index > 1 %}
+                                                    <tr>
+                                                {% endif %}
+                                                <td>{{ matiere['NOM'] }}</td>
+                                                <td>
+                                                    {% for coursId, cours in matiere['COURS'] %}
+                                                        <a class="text-danger" href="{{ path('find_by_prof', { id: 1 }) }}">  {{ cours['LIBELLE'] }}<br>
+                                                    {% endfor %}
+                                                </td>
+                                                <td>{{ matiere['ENSEIGNANT'] }}</td>
+                                                {% if loop.index > 1 %}
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+<!-- /tableau -->
+                    </div>
+                </section>
+               
+                
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#enseignant').change(function() {
+                // Dès que la sélection change, soumettez automatiquement le formulaire
+                $('#searchForm').submit();
+            });
+            $('#mention').change(function() {
+                // Dès que la sélection change, soumettez automatiquement le formulaire
+                $('#searchFormMention').submit();
+            });
+        });
+</script>
+{% endblock %}
+
+
+
+
+

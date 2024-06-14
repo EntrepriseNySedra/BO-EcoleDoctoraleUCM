@@ -1,0 +1,90 @@
+<style>
+    .form-group legend {
+        font-size: 15px;
+    }
+    .invalid-feedback {
+        display: block;
+        color: white;
+        background-color: #E5343D;
+        border-color: #BD000A;
+    }
+</style>
+
+{% set action = path('admin_concours_add') %}
+{% if concours.id %}
+   {% set action = path('admin_concours_edit', { id: concours.id }) %}
+{% endif %}
+<form id="concours-new" method="POST" class="page-form-edit-new form-validation" role="form" action="{{action}}">
+    {{ form_errors(form) }}
+    {{ form_row(form._token) }}
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-bd">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Information concernant le concours</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        {{ form_label(form.libelle, 'Titre') }}
+                        {{ form_widget(form.libelle) }}
+                    </div>
+                    {#<div class="form-group row">
+                        <label for="concours_startDate" class="col-sm-3 col-form-label">Date de début</label>
+                        <div class="col-sm-12">
+                            <input type="text" id="concours_startDate" name="concours[startDate]" required="required" class="form-control" {% if concours.startDate %} value="{{ concours.getFormatedStartDate }}" {% endif %}>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="concours_endDate" class="col-sm-3 col-form-label">Date de fin</label>
+                        <div class="col-sm-12">
+                            <input type="text" id="concours_endDate" name="concours[endDate]" required="required" class="form-control" {% if concours.endDate %} value="{{ concours.getFormatedEndDate }}" {% endif %}>
+                        </div>
+                    </div>#}
+                    {#<div class="form-group">
+                        {{ form_label(form.annee_universitaire, 'Année universitaire *') }}
+                        {{ form_widget(form.annee_universitaire) }}
+                    </div>#}
+                    <div class="form-group">
+                        {{ form_label(form.startDate, 'Date de début') }}
+                        {{ form_widget(form.startDate) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.endDate, 'Date de fin') }}
+                        {{ form_widget(form.endDate) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.deliberation, 'Déliberation') }}
+                        {{ form_widget(form.deliberation) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.mention, 'Mention') }}
+                        {{ form_widget(form.mention) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.niveau, 'Niveau') }}
+                        {{ form_widget(form.niveau) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.parcours, 'Parcours') }}
+                        {{ form_widget(form.parcours) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.signataire, 'Signataire') }}
+                        {{ form_widget(form.signataire) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-bd">
+                <div class="panel-body">
+                    <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

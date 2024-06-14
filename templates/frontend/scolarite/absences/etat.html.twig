@@ -1,0 +1,198 @@
+{% extends layout_frontend %}
+{% block title %}Gestion absences{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Gestion absence</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace RVN</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace rvn</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Gestion absences</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+               {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Scolarité</p>
+                    <h2 class="title-bloc">Etat d'absence</h2>
+                </div>
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <!-- filter block -->
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="filter-form" autocomplete="off">
+                                    <div class="form-group row">
+                                        <label class="col-xl-1">Mention :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="mention" id="mention">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for men in mentions %}
+                                                    <option value="{{ men.id }}" {% if m is defined and men.id == m %}selected{% endif %}>{{ men.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <label class="col-xl-1">Niveau :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="niveau" id="niveau">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for niv in niveaux %}
+                                                    <option value="{{ niv.id }}" {% if n is defined and niv.id == n %}selected{% endif %}>{{ niv.libelle }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <label class="col-xl-1">Parcours :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="parcours" id="parcours">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for parc in parcours %}
+                                                    <option value="{{ parc.id }}" {% if p is defined and parc.id == p %}selected{% endif %}>{{ parc.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <label class="col-xl-2 mt-4">Semestres :</label>
+                                        <div class="form-field select-field col-xl-4 mt-4">
+                                            <select class="form-control" name="semestre" id="semestre">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for sem in semestres %}
+                                                    <option value="{{ sem.id }}" {% if s is defined and sem.id == s %}selected{% endif %}>{{ sem.libelle }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <label class="col-xl-2 mt-4">Matieres :</label>
+                                        <div class="form-field select-field col-xl-4 mt-4">
+                                            <select class="form-control" name="matiere" id="matiere">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for mat in matieres %}
+                                                    <option value="{{ mat.id }}" {% if mt is defined and mat.id == mt %}selected{% endif %}>{{mat.semestre}} {{ mat.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                                </br>
+                                <!-- Bouton pour télécharger le fichier Excel -->
+                                    <div class="export-button">
+                                        <div class="export-button d-flex justify-content-center">
+                                            <a href="{{ path('export_absences_excel') }}" class="btn btn-primary">Exporter vers Excel</a>
+
+                                        </div>
+                                    </div>
+                        </div>
+                    </div> <!-- /filter block -->
+
+                    
+                    <div class="tab-pane fade show" id="validated" role="tabpanel" aria-labelledby="validated-tab">
+                        <div class="dt-custom-title hidden">
+                            Liste absences 
+                        </div>
+                        <div class="table-responsive table-wrapper">
+                            {% if list is defined and list | length > 0 %}
+                                <table class="table table-bordered table-hover list-data table-advance" id="list-validated">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th class="text-center">Date</th> -->
+                                            <!-- <th class="text-center">Heure</th> -->
+                                            <th class="text-center">Etudiant</th>
+                                            <th class="text-center">Absence</th>
+                                            <th class="text-center">Absence Justifiée</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in list %}
+                                            <tr class="middle-align">
+                                                {# <td class="w-15">{{ item.date | date('d/m/Y') }}</td>
+                                                <td class="w-15">{{ item.start_time | date('G\\h:i') }}-{{ item.end_time | date('G\\h:i') }}</td> #}
+                                                <td class="w-30">{{ item.last_name }} {{ item.first_name }}</td>
+                                                <td class="w-10 text-center">{{ item.nbrAbsence }}</td>
+                                                <td class="w-10 text-center">{{ item.nbrJustifiedAbsence }}</td>
+                                               
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+   <script>
+     (function($) {
+        $(document).ready(function() {
+
+            // Fonction pour récupérer les données
+            function getDataForSelection() {
+                let p = $('#parcours :selected').val();
+                let n = $('#niveau :selected').val();
+                let m = $('#mention :selected').val();
+                let s = $('#semestre :selected').val();
+                let mt = $('#matiere :selected').val();
+
+                // Redirection vers la route Symfony pour récupérer les données mises à jour
+                window.location.href = '{{ path('front_scol_absence_etat')}}' + "?m=" + m + "&p=" + p + "&n=" + n + "&s=" + s + "&mt=" + mt;
+            }
+
+            // Gestion du clic sur le bouton d'export
+            $('.export-button a').on('click', function(e) {
+                e.preventDefault(); // Empêche le comportement par défaut du lien
+                let p = $('#parcours :selected').val();
+                let n = $('#niveau :selected').val();
+                let m = $('#mention :selected').val();
+                let s = $('#semestre :selected').val();
+                let mt = $('#matiere :selected').val();
+
+                // Redirection vers la route Symfony pour récupérer les données mises à jour
+                window.location.href = '{{ path('export_absences_excel')}}' + "?m=" + m + "&p=" + p + "&n=" + n + "&s=" + s + "&mt=" + mt;
+                
+            });
+
+            // Gestion des changements de sélection
+            $('#semestre, #niveau, #mention, #parcours, #matiere').on('change', function() {
+                getDataForSelection(); // Récupérer les données
+            });
+
+        });
+    })(jQuery);
+</script>
+{% endblock %}

@@ -1,0 +1,94 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('SubventionRecherche_add') %}
+{% if SubventionRecherche.id %}
+    {% set action = path('SubventionRecherche_edit', { id: SubventionRecherche.id }) %}
+{% endif %}
+<section class="content">
+    <form id="actualite-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Ajouter des Subventions de Recherches</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Subvention de Recherche: informations principales</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                            
+                        <div class="form-group">
+                            {{ form_label(form.name, 'Nom') }}
+                            {{ form_widget(form.name) }}
+                        </div>
+
+                         <div class="form-group">
+                            {{ form_label(form.projetRecherche, 'Projet de Recherche') }}
+                            {{ form_widget(form.projetRecherche) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.sourceFinancement, 'SourceFinancement') }}
+                            {{ form_widget(form.sourceFinancement) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.exemple, 'Exemple') }}
+                            {{ form_widget(form.exemple) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.critere, 'Critere') }}
+                            {{ form_widget(form.critere) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.procedureCandidature, 'ProcedureCandidature') }}
+                            {{ form_widget(form.procedureCandidature) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.avantages, 'Avantages') }}
+                            {{ form_widget(form.avantages) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.image, 'images') }}
+                            {{ form_widget(form.image) }}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-actualite-form">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+</section>

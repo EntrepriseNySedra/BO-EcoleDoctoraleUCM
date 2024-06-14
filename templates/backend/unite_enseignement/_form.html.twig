@@ -1,0 +1,101 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_rf_unite_enseignements_new') %}
+{% if unite_enseignements.id %}
+    {% set action = path('admin_rf_unite_enseignements_edit', { id: unite_enseignements.id }) %}
+{% endif %}
+<section class="content">
+    <form id="unite_enseignements-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if unite_enseignements.id %}
+                            <h4>Modification unités d'enseignement</h4>
+                        {% else %}
+                            <h4>Ajout unité d'enseignement</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(formUE) }}
+                            {{ form_row(formUE._token) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formUE.libelle, 'Libelle') }}
+                            {{ form_widget(formUE.libelle) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formUE.type, 'Type') }}
+                            {{ form_widget(formUE.type) }}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required" for="unite_enseignement_mention">Mention *</label>
+                            <select id="unite_enseignement_mention" name="unite_enseignement[mention]" class="form-control">
+                                <option> -- Selectionnez -- </option>
+                                    {% for mention in mentions %}
+                                        <option 
+                                        {% if unite_enseignements.mention.id is defined and mention.id == unite_enseignements.mention.id %} selected {% endif %}
+                                         value="{{ mention.id }}">{{ mention.nom }}</option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formUE.niveau, 'Niveau *') }}
+                            {{ form_widget(formUE.niveau) }}
+                        </div>
+                        <div class="form-group">
+                            <label class="required" for="unite_enseignement_parcours">Parcours</label>
+                            <select id="unite_enseignement_parcours" name="unite_enseignement[parcours]" class="form-control">
+                                <option value=""> -- Selectionnez -- </option>
+                                {% if unite_enseignements.mention %}
+                                    {% for parcr in parcours %}
+                                        <option 
+                                        {% if unite_enseignements.parcours.id is defined and parcr.id == unite_enseignements.parcours.id %} selected {% endif %}
+                                         value="{{ parcr.id }}">{{ parcr.nom }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formUE.semestre, 'Semestre *') }}
+                            {{ form_widget(formUE.semestre) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formUE.credit, 'Crédits *') }}
+                            {{ form_widget(formUE.credit) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(formUE.active, 'Active') }}
+                            {{ form_widget(formUE.active) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if unite_enseignements.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+</section>

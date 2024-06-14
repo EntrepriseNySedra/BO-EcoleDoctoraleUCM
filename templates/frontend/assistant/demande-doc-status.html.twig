@@ -1,0 +1,133 @@
+{% extends layout_teacher %}
+{% block title %}Espace assistant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Edition document</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><span>Statut document</span></li>
+            </ol>
+        </nav><!-- /breadcrumb -->
+
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <!-- content Edition document -->
+                <section class="content document-edit-content">
+                    <form action="{{ path('front_assistant_demande_doc_status') }}" id="demande-de-doc-edit" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+                        <div class="panel panel-bd">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <h4 class="text-dark">Statut document</h4>
+                                </div>
+                            </div>
+                            {% if demandeDoc is defined %}
+                                <div class="alert alert-info" role="alert">
+                                <strong>Matricule:</strong> {{ demandeDoc.matricule }} <br>
+                                <strong>Civilité:</strong> {{ demandeDoc.civility }} <br>
+                                <strong>Nom:</strong> {{ demandeDoc.firstName }} <br>
+                                <strong>Prénom:</strong> {{ demandeDoc.lastName }} <br>
+                                <strong>Description:</strong> {{ demandeDoc.description }}  <br>
+                                <strong>Quantité:</strong> {{ demandeDoc.quantity }}  <br>
+                                <strong>Type:</strong> {{ demandeDoc.type.libelle }}  <br>
+                                <strong>Date de création:</strong> {{ demandeDoc.createdAt|date('H:i:s') }} <br>
+                                <strong>Date de modification:</strong> {{ demandeDoc.updatedAt|date('H:i:s') }}
+                                </div>
+                            {% endif %}
+                            <div class="panel-body">
+                                {% if demandeDoc is defined %}
+                                    <input type="hidden" name="docId" id="id-doc" value="{{ demandeDoc.id }}" />
+                                    <!-- status -->
+                                    <select id="status-doc" name="status" required="required" class="form-control">
+                                        <option value="" selected="selected">-- Séléctionnez --</option>
+                                        {% if demandeDoc.statut != constant('App\\Entity\\DemandeDoc::STATUS_VALIDATED')  %}
+                                            <option value="CREATED"     {% if demandeDoc.statut == "CREATED"  %} selected="selected" {% endif %}>Créé  </option>
+                                            <option value="VERIFIED"    {% if demandeDoc.statut == "VERIFIED"  %} selected="selected" {% endif %}>Vérifié</option>
+                                            <option value="REJECTED"    {% if demandeDoc.statut == "REJECTED"  %} selected="selected" {% endif %}>Rejeté</option>
+                                        {% endif %}
+
+                                        {% if demandeDoc.statut == "ARCHIVED"  %}
+                                            <option value="ARCHIVED"    {% if demandeDoc.statut == "ARCHIVED"  %} selected="selected" {% endif %}>Archivé</option>
+                                        {% endif %}
+                                    </select>
+                                {% endif %}
+                                <div class="form-group">
+                                    <div class="alert alert-danger doc-required-fields" role="alert" style="display: none;"> Merci de renseigner le statut </div>
+                                </div>
+                            </div>
+                            <div class="panel-body text-right m-t-20">
+                                <a href="{{ path('front_assistant_demande_doc_list') }}" type="button" class="btn btn-primary cancel">Annuler</a>
+                                <button type="button" class="btn btn-primary" id="btn-submit-edt-status">Valider</button>
+                            </div>
+                        </div>
+                        <div class="panel panel-bd">
+                        </div>
+                    </form>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $(".doc-required-hide").hide();
+                $('#btn-submit-edt-status').bind('click', function(){
+                    docId       = $("#id-doc").val();
+                    status      = $("#status-doc").val();
+                    if(status === "-- Séléctionnez --"){
+                        $(".doc-required-fields").show();
+                    }
+                    else{
+                        $.ajax({
+                            method: "POST",
+                            url: "{{ path('front_assistant_demande_doc_status')}}",
+                            data: {
+                                docId   :docId,
+                                status  :status,
+                            }
+                        }).done(
+                            function(html){
+                                location.href = '{{ path('front_assistant_demande_doc_list') }}';
+                            }
+                        )
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

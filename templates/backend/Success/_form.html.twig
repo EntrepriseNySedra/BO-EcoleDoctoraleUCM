@@ -1,0 +1,74 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('Success_add') %}
+{% if Success.id %}
+    {% set action = path('Success_edit', { id: Success.id }) %}
+{% endif %}
+<section class="content">
+    <form id="actualite-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Ajouter des Success stories</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Success: informations principales</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                            
+                        <div class="form-group">
+                            {{ form_label(form.name, 'Nom') }}
+                            {{ form_widget(form.name) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.user, 'User') }}
+                            {{ form_widget(form.user) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.description, 'Description') }}
+                            {{ form_widget(form.description) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.image, 'images') }}
+                            {{ form_widget(form.image) }}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-actualite-form">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+</section>

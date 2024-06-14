@@ -1,0 +1,151 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_rf_matiere_new') %}
+{% if matiere.id %}
+    {% set action = path('admin_rf_matiere_edit', { id: matiere.id }) %}
+{% endif %}
+<section class="content">
+    <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        {% if(unite_enseignement|length == 0 ) %}
+            <div class="col-sm-12 alert alert-warning" style="border:none;border-radius:0;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                Renseigner au moins une unité d'enseignement.
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if matiere.id %}
+                            <h4>Modification matière</h4>
+                        {% else %}
+                            <h4>Ajout matière</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(formMatiere) }}
+                            {{ form_row(formMatiere._token) }}
+                        </div>               
+                        
+                        <!-- MENTION -->
+                        <div class="form-group">
+                            <label class="required" for="matiere_ue_mention">Mention</label>
+                            <select id="matiere_ue_mention" name="matiere_ue[mention]" class="form-control">
+                                <option> -- Selectionnez -- </option>
+                                    {% for mention in mentions %}
+                                        <option 
+                                        {% if matiere.uniteEnseignements.mention.id is defined and mention.id == matiere.uniteEnseignements.mention.id %} selected {% endif %}
+                                         value="{{ mention.id }}">{{ mention.nom }}</option>
+                                    {% endfor %}
+                            </select>
+                        </div>                        
+                       
+                       <!-- NIVEAU -->
+                        <div class="form-group">
+                            <label class="required" for="matiere_ue_niveau">Niveau</label>
+                            <select id="matiere_ue_niveau" name="matiere_ue[niveau]" class="form-control">
+                                <option value=""> -- Selectionnez -- </option>
+                                {% for niv in niveaux %}
+                                    <option 
+                                    {% if matiere.uniteEnseignements.niveau.id is defined and niv.id == matiere.uniteEnseignements.niveau.id %} selected {% endif %}
+                                        value="{{ niv.id }}">{{ niv.libelle }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- PARCOURS -->
+                        <div class="form-group">
+                            <label class="required" for="matiere_ue_parcours">Parcours</label>
+                            <select id="matiere_ue_parcours" name="matiere_ue[parcours]" class="form-control">
+                                <option value=""> -- Selectionnez -- </option>
+                                {% if matiere.uniteEnseignements.mention is defined %}
+                                    {% for parcr in parcours %}
+                                        <option 
+                                        {% if matiere.uniteEnseignements.parcours.id is defined and parcr.id == matiere.uniteEnseignements.parcours.id %} selected {% endif %}
+                                         value="{{ parcr.id }}">{{ parcr.nom }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <!-- SEMESTRE -->
+                        <div class="form-group">
+                            <label class="required" for="matiere_ue_semestre">Semestre</label>
+                            <select id="matiere_ue_semestre" name="matiere_ue[semestre]" class="form-control">
+                                <option value=""> -- Selectionnez -- </option>
+                                {% if matiere.uniteEnseignements.semestre is defined %}
+                                    {% for sem in semestres %}
+                                        <option 
+                                        {% if matiere.uniteEnseignements.semestre.id is defined and sem.id == matiere.uniteEnseignements.semestre.id %} selected {% endif %}
+                                         value="{{ sem.id }}">{{ sem.libelle }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <!-- UE -->
+                        <div class="form-group">
+                            {{ form_label(formMatiere.uniteEnseignements, 'Unite enseignements *') }}
+                            {{ form_widget(formMatiere.uniteEnseignements, {'attr':{'required':'required'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(formMatiere.nom, 'Nom *') }}
+                            {{ form_widget(formMatiere.nom) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(formMatiere.code, 'Code') }}
+                            {{ form_widget(formMatiere.code) }}
+                        </div> 
+                        <div class="form-group">
+                            {{ form_label(formMatiere.credit, 'Credit *') }}
+                            {{ form_widget(formMatiere.credit) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMatiere.volumeHoraireTotal, 'Volume horaire') }}
+                            {{ form_widget(formMatiere.volumeHoraireTotal) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMatiere.etudeTheorique, 'Etude théorique') }}
+                            {{ form_widget(formMatiere.etudeTheorique) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMatiere.travauDirige, 'Travaux dirigé') }}
+                            {{ form_widget(formMatiere.travauDirige) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMatiere.tauxHoraire, 'Taux horaire') }}
+                            {{ form_widget(formMatiere.tauxHoraire) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formMatiere.active, 'Active') }}
+                            {{ form_widget(formMatiere.active) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if matiere.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

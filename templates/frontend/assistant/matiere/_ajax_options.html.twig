@@ -1,0 +1,33 @@
+<!-- parcours -->
+{% if parcours is defined and parcours | length > 0 %}
+    <option value="" selected="selected">-- Séléctionnez --</option>
+    {% for parc in parcours %}
+        <option value="{{ parc.id }}">{{ parc.nom }} </option>
+    {% endfor %}
+{% endif %}
+
+<!-- enseignant -->
+{% if enseignants is defined and enseignants | length > 0 %}
+    <option value="" selected="selected">-- Séléctionnez --</option>
+    {% for enseignant in enseignants %}
+        <option value="{{ enseignant.id }}">{{ enseignant.first_name }} {{ enseignant.last_name }}</option>
+    {% endfor %}
+{% endif %}
+
+<!-- ue -->
+{% if uniteEnseignements is defined and uniteEnseignements | length > 0 %}
+    <option value="" selected="selected">-- Séléctionnez --</option>
+    {% for ue in uniteEnseignements %}
+        <option value="{{ ue.id }}">{{ ue.libelle }} </option>
+    {% endfor %}
+{% endif %}
+
+<!-- matiere -->
+{% if matieres is defined and matieres | length > 0 %}
+    <option value="" selected="selected">-- Séléctionnez --</option>
+    {% for mat in matieres %}
+        <option value="{{ mat.id }}">{{ mat.nom }} </option>
+    {% endfor %}
+{% endif %}
+
+

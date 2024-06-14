@@ -1,0 +1,153 @@
+{% extends "frontend/layout/base-email-pdf.html.twig" %}
+
+{% block title %}Confirmation candidature{% endblock %}
+
+{% block body %}
+    <tr>
+        <td data-bgcolor="bg-module" >
+            <table class="flexible" width="600" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td data-bgcolor="bg-block" class="holder" style="padding:58px 60px 52px;" bgcolor="#f9f9f9">
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td data-color="title" data-size="size title" data-min="25" data-max="45"
+                                    data-link-color="link title color"
+                                    data-link-style="text-decoration:none; color:#292c34;"
+                                    class="title" align="left">
+                                    <img src="{{ absolute_url(asset('/assets/images/design/ucm_logo_redbg.png')) }}" colspan="2">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td data-color="title" data-size="size title" data-min="25" data-max="45"
+                                    data-link-color="link title color"
+                                    data-link-style="text-decoration:none; color:#292c34;text-transform: uppercase;"
+                                    class="title" align="center"
+                                    style="font:35px/38px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;" colspan="2">
+                                    CONVOCATION
+                                    <br>
+                                </td>
+                            </tr>
+                            {% if concours %}
+                            <tr>
+                                <td data-color="title" data-size="size title" data-min="25" data-max="45"
+                                    data-link-color="link title color"
+                                    data-link-style="text-decoration:none; color:#292c34;text-transform: uppercase;"
+                                    class="title" align="center"
+                                    style="font:35px/38px Arial, Helvetica, sans-serif; color:#292c34; padding:0 0 24px;" colspan="2">
+                                    AU CONCOURS D'ENTREE EN {{ concours.niveau.libelle }} EN {{ concours.mention.nom }} - ANNEE UNIVERSITAIRE {{ concours.anneeUniversitaire.libelle }}
+                                    <br>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    <strong>{{ candidature.civility }}</strong>: {{ candidature.firstName }} {{ candidature.lastName }}
+                                </td>
+                                <td data-color="title" data-size="size title" data-min="25" data-max="45"
+                                    data-link-color="link title color"
+                                    data-link-style="text-decoration:none; color:#292c34;"
+                                    class="title" align="right">
+                                    <img src="{{ absolute_url(asset('/uploads/concours/')) ~ candidature.photo }}" width="100" height="100">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    <strong>Né le</strong>: {{ candidature.dateOfBirth | date('d M Y') }}
+                                </td>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    <strong>à</strong>: {{ candidature.birthPlace }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;" colspan="2">
+                                    Est invité à se présenter dans les locaux du centre d'examen : {% if concours.signataire %} <strong>{{ candidature.centre.name }}</strong>{% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;" colspan="2">
+                                    - Muni :<br>
+                                        * d'une pièce d'identité valide et valable <br>
+                                        * de la présente convocation
+                                </td>
+                            </tr>       
+                            
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:bold 16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;" colspan="3">
+                                    {% if emploiDuTemps|length > 0 %}
+                                        <table width="100%" cellspacing="0" cellpadding="0" border="1">
+                                            <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Heure</th>
+                                                <th>Matière</th>
+                                                <th>Salle</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for edt in emploiDuTemps %}
+                                                <tr>
+                                                    <td>{{ edt['startDate']|date('d/m/Y') }}</td>
+                                                    <td>
+                                                        {{ edt['startDate'] | format_time(timeFormat='short', locale='fr') }}
+                                                        <span class="fa fa-minus">-</span>
+                                                        {{ edt['endDate'] | format_time(timeFormat='short', locale='fr') }}
+                                                    </td>
+                                                    <td>{{ edt['matiere'] }}</td>
+                                                    <td>{{ edt['salle'] }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    <strong>Tél</strong>: +20 22 340 09
+                                </td>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    <strong>B.P</strong>: 6059, Ambatoroka
+                                </td>
+                                <td data-color="text" data-size="size text" data-min="10" data-max="26"
+                                    data-link-color="link text color"
+                                    data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
+                                    style="font:16px/25px Arial, Helvetica, sans-serif; color:#888; padding:0 0 23px;">
+                                    www.ucm.mg
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="28"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+{% endblock %}

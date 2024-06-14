@@ -1,0 +1,122 @@
+
+ <div class="col-md-2" style="width:13%;">
+    <div class="form-group row">
+        <label for="enseignant_immatricule" class="required">Matricule * :</label>
+    </div>
+</div>
+<div class="col-md-9">
+    <div class="form-group row">
+        <input type="text" id="enseignant_immatricule" name="enseignant[immatricule]" value="{{ enseignant.immatricule }}" required="required" maxlength="255" class="form-control">
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="form-group row">
+        <div class="col-xl-3">
+            <label for="enseignant_lastName" class="required">Nom * :</label>
+        </div>
+        <div class="col-xl-9">
+            <input type="text" id="enseignant_lastName" name="enseignant[lastName]" value="{{ enseignant.lastName }}" required="required" maxlength="255" class="form-control basicAutoComplete" autocomplete="off">
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <div class="col-xl-3">
+            <label for="enseignant_firstName">Prénom * :</label>
+        </div>
+        <div class="col-xl-9">
+            <input type="text" id="enseignant_firstName" name="enseignant[firstName]" value="{{ enseignant.firstName }}" required="required" maxlength="255" class="form-control">
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <div class="col-xl-3">
+            <label for="enseignant_email">Email * :</label>
+        </div>
+        <div class="col-xl-9">
+            <input type="text" id="enseignant_email" name="enseignant[email]" value="{{ enseignant.email }}" maxlength="255" class="form-control">
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <div class="col-xl-3">
+            <label for="enseignant_address">Adresse * :</label>
+        </div>
+        <div class="col-xl-9">
+            <input type="text" id="enseignant_address" name="enseignant[address]" value="{{ enseignant.address }}" maxlength="255" class="form-control">
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <div class="col-xl-3">
+            <label for="enseignant_phone">Téléphone * :</label>
+        </div>
+        <div class="col-xl-9">
+            <input type="text" id="enseignant_phone" name="enseignant[phone]" value="{{ enseignant.phone }}" maxlength="20" class="form-control">
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <div class="col-xl-3">
+            <label class="required" for="enseignant_civility">Civilité :</label>
+        </div>
+        <div class="col-xl-9">
+            <select id="enseignant_civility" name="enseignant[civility]" required="required" class="form-control">
+                <option value="">-- Sexe --</option>
+                <option value="FEMME" {% if (enseignant.civility == 'FEMME') %} selected="selected" {% endif %}>Femme</option>
+                <option value="HOMME" {% if (enseignant.civility == 'HOMME') %} selected="selected" {% endif %}>Homme</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="form-group row">
+        <div class="col-md-1" style="width:12.5%;">
+            <label for="enseignant_bank_name">Banque :</label>
+        </div>
+        <div class="col-md-11" style="width:87.5%;">
+            <input type="text" id="enseignant_bank_name" name="enseignant[bank_name]" value="{{ enseignant.bankName }}" class="form-control">
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="form-group row">
+        <div class="col-md-1" style="width:12.5%;">
+            <label for="enseignant_bank_num">RIB :</label>
+        </div>
+        <div class="col-md-11" style="width:87.5%;">
+            <input type="text" id="enseignant_bank_num" name="enseignant[bank_num]" value="{{ enseignant.bankNum }}" class="form-control">
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group row">
+        <div class="col-xl-3">
+            <label for="enseignant_pathCv">CV :</label>
+        </div>
+        <div class="col-xl-9">
+            <div class="custom-file">
+                <input type="file" id="enseignant_pathCv" name="enseignant[pathCv]" value="{{ enseignant.pathCv }}" class="custom-file-input"><label for="enseignant_pathCv" class="custom-file-label"></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="form-group row">
+        <div class="col-xl-3">
+            <label for="enseignant_pathDiploma">Diplôme :</label>
+        </div>
+        <div class="col-xl-9">
+            <div class="custom-file">
+                <input type="file" id="enseignant_pathDiploma" name="enseignant[pathDiploma]" value="{{ enseignant.pathDiploma }}" class="custom-file-input"><label for="enseignant_pathDiploma" class="custom-file-label"></label>
+            </div>
+        </div>
+    </div>
+</div>
+                                        

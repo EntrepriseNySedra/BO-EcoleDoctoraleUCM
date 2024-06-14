@@ -1,0 +1,150 @@
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+    <!-- jquery-ui css -->
+    <link href="{{ asset('bo/assets/plugins/jquery-ui-1.12.1/jquery-ui.min.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Demande de document</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="{{ path('front_student_emploi_du_temps') }}" title="Formation">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Demande de document</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {% if app.request.get('_route') == 'front_assistant_demande_doc_edit' %}
+                    {{ include('frontend/assistant/_menu.html.twig') }}
+                {% else %}
+                    {{ include('frontend/etudiant/_menu.html.twig') }}
+                {% endif %}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Espace étudiant</p>
+                    <h2 class="title-bloc">Envoie document</h2>
+                </div>
+                <!-- demande de document -->
+                <section class="content demandeDoc-content">
+                   
+
+
+                    <div class="form-bloc">
+                        
+                        <form id="request-doc" method="POST" class="page-form-edit-new form-validation"
+                            enctype="multipart/form-data" role="form">
+                        
+                            {{ form_errors(form) }}
+                            {{ form_row(form._token) }}
+                                                        
+                            <div class="row">                                                               
+                                
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <div class="col-xl-4 label-content">{{ form_label(form.nom, 'Nom :') }}</div>
+                                        <div class="col-xl-8">
+                                            {{ form_widget(form.nom) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <div class="col-xl-4 label-content">
+                                            {{ form_label(form.description, 'Description :') }}
+                                        </div>
+                                        <div class="col-xl-8">
+                                            {{ form_widget(form.description) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <div class="col-xl-4 label-content">
+                                            {{ form_label(form.path, 'Document :') }}
+                                        </div>
+                                        <div class="col-xl-8">
+                                            {{ form_widget(form.path) }}
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </div>
+
+                            <div class="groups-btn justify-content-end mt-0">
+                                <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('bo/assets/js/jquery.mask.min.js') }}" type="text/javascript"></script>
+    <!-- jquery-ui -->
+    <script src="{{ asset('bo/assets/plugins/jquery-ui-1.12.1/jquery-ui.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bo/assets/plugins/jquery-ui-1.12.1/datepicker-fr.js') }}" type="text/javascript"></script>
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $( "#demande_birthDate" ).mask('00/00/0000');
+
+                $.datepicker.regional['fr'];
+                $( "#demande_birthDate" ).datepicker();
+
+
+                $('#demande_type').bind('change', function(){
+                    type = $(this).val();
+                    if(type == 2) {
+                        $('#diplome_bloc').show()
+                    } else {
+                        $('#diplome_bloc').hide()
+                    }
+                });
+
+                
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}
+

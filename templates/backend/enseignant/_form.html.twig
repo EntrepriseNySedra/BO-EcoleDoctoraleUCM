@@ -1,0 +1,108 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_enseignant_add') %}
+{% if enseignant.id %}
+    {% set action = path('admin_enseignant_edit', { id: enseignant.id }) %}
+{% endif %}
+<section class="content">
+    <form id="enseignant-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Enseignant</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        
+                        <div class="form-group">
+                            {{ form_label(form.immatricule, 'Matricule') }}
+                            {{ form_widget(form.immatricule) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.firstName, 'Nom *') }}
+                            {{ form_widget(form.firstName) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.lastName, 'Prénom *') }}
+                            {{ form_widget(form.lastName) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.email, 'Email *') }}
+                            {{ form_widget(form.email) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.address, 'Adresse *') }}
+                            {{ form_widget(form.address) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.phone, 'Téléphone *') }}
+                            {{ form_widget(form.phone) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.civility, 'Actions ') }}
+                            {{ form_widget(form.civility) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.bank_num, 'RIB ') }}
+                            {{ form_widget(form.bank_num) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.bank_name, 'BANQUE ') }}
+                            {{ form_widget(form.bank_name) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.pathCv, 'CV ') }}
+                            {{ form_widget(form.pathCv) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.pathDiploma, 'Diplôme ') }}
+                            {{ form_widget(form.pathDiploma) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.status, 'Active ') }}
+                            {{ form_widget(form.status) }}
+                        </div>
+                        {#<div class="form-group">
+                            {% if(mentions | length > 0) %}
+                            <select name="mention[]" required="required" class="form-control" multiple="multiple">
+                                {% for mention in mentions %}
+                                <option value="{{ mention.id }}">{{ mention.nom ~' '~mention.active }} </option>
+                                {% endfor %}
+                            </select>
+                            {% endif %}
+                        </div>#}
+                        {#<div class="form-group">
+                            {% if(niveaux | length > 0) %}
+                            <select name="niveau[]" required="required" class="form-control" multiple="multiple">
+                                {% for niveau in niveaux %}
+                                <option value="{{ niveau.id }}">{{ niveau.libelle }} </option>
+                                {% endfor %}
+                            </select>
+                            {% endif %}
+                        </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

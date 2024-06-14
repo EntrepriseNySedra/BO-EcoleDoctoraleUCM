@@ -1,0 +1,71 @@
+{% extends layout_backend %}
+{% set menuConcours = true %}
+{% set menuConcoursAdd = true %}
+{% block pageicon %}
+    pe-7s-cup
+{% endblock %}
+{% block title %}{{ parent() }}
+    Création d'un concours
+{% endblock %}
+{% block pagetitle %}
+    Création d'un concours
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/concours/_form.html.twig') }}
+    {#<a href="{{ path('admin_users_list') }}">back to list</a>#}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            _defaultOption = "<option> -- Parcours -- </option>";
+            $( "#concours_startDate" ).mask('00/00/0000');
+            $( "#concours_endDate" ).mask('00/00/0000');
+
+            $.datepicker.regional['fr'];
+            $( "#concours_startDate" ).datepicker();
+            $( "#concours_endDate" ).datepicker({ minDate: 0 });
+        
+            $('#concours_mention').bind('change', function(){
+                _niveauId = $('#concours_niveau').val();
+                if(_niveauId > 0) {
+                    _mentionId  = $(this).val();
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('admin_concours_parcours_options') }}",
+                        data: {
+                            niveau_id : _niveauId,
+                            mention_id: _mentionId,
+                        }
+                    }).done(
+                        function(html){
+                            $('#concours_parcours').html(html);
+                        }
+                    );   
+                } else {
+                    $('#concours_parcours').html(_defaultOption);
+                }
+            });
+
+            $('#concours_niveau').bind('change', function(){
+                _niveauId   = $(this).val();
+                _mentionId  = $('#concours_mention').val();
+                $.ajax({
+                    method: "GET",
+                    url: "{{ path('admin_concours_parcours_options') }}",
+                    data: {
+                        niveau_id : _niveauId,
+                        mention_id: _mentionId,
+                    }
+                }).done(
+                    function(html){
+                        $('#concours_parcours').html(html);
+                    }
+                );                    
+            });
+        });
+    </script>
+{% endblock %}

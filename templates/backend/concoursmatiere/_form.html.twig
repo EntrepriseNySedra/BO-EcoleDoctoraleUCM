@@ -1,0 +1,71 @@
+<style>
+    .form-group legend {
+        font-size: 15px;
+    }
+    .invalid-feedback {
+        display: block;
+        color: white;
+        background-color: #E5343D;
+        border-color: #BD000A;
+    }
+</style>
+
+{% set action = path('admin_concours_matiere_add') %}
+{% if matieres.id %}
+   {% set action = path('admin_concours_matiere_edit', { id: matieres.id }) %}
+{% endif %}
+<form id="agency-new" method="POST" class="page-form-edit-new form-validation" role="form" action="{{action}}">
+    {{ form_errors(form) }}
+    {{ form_row(form._token) }}
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-bd">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Information concernant la matière</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        {{ form_label(form.libelle, 'Titre') }}
+                        {{ form_widget(form.libelle) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.concours, 'Concours associé') }}
+                        {{ form_widget(form.concours) }}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required" for="concours_matiere_mention">Mention associée</label>
+                        <select id="concours_matiere_mention" name="concours_matiere[mention]" required="required" class="form-control">
+                            <option value="">-- Mention --</option>
+                            {% for mention in mentions %}
+                                <option 
+                                {% if matieres.mention.id is defined and mention.id == matieres.mention.id %}
+                                    selected
+                                {% endif %}
+                                value="{{mention.id}}">{{ mention.nom }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.parcours, 'Parcours associé') }}
+                        {{ form_widget(form.parcours) }}
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-bd">
+                <div class="panel-body">
+                    <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

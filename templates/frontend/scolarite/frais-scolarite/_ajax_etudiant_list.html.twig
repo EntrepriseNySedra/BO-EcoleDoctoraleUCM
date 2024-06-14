@@ -1,0 +1,6 @@
+<option value="" selected="selected">-- Etudiant --</option>
+{% if etudiants is defined and etudiants | length > 0 %}
+    {% for etd in etudiants %}
+        <option value="{{ etd.id }}">{{ etd.last_name }} {{ etd.first_name }}</option>
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,90 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_rubriques_add') %}
+{% if rubrique.id %}
+    {% set action = path('admin_rubriques_edit', { id: rubrique.id }) %}
+    {% set parent = rubrique.parent %}
+{% endif %}
+<section class="content">
+    <form id="rubrique-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Rubrique</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        {% if rubrique.parent() == null or rubrique.parent() == 1 %}
+                        {% set checked = rubrique.parent() == 1 ? "checked" : "" %}
+                        {% set disabled = rubrique.parent() == 1 ? "disabled" : "" %}
+                        {#<div class="form-group">
+                            <div class="checkbox  checkbox-success">
+                                <input id="checkbox" {{ checked }}  {{ disabled }} name="rubrique_menu" type="checkbox">
+                                <label for="checkbox">Menu [Cocher dans le cas ou vous voulez créer un menu ]</label>
+                            </div>
+                            <input type="hidden" id="rubrique_parent" name="rubrique[parent]" value="1">
+                        </div>#}
+                        {% endif %}
+                        {#%  if rubrique.parent() != 1 %#}
+                            <div class="form-group">
+                                {{ form_widget(form.parent) }}
+                                <label for="rubrique_parent" class="">Parent </label>
+                                <select id="rubrique_ressourceType" name="rubrique[parent]" class="form-control">
+                                    {% if(rubriques|length == 0) %}
+                                        <option value="1">Rubrique  par défaut</option>
+                                    {% else %}
+                                        {% for rubrique in rubriques %}
+                                            {% set state ="" %}
+                                            {% if(parent is defined and parent == rubrique.id) %}
+                                                {% set state ="selected='selected'" %}
+                                            {% endif %}
+                                            <option {{ state }} value="{{ rubrique.id }}">{{ rubrique.title }}</option>
+                                        {% endfor %}
+                                    {%  endif %}
+                                </select>
+                            </div>
+                        {#% endif %#}
+                        <div class="form-group">
+                            {{ form_label(form.title, 'Titre *') }}
+                            {{ form_widget(form.title) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.code, 'Code') }}
+                            {{ form_widget(form.code) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.description, 'Description *') }}
+                            {{ form_widget(form.description) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.details, 'Details *') }}
+                            {{ form_widget(form.details) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.active, 'Active *') }}
+                            {{ form_widget(form.active) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-rubrique-form">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

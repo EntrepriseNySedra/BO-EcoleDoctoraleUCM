@@ -1,0 +1,91 @@
+<!-- Chercher les classes actives -->
+{% set estMesCoursActive    = app.request.get('_route') == 'front_student_classes' ? "active" : "" %}
+{% set estAbscenceActive    = app.request.get('_route') == 'front_student_absences' ? "active" : "" %}
+{% set estMonEdtActive      = app.request.get('_route') == 'front_student_emploi_du_temps' ? "active" : "" %}
+{% set estNotesActive      = app.request.get('_route') == 'front_student_notes' ? "active" : "" %}
+{% set estCalendrierActive  = app.request.get('_route') == 'front_calendrier_universitaire' ? "active" : "" %}
+{% set estDemandeActive  = app.request.get('_route') == 'front_student_requestdoc' ? "active" : "" %}
+{% set estInscriptionActive  = app.request.get('_route') == 'front_student_re_inscription' ? "active" : "" %}
+{% set estEcolageActive  = app.request.get('_route') == 'front_student_frais_index' ? "active" : "" %}
+{% set estForumActive  = app.request.get('_route') == 'frontend_discussion_index' ? "active" : "" %}
+
+
+<!-- Titre  breadcrumb-->
+{% set breadcrumbTitre = "" %}
+{% if (app.request.get('_route') == 'front_student_classes') %}
+    {% set breadcrumbTitre = "Mes cours" %}
+{% elseif (app.request.get('_route') == 'front_student_notes') %}
+    {% set breadcrumbTitre = "Mes notes" %}
+{% elseif (app.request.get('_route') == 'front_student_absences') %}  
+    {% set breadcrumbTitre = "Mes absences" %} 
+{% elseif (app.request.get('_route') == 'front_student_emploi_du_temps') %}   
+    {% set breadcrumbTitre = "Emploi du temps" %} 
+{% elseif (app.request.get('_route') == 'front_calendrier_universitaire') %}   
+    {% set breadcrumbTitre = "Calendrier universitaire" %}
+{% elseif (app.request.get('_route') == 'front_student_requestdoc') %}
+    {% set breadcrumbTitre = "Demande de document" %}
+{% elseif (app.request.get('_route') == 'front_student_re_inscription') %}
+    {% set breadcrumbTitre = "Réinscription" %}
+{% elseif (app.request.get('_route') == 'frontend_discussion_index') %}
+    {% set breadcrumbTitre = "Forum" %}
+{% endif %}
+
+
+<!-- breadcrumb -->
+<!-- <nav aria-label="breadcrumb" class="breadcrumb-bloc">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="/formation" title="Formation">Espace étudiant</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><span>{{ breadcrumbTitre }}</span></li>
+    </ol>
+</nav> -->
+<!-- breadcrumb -->
+
+
+<nav class="menu_etudiant menu_list">
+<a class="nav-Link {{ estMesCoursActive }}" href="{{ path('front_student_classes') }}" title="{{ breadcrumbTitre }}">
+    <span class="fa fa-file"></span>
+    <span class="text">Mes cours</span>
+</a>
+
+<a class="nav-Link {{ estNotesActive }}" href="{{ path('front_student_notes') }}" title="{{ breadcrumbTitre }}">
+    <span class="fa fa-book"></span>
+    <span class="text">Mes notes</span>
+</a>
+
+<a class="nav-Link {{ estAbscenceActive }}" href="{{ path('front_student_absences') }}" title="{{ breadcrumbTitre }}">
+    <span class="fa fa-calendar-minus"></span>
+    <span class="text">Mes absences</span>
+</a>
+    
+<a class="nav-Link {{ estMonEdtActive }}" href="{{ path('front_student_emploi_du_temps') }}" title="{{ breadcrumbTitre }}">
+    <span class="fa fa-calendar-alt"></span>
+    <span class="text">Emploi du temps</span>
+</a>
+    
+<a class="nav-Link {{ estCalendrierActive }}" href="{{ path('front_calendrier_universitaire') }}" title="{{ breadcrumbTitre }}">
+    <span class="fa fa-calendar-alt"></span>
+    <span class="text">Calendrier universitaire</span>
+</a>
+
+<a class="nav-Link {{ estDemandeActive }}" href="{{ path('front_student_requestdoc') }}" title="{{ breadcrumbTitre }}">
+    <span class="fa fa-sticky-note"></span>
+    <span class="text">Demande de document</span>
+</a>
+
+<a class="nav-Link {{ estEcolageActive }}" href="{{ path('front_student_frais_index') }}" title="{{ breadcrumbTitre }}">
+    <span class="fa fa-sticky-note"></span>
+    <span class="text">Ecolage</span>
+</a>
+
+<a class="nav-Link {{ estForumActive }}" href="{{ path('frontend_discussion_index') }}" title="{{ breadcrumbTitre }}">
+    <span class="fa fa-sticky-note"></span>
+    <span class="text">Forum</span>
+</a>
+
+<a class="nav-Link {{ estInscriptionActive }}" href="{{ path('front_student_re_inscription') }}" title="{{ breadcrumbTitre }}">
+    <span class="fa fa-sticky-note"></span>
+    <span class="text">Réinscription</span>
+</a>
+</nav>
+    

@@ -1,0 +1,70 @@
+<td class="text-left w-25">
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_ASSIST_VALIDATED') %}
+        <span>1 - Assist {{ prestation.authorMention }}</span>
+    {% endif %}
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_CM_VALIDATED') %}
+        <span>1 - Assist {{ prestation.authorMention }}</span><br>
+        <span>2 - Resp {{ prestation.authorMention }}</span>
+    {% endif %}
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_COMPTA_VALIDATED') %}
+        <span>1 - Assist {{ prestation.authorMention }}</span><br>
+        <span>2 - Resp {{ prestation.authorMention }}</span><br>
+        <span>3 - Compta</span>
+    {% endif %}
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_RF_VALIDATED') %}
+        <span>1 - Assist {{ author.mention.nom }}</span><br>
+        <span>2 - Resp {{ author.mention.nom }}</span><br>
+        <span>3 - Compta</span><br>
+        <span>4 - Raf</span>
+    {% endif %}
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_SG_VALIDATED') %}
+        <span>1 - Assist {{ prestation.authorMention }}</span><br>
+        <span>2 - Resp {{ prestation.authorMention }}</span><br>
+        <span>3 - Compta</span><br>
+        <span>4 - Raf</span><br>
+        <span>5 - SG</span>
+    {% endif %}
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_RECTEUR_VALIDATED') %}
+        <span>1 - Assist {{ prestation.authorMention }}</span><br>
+        <span>2 - Resp {{ prestation.authorMention }}</span><br>
+        <span>3 - Compta</span><br>
+        <span>4 - Raf</span><br>
+        <span>5 - SG</span><br>
+        <span>6 - Recteur</span>
+    {% endif %}
+</td>
+<td class="text-left w-25">
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_CREATED') %}
+        <span>1 - Assist {{ prestation.authorMention }}<br></span>
+        <span>2 - Resp {{ prestation.authorMention }}<br></span>
+        <span>3 - Compta<br></span>
+        <span>4 - RAF<br></span>
+        <span>5 - SG<br></span>
+        <span>6 - Recteur<br></span>
+    {% endif %}
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_ASSIST_VALIDATED') %}
+        <span>2 - Resp {{ prestation.authorMention }}<br></span>
+        <span>3 - Compta<br></span>
+        <span>4 - RAF<br></span>
+        <span>5 - SG<br></span>
+        <span>6 - Recteur<br></span>
+    {% endif %}
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_CM_VALIDATED') %}
+        <span>3 - Compta<br></span>
+        <span>4 - RAF<br></span>
+        <span>5 - SG<br></span>
+        <span>6 - Recteur<br></span>
+    {% endif %}
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_COMPTA_VALIDATED') %}
+        <span>4 - RAF<br></span>
+        <span>5 - SG<br></span>
+        <span>6 - Recteur<br></span>
+    {% endif %}
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_RF_VALIDATED') %}
+        <span>5 - SG<br></span>
+        <span>6 - Recteur<br></span>
+    {% endif %}
+    {% if prestation.statut ==  constant('App\\Services\\WorkflowStatutService::STATUS_SG_VALIDATED') %}
+        <span>6 - Recteur<br></span>
+    {% endif %}
+</td>

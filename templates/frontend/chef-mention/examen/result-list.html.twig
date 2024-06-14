@@ -1,0 +1,153 @@
+{% extends layout_frontend %}
+{% block title %}Validation concours{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Resultat d'examen</h1>
+
+    <!-- big slider banner espace chef de mention -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace chef de mention</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Chef de mention">Espace chef de mention</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Resultat d'examen</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/chef-mention/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Chef de mention</p>
+                    <h2 class="title-bloc">Resultat d'examen</h2>
+                </div>
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <!-- filter block -->
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="filter-form" autocomplete="off">
+                                    <div class="form-group row">
+                                        <label class="col-xl-3">Niveau :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="niveau" id="niveau">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for niv in niveaux %}
+                                                    <option value="{{ niv.id }}" {% if n is defined and niv.id == n %}selected{% endif %}>{{ niv.libelle }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <label class="col-xl-3">Parcours :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="parcours" id="parcours">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for parc in parcours %}
+                                                    <option value="{{ parc.id }}" {% if p is defined and parc.id == p %}selected{% endif %}>{{ parc.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> <!-- /filter block -->
+
+
+                    <div class="table-responsive table-wrapper">
+                        {% if resultats is defined and resultats | length > 0 %}
+                            <table class="table table-bordered table-hover list-data">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Nom</th>
+                                        <th class="text-center">Prénom</th>
+                                        <!-- <th class="text-center">Total crédits compensés</th> -->
+                                        <th class="text-center">Total crédits</th>
+                                        <th class="text-center">UE fondamentale</th>
+                                        <th class="text-center">UE transversale</th>
+                                        <th class="text-center">UE complémentaire</th>
+                                        <th class="text-center">Moyenne</th>
+                                        <th class="text-center">Résultat</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in resultats %}
+                                    <tr class="middle-align">
+                                        <td class="w-15">{{ item.firstName }}</td>
+                                        <td class="w-15">{{ item.lastName }}</td>
+                                        <!-- <td class="text-center w-10">{{ item.iTotalCreditFinal }}</td> -->
+                                        <td class="text-center w-10">{{ item.iTotalCreditObtenu }}</td>
+                                        <td class="text-center w-10">{{ item.iCrdFondamentaleObtenu }}</td>
+                                        <td class="text-center w-10">{{ item.iCrdTransversaleObtenu }}</td>
+                                        <td class="text-center w-10">{{ item.iCrdComplementaireObtenu }}</td>
+
+                                        <td class="text-center w-10">{{ item.moyenneGenerale }}</td>
+
+                                        <td class="text-center w-10">{{ item.resultStatut }}</td>
+                                        <td class="action_col w-5">
+                                            <div class="wrap-btn">
+                                                <a class="btn" href="{{ path('front_cm_etudiant_releve', {id: item.etudiantId}) }}">
+                                                    <span class="fa fa-eye"></span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { 
+                $('#niveau').bind('change', function(){
+                    _parcoursId = $('#parcours').val();
+                    location.href = '{{ path('front_cm_examen_note')}}' + "?n=" + $(this).val() + "&p=" + _parcoursId;
+                });
+                $('#parcours').bind('change', function(){
+                    _niveauId = $('#niveau').val();
+                    location.href = '{{ path('front_cm_examen_note')}}' + "?n=" + _niveauId + "&p=" + $(this).val();
+                });
+            });
+        } )( jQuery );
+        function submit_form() {
+            $('#validate_concours_result_form').submit();
+        }
+    </script>
+{% endblock %}
+

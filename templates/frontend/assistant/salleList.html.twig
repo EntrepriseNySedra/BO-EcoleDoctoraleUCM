@@ -1,0 +1,94 @@
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Salle</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Salle</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+           
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <!-- content salle list -->
+                <section class="salle-list-content richText">
+                    <div class="mt-12 form-group">
+                        <a href="{{ path('front_classroom_add') }}" class="btn btn-secondary my-3" id="btn-submit-product-form" >Gérer les salles</a>
+                    </div>
+
+                    {% if salles is defined and salles | length > 0 %}
+                    <div class="table-responsive table-wrapper">
+                        <table class="table table-bordered table-hover list-data">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Libellé</th>
+                                    <th class="action_col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for salle in salles %}
+                                <tr class="middle-align">
+                                    <td>{{ salle.id }}</td>
+                                    <td>{{ salle.libelle }}</td>
+                                    <td class="action_col w-5">
+                                        <a href="{{ path('front_assistant_edit_salle', { id: salle.id}) }}" title="Modifier" class="btn btn-primary">
+                                            <span>Modifier</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

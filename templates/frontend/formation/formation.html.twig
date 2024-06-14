@@ -1,0 +1,92 @@
+{% extends layout_frontend %}
+{% block title %}Formation{% endblock %}
+{% block content %}
+<div class="main-container">
+<!-- hidden Title H1 -->
+    <h1 class="hide">Formation</h1>
+        
+    <!-- big slider banner formation -->
+    <section class="banner banner-training">
+        <div class="banner-container">
+            <figure class="bigImg-no">
+                <img src="{{ asset('/assets/images/data/training/banner-training.png') }}" alt="Formation">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                        <h2 class="main-title item-title">Nos formations</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Formation</span></li>
+        </ol>
+    </nav><!-- breadcrumb -->
+    
+    <div class="main-contentPage formation-container">
+        <div class="container">
+            <!-- aside Right -->
+            <aside class="asideRight asideSticky">
+                {{ include('frontend/formation/recherche.html.twig') }}
+                <!-- aside Right actuality-->
+                {{ include('frontend/layoutactus/_actus.html.twig') }}
+            </aside>
+            <!-- /aside Right -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-training" id="mainBloc">
+                <!-- main content training -->
+                <section class="trainingHome-bloc">
+                    <div class="title-group">
+                        <p class="sup-title">Présentation</p>
+                        <h2 class="title-bloc">{{ oFormation.title }}</h2>
+                    </div>
+                    <div class="chapo-text">
+                        <p>{{ oFormation.description }}</p>
+                    </div>
+                    <div class="menu-list">
+                        {% if(results | length > 0) %}
+                            {% for departement_name, mentions in results %}
+                                <h2 class="titre-category">{{ departement_name }}</h2>
+                                <div class="row">
+                                    {% for mention in mentions %}
+                                        {% if mention.active != 0 %}
+                                        <div class="col-md-6">
+                                            <div class="item">
+                                                {%  set param = null %}
+                                                {% if mention.slug is not empty %}
+                                                    {%  set param = path('details_formation', { slug: mention.slug })  %}
+                                                {% endif %}
+                                                <a href="{{ param }}" title="Formation en {{mention.nom}}">
+                                                    <figure class="photo-menu">
+                                                        {% if mention.path == NULL %}
+                                                            <img src="{{ asset('/assets/images/data/training/training-theology.png') }}"
+                                                                alt="Formation en {{mention.nom}}">
+                                                        {% else %}
+                                                            <img src="uploads/mention/{{mention.uuid }}/{{ mention.path }}"
+                                                                alt="Formation en {{mention.nom}}">
+                                                        {% endif %}
+                                                    </figure>
+                                                    <div class="text-menu">
+                                                        <p>Formation en</p>
+                                                        <h4>{{mention.nom}}</h4>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}

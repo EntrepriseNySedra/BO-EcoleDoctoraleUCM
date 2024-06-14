@@ -1,0 +1,67 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_rf_salle_new') %}
+{% if salle.id %}
+    {% set action = path('admin_rf_salle_edit', { id: salle.id }) %}
+{% endif %}
+<section class="content">
+    <form id="salle-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if salle.id %}
+                            <h4>Modification bâtiment</h4>
+                        {% else %}
+                            <h4>Ajout salle</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_errors(form) }}
+                            {{ form_row(form._token) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.libelle, 'Libelle *') }}
+                            {{ form_widget(form.libelle, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.batiment, 'Batiment ') }}
+                            {{ form_widget(form.batiment, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.capacite, 'Capacité') }}
+                            {{ form_widget(form.capacite) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_widget(form.internetConnexionOn) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_widget(form.videoProjecteurOn) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if salle.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</form>

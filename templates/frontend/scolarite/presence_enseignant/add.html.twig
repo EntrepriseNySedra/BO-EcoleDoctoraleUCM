@@ -1,0 +1,277 @@
+{% extends layout_frontend %}
+{% block title %}Fiche présence enseignants{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">iche de présence enseignants</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Fiche de présence enseignants</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+           
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <!-- content  -->
+                <section class="formation-actus-content richText">
+                    <div class="title-group">
+                        <p class="sup-title">Scolarité</p>
+                        <h2 class="title-bloc">Fiche de présence enseignants</h2>
+                    </div>
+
+                    {{ form_start(form, {'attr': {'class': 'row'}}) }}
+                    {{ form_row(form._token) }}
+                    <div class="form-bloc form-inline">
+                        <form id="fiche-form" autocomplete="off">
+                            
+                            {% if duplicateEntryError %}
+                                <div class="form-group row text-center error">L'enseignant a déjà une présence avec cette date</div>
+                            {% endif %}
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="control-label col-xl-4" for="plusInfos-stnd">Faculté <span class="required">*</span></label>
+                                        <div class="form-field select-field col-xl-8">
+                                            {{ form_widget(form.domaine) }}
+                                            <span class="error">{{ form_errors(form.domaine) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="control-label col-xl-4" for="plusInfos-stnd">Mention <span class="required">*</span></label>
+                                        <div class="form-field select-field col-xl-8">
+                                            {{ form_widget(form.mention) }}
+                                            <span class="error">{{ form_errors(form.mention) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="control-label col-xl-4" for="plusInfos-stnd">Niveau<span class="required">*</span> :</label>
+                                        <div class="form-field select-field col-xl-8">
+                                            {{ form_widget(form.niveau) }}
+                                            <span class="error">{{ form_errors(form.niveau) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="control-label col-xl-4" for="plusInfos-stnd">Parcours<span class="required"></span> :</label>
+                                        <div class="form-field select-field col-xl-8">
+                                            {{ form_widget(form.parcours) }}
+                                            <span class="error">{{ form_errors(form.parcours) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="control-label col-xl-4" for="plusInfos-stnd">UE<span class="required">*</span> :</label>
+                                        <div class="form-field select-field col-xl-8">
+                                            {{ form_widget(form.ue) }}
+                                            <span class="error">{{ form_errors(form.ue) }}</span>
+                                        </div>
+                                    </div>  
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="control-label col-xl-4" for="plusInfos-stnd">EC<span class="required">*</span> :</label>
+                                        <div class="form-field select-field col-xl-8">
+                                            {{ form_widget(form.matiere) }}
+                                            <span class="error">{{ form_errors(form.matiere) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group row">
+                                        <label class="control-label col-xl-6" for="plusInfos-stnd">Date :<span class="required">*</span> :</label>
+                                        <div class="col-xl-6">
+                                            {{ form_widget(form.date) }}
+                                            <span class="error">{{ form_errors(form.date) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group row">
+                                        <label class="control-label col-xl-7" for="plusInfos-stnd">Heure de début du cours :<span class="required">*</span> :</label>
+                                        <div class="col-xl-5">
+                                            {{ form_widget(form.startTime) }}
+                                            <span class="error">{{ form_errors(form.startTime) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group row">
+                                        <label class="control-label col-xl-6" for="plusInfos-stnd">Heure de fin du cours :<span class="required">*</span> :</label>
+                                        <div class="col-xl-6">
+                                            {{ form_widget(form.endTime) }}
+                                            <span class="error">{{ form_errors(form.endTime) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="groups-btn justify-content-end mt-0">
+                                    <button type="submit" class="btn btn-primary">Valider</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                _defaultOption = "<option value=\"\"> -- Séléctionnez -- </option>";
+                $('#fiche_presence_enseignant_domaine').bind('change', function(){
+                departementId = $(this).val();
+                $.ajax({
+                        method: "GET",
+                        url: '{{ path('front_scolarite_presence_enseignant_ajax_options') }}',
+                        data: { 
+                            parent_name: 'departement',
+                            parent_id: departementId,
+                        }
+                    }).done(
+                        function(html){
+                            $('#fiche_presence_enseignant_mention').html(html);
+                            $('#fiche_presence_enseignant_niveau').val("");
+                            $('#fiche_presence_enseignant_parcours').html(_defaultOption);
+                            $('#fiche_presence_enseignant_ue').html(_defaultOption);
+                            $('#fiche_presence_enseignant_matiere').html(_defaultOption);
+                        } 
+                    )
+                });
+
+                $('#fiche_presence_enseignant_mention').bind('change', function(){
+                mentionId = $(this).val();
+                $.ajax({
+                        method: "GET",
+                        url: '{{ path('front_scolarite_presence_enseignant_ajax_options') }}',
+                        data: { 
+                            parent_name: 'mention',
+                            parent_id: mentionId
+                        }
+                    }).done(
+                        function(html){
+                            $('#fiche_presence_enseignant_parcours').html(_defaultOption);
+                            $('#fiche_presence_enseignant_niveau').val("");
+                            $('#fiche_presence_enseignant_ue').html(_defaultOption);
+                            $('#fiche_presence_enseignant_matiere').html(_defaultOption);                           
+                        } 
+                    )
+                });
+
+                $('#fiche_presence_enseignant_niveau').bind('change', function(){
+                niveauId = $(this).val();
+                $.ajax({
+                        method: "GET",
+                        url: '{{ path('front_scolarite_presence_enseignant_ajax_options') }}',
+                        data: { 
+                            parent_name :    'niveau',
+                            parent_id   :    niveauId,
+                            mention_id  :    $('#fiche_presence_enseignant_mention').val(),
+                            parcours_id :    $('#fiche_presence_enseignant_parcours').val(),
+                            child_target:    'parcours'   
+                        }
+                    }).done(
+                        function(html){
+                            $('#fiche_presence_enseignant_parcours').html(html);
+                        } 
+                    )
+                });
+
+                $('#fiche_presence_enseignant_niveau').bind('change', function(){
+                niveauId = $(this).val();
+                $.ajax({
+                        method: "GET",
+                        url: '{{ path('front_scolarite_presence_enseignant_ajax_options') }}',
+                        data: { 
+                            parent_name :    'niveau',
+                            parent_id   :    niveauId,
+                            mention_id  :    $('#fiche_presence_enseignant_mention').val(),
+                            parcours_id :    $('#fiche_presence_enseignant_parcours').val(),
+                            child_target:    'unite_enseignement'   
+                        }
+                    }).done(
+                        function(html){
+                            $('#fiche_presence_enseignant_ue').html(html);
+                            $('#fiche_presence_enseignant_matiere').html(_defaultOption);
+                        } 
+                    )
+                });
+
+                $('#fiche_presence_enseignant_parcours').bind('change', function(){
+                parcoursId = $(this).val();
+                $.ajax({
+                        method: "GET",
+                        url: '{{ path('front_scolarite_presence_enseignant_ajax_options') }}',
+                        data: { 
+                            parent_name:    'parcours',
+                            parent_id:      parcoursId
+                        }
+                    }).done(
+                        function(html){
+                            $('#fiche_presence_enseignant_ue').html(html);
+                            $('#fiche_presence_enseignant_matiere').html(_defaultOption);
+                        } 
+                    )
+                });   
+
+                $('#fiche_presence_enseignant_ue').bind('change', function(){
+                ueId = $(this).val();
+                $.ajax({
+                        method: "GET",
+                        url: '{{ path('front_scolarite_presence_enseignant_ajax_options') }}',
+                        data: { 
+                            parent_name:    'uniteEnseignements',
+                            parent_id:      ueId
+                        }
+                    }).done(
+                        function(html){
+                            $('#fiche_presence_enseignant_matiere').html(html);
+                        } 
+                    )
+                });   
+
+            });
+
+        } )( jQuery );
+    </script>
+{% endblock %}
+

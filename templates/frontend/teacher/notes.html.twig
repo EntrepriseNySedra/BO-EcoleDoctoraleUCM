@@ -1,0 +1,107 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Notes</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace enseignant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Notes</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Enseignant</p>
+                    <h2 class="title-bloc">Notes</h2>
+                </div>
+                <!-- content notes -->
+                <section class="notes-content richText">
+                    <div class="list-group">
+                        {% for key, value in matieres %}
+                        <div class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h3 class="mb-1"><strong>{{ key }}</strong></h3>
+                            </div>
+                            
+                            {% set initParcours = "" %}
+                            {% set initNiveau = "" %}
+                            {% set initUe = "" %}
+                            {% set initSemestre = "" %}
+                            {% for item in value %}
+                                    {% if item.niveauLibelle != initNiveau %}
+                                        <p class="mb-2 p-2 bg-primary text-white"><strong>{{ item.niveauLibelle }}</strong></p>
+                                    {% endif %}
+                                    {% if item.parcoursNom != initParcours %}
+                                        <p class="mb-2 p-2 bg-primary">{{ item.parcoursNom }}</p>
+                                    {% endif %}
+                                    {% if item.semestre != initSemestre %}
+                                        <p class="mb-1 pl-2">Semestre : <strong>{{ item.semestre }}</strong></p>
+                                    {% endif %}
+                                    {% if item.ueLibelle != initUe %}
+                                        <div>Unité d'enseignement : <strong>{{ item.ueLibelle }}</strong></div>
+                                    {% endif %}
+                                    <div class="item" style="padding: 5px 0 5px 30px;">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-8">{{ item.matiereNom }}</div>
+                                            <div class="col-md-4 text-right">
+                                                <a href="{{ path('front_teacher_show_notes', {id: item.matiereId })}}" class="m-2"><span class="fa fa-eye text-danger"></span></a>
+                                                <a href="{{ path('front_teacher_add_notes', {id: item.matiereId })}}" class="m-2"><span class="fa fa-edit text-danger"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% set initUe = item.ueLibelle %}
+                                {% set initNiveau = item.niveauLibelle %}
+                                {% set initSemestre = item.semestre %}
+                                {% set initParcours = item.parcoursNom %}
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

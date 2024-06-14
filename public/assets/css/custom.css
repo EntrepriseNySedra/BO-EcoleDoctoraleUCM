@@ -1,0 +1,19 @@
+form label {
+    color: #000;
+}
+
+.emptyresult {
+    color: #504f4f;
+}
+
+.no-nunderline {
+    text-decoration: none;
+}
+
+span.required {
+    color: #FF0000;
+}
+
+.fs-26 {
+    font-size: 26px;
+}

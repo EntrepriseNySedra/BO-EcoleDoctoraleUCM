@@ -1,0 +1,122 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+    <style>
+        .bg-red {
+            background: #E5343D !important;
+        }
+    </style>
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Matieres</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace enseignant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Matieres</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+         <!-- main Bloc -->
+<article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+    <div class="title-group">
+        <p class="sup-title">Enseignant</p>
+        <h2 class="title-bloc">Matieres</h2>
+    </div>
+
+    <!-- content cours -->
+    <section class="cours-content richText">
+        <div class="list-group">
+            {% for mention, data in enseignantData %}
+                <div class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                      
+                        <div class="alert alert-primary" role="alert" style="padding: 20px; width: 100%;text-align: center; margin-bottom: 10px">
+                           <strong>{{ mention }}</strong>
+                        </div>
+                    </div>
+
+                    {% for key, item in data %}
+                        {% if key == 'parcours' %}
+                            {% for parcName, parcData in data['parcours'] %}
+                                <div class="mb-3 pl-2" style="margin-left: 40px"><strong><u>Parcours : {{ parcName }}  </u></strong></div>
+                                {% for parc in parcData %}
+                                    <div class="mb-2 pl-2 d-flex justify-content-between align-items-center">
+                                        <div style="margin-left: 40px">{{ parc.niveauLibelle }} {{ parc.matiereNom }}</div>
+                                        <a href="{{ path('front_teacher_cours', {id: parc.matiereId })}}" class="btn btn-sm bg-danger text-white"><span class="fa fa-eye"></span></a>
+                                    </div>
+                                    
+
+                                {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            <div class="mb-2 pl-2 d-flex justify-content-between align-items-center">
+                                <div style="margin-left: 20px">{{ item.niveauLibelle }} {{ item.matiereNom }}</div>
+                                <a href="{{ path('front_teacher_cours', {id: item.matiereId })}}" class="btn btn-sm bg-danger text-white"><span class="fa fa-eye"></span></a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</article> <!-- /main Bloc -->
+
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+
+        function deleteElement(id) {
+            if (confirm('Etes-vous sûr de vouloir supprimer cet element ?')) {
+                $("#delete-form-"+id).submit();
+            }
+        }
+
+        (function ($) {
+            $(document).ready(function () {
+                $('#anneeUniv').change((e) => {
+                    const anneeUnivId = e.target.value;
+
+                    window.location.href = "{{ path('front_teacher_matieres') }}?au=" + anneeUnivId
+                });
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}
+

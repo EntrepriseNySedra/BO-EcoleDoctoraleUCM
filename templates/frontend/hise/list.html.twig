@@ -1,0 +1,78 @@
+{% extends layout_frontend %}
+{% block title %}{{rubrique.title}} | UCM{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Actualité</h1>
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="/" title="recherche list">Recherche</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>{{rubrique.title}}</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    
+    <div class="main-contentPage actus-container">
+        <div class="container">
+            <!-- aside Right -->
+            <aside class="asideRight asideSticky">
+                <!-- aside Right actuality-->
+                {{ include('frontend/layoutactus/_actus.html.twig') }}
+            </aside>
+            <!-- /aside Right -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-training" id="mainBloc">
+                <!-- main content training -->
+                <section class="trainingDetail-bloc">
+                    <div class="top-titre">
+                        <div class="title-group">
+                            <p class="sup-title">HISE</p>
+                            <h2 class="title-bloc">{{rubrique.title}}</h2>
+                        </div>
+                    </div>
+                    
+                    <section class="banner banner-training">
+                        <div class="banner-container">
+                        </div>
+                    </section>
+                    
+                    <section class="widget mostConstulted-widget">
+                        <div class="list-tag">
+                            {% for article in toArticle %}
+                                <div class="card article-item w-100" style="border:0;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-danger" style="font-weight:600;">{{ article.title }}</h5>
+                                        <p class="card-text text-dark">{{ article.description | u.truncate(500, '...') }}</p>
+                                        <a href="{{ path('recherche_details_article', {slug: article.slug}) }}" class="link-more text-danger" style="text-decoration: none;" title="Lire la suite"><span>Lire la suite</span> <i class="iconucm-chevron-right"></i></a>
+                                    </div>
+                                </div>    
+                            {% endfor%}
+                        </div>
+                    </section>
+                    <!-- /tabs and swipe system -->
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+
+        <section class="offres-bloc">
+            <figure class="backgroundImg">
+                <img src="{{ asset('/assets/images/data/training/banner-economics-management.png') }}" alt="Training Background">
+            </figure>
+            <div class="content-text">
+                <div class="container">
+                    <h2 class="offres-title">Intéressé ?</h2>
+                    <h3 class="sub-title">Alors, n'hésitez pas à nous envoyer votre dossier, à bientôt !</h3>
+                    <p class="group-btns">
+                        <a class="btn-primary" href="/concours/candidature" title="Candidature spontanée">Candidature spontanée</a>
+                        <a class="btn-primary" href="/formation" title="Consultez nos offres">Consultez nos offres</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

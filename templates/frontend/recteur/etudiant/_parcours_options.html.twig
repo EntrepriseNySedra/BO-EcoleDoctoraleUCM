@@ -1,0 +1,7 @@
+<!-- parcours -->
+{% if parcours is defined and parcours | length > 0 %}
+    <option value="" selected="selected">-- Séléctionnez --</option>
+    {% for parc in parcours %}
+        <option value="{{ parc.id }}">{{ parc.nom }} </option>
+    {% endfor %}
+{% endif %}

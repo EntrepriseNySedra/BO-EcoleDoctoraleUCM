@@ -1,0 +1,241 @@
+{% extends layout_frontend %}
+{% block title %}Fiche vacation{% endblock %}
+{% block content %}
+
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Vacation</h1>
+
+    <!-- big slider banner espace commptable -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">{% if is_granted('ROLE_COMPTABLE') %}
+                            Comptable
+                        {% elseif is_granted('ROLE_RF') %}
+                            Responsable financier
+                        {% endif %}</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path(workspacePath) }}" title="Chef de mention">{% if is_granted('ROLE_COMPTABLE') %}
+                Comptable
+            {% elseif is_granted('ROLE_RF') %}
+                Responsable financier
+            {% endif %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Vacation</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/comptable/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">
+                        {% if is_granted('ROLE_COMPTABLE') %}
+                            Comptable
+                        {% elseif is_granted('ROLE_RF') %}
+                            Responsable financier
+                        {% endif %}
+                    </p>
+                    <h2 class="title-bloc">Vacation</h2>
+                </div>
+                <div class="form-bloc filter-bloc">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="filter-form" autocomplete="off">
+                                <div class="row">                                   
+                                    <div class="form-group row">
+                                        <label class="col-lg-2">Calendrier :</label>
+                                        <div class="form-field select-field col-lg-4">
+                                            <select class="form-control" name="calendrier-paiement" id="calendrier_paiement">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for cal in calPaiements %}
+                                                    <option value="{{ cal.id }}" 
+                                                        {% if  cal.id == c %}selected{% endif %}>{{ cal.libelle }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <label class="col-lg-2">Mention :</label>
+                                        <div class="form-field select-field col-lg-4">
+                                            <select class="form-control" name="mention" id="mention">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for men in mentions %}
+                                                    <option value="{{ men.id }}" 
+                                                        {% if  men.id == m %}selected{% endif %}>{{ men.nom }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div> <!-- /filter block -->
+                <!-- content  -->
+                <section class="content presenceEnseignant-content">
+                    <div class="groups-btn justify-content-end my-1">
+                        <form id="num_piece_form" method="GET" class="page-form-edit-new form-validation" role="form">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="first_inscription_form_civility">Index numéro de pièce</label>
+                                    <input type="text" name="num_piece" id="num_piece" value="">
+                                    <a href="{{ path('front_comptable_export_vacation') }}?c={{ c }}&m={{ m }}" class="btn btn-primary">Etats</a>
+                                    <a class="btn btn-primary" onclick="exportComtpa()">Export compta</a>
+                                    <a class="btn btn-primary" onclick="exportBank()">Export banque</a>
+                                    <a class="btn btn-primary" onclick="exportOpavi()">Export opavi</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="table-responsive table-wrapper">
+                        {% if fPresenceEnseignants is defined and fPresenceEnseignants | length > 0 %}
+                            <table class="table table-bordered table-hover list-data">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Enseignant</th>
+                                        <th class="text-center">Nombre de matière</th>
+                                        <th class="text-center">Heures effectuées</th>
+                                        <th class="text-center">Montant</th>
+                                        <th class="text-center">Impot</th>
+                                        <th class="text-center">NET</th>
+                                        <th class="text-center">Etat</th>
+                                        <th class="text-center">Statut</th>
+                                        <th class="text-center">Fiche de paie</th>
+                                        <th class="action_col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for presence in fPresenceEnseignants %}
+                                    {% set montantTTC = presence.montantHT / (0.98) %}
+                                    {% set montantImpot = montantTTC - presence.montantHT %}
+                                    {% set count_validatable_edt = 0 %}
+                                    {% set count_validated_edt = 0 %}
+                                    <tr class="middle-align">                                        
+                                        {% for statut in presence.statut_2|split(',')|filter((t) => t == profilListStatut) %}
+                                            {% set count_validatable_edt = count_validatable_edt + 1 %}
+                                        {% endfor %}
+                                        {% for statut in presence.statut_2|split(',')|filter((t) => t >= profilNextStatut) %}
+                                            {% set count_validated_edt = count_validated_edt + 1 %}
+                                        {% endfor %}
+                                        <td class="w-20">{{ presence.enseignant }}</td>
+                                        <td class="text-center w-5">{{ presence.nbrMatiere }}</td>
+                                        <td class="text-center w-10">{{ presence.totalH }}</td>
+                                        <td class="text-center w-10">{{ montantTTC | number_format(2, '.', ' ') }}</td>
+                                        <td class="text-center w-10">{{ montantImpot | number_format(2, '.', ' ') }}</td>
+                                        <td class="text-center w-10">{{ (presence.montantHT) | number_format(2, '.', ' ') }}</td>
+
+                                        <td class="text-center w-10">
+                                            {% if count_validated_edt > 0 and (count_validated_edt == presence.statut_2|split(',')|length) %}
+                                                Validé
+                                            {% else %}
+                                                {% if count_validatable_edt > 0 %}
+                                                    En cours
+                                                    {% else %}
+                                                        En attente
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center w-5">
+                                            {% if count_validatable_edt > 0 %}
+                                                {{ count_validatable_edt }} cours à valider
+                                            {% endif %}
+                                        </td>
+
+                                        <td class="text-center w-5">
+                                            <a class="btn" href="{{ path('front_finance_fiche_paie', { id: presence.ensId}) }}?c={{c}}" title="Modifier">
+                                                <i class="far fa-download"></i>
+                                            </a>
+                                        </td>
+
+                                        <td class="action_col w-5">
+                                            <div class="wrap-btn">
+                                                <a class="btn" href="{{ path('front_comptable_vacation_enseignant_index', { id: presence.ensId}) }}?c={{c}}&m={{m}}" title="Modifier">
+                                                        <i class="far fa-edit"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <div class="container">
+                                <div class="row mt-1">
+                                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                        <div class="text-center">
+                                        <div class="pagination">
+                                            {{ knp_pagination_render(fPresenceEnseignants) }}
+                                        </div> </br>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        function exportComtpa() {
+            indexNumPiece = $("#num_piece").val();
+            mentionId = $("#mention").val();
+            calPaiment =  $("#calendrier_paiement").val();
+            window.location.href = "{{ path('front_comptable_export_vacation_compta') }}?c=" + calPaiment + "&np=" + indexNumPiece + "&m=" + mentionId ;
+        }
+        function exportBank() {
+            indexNumPiece = $("#num_piece").val();
+            mentionId = $("#mention").val();
+            calPaiment =  $("#calendrier_paiement").val();
+            window.location.href = "{{ path('front_comptable_export_vacation_bank') }}?c=" + calPaiment + "&np=" + indexNumPiece + "&m=" + mentionId ;
+        }
+        function exportOpavi() {
+            indexNumPiece = $("#num_piece").val();
+            mentionId = $("#mention").val();
+            calPaiment =  $("#calendrier_paiement").val();
+            window.location.href = "{{ path('front_comptable_export_vacation_opavi') }}?c=" + calPaiment + "&np=" + indexNumPiece + "&m=" + mentionId ;
+        }
+
+        ( function( $ ) {
+            $(document).ready(function () { 
+                mentionId = $("#mention").val();
+                calId = $("#calendrier_paiement").val();
+                $("#calendrier_paiement").bind('change', function(){
+                    window.location.href = "{{ path('front_comptable_presence_enseignant_index') }}?c=" + $(this).val() + "&m=" + mentionId;
+                });
+                $("#mention").bind('change', function(){
+                    window.location.href = "{{ path('front_comptable_presence_enseignant_index') }}?m=" + $(this).val() + "&c=" + calId;
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}
+
+ 

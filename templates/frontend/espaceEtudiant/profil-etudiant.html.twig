@@ -1,0 +1,139 @@
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Fiche de renseignements</h1>
+
+    <div class="main-container profil-container">
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Fiche de renseignements</h2>
+                    <div class="form-bloc">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="mtrcl-stnd">Matricule<span class="required">*</span></label>
+                                <input type="text" class="form-control" id="mtrcl-stnd" name="Matricule" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="pwd-stnd">Mot de passe<span class="required">*</span></label>
+                                <input type="password" class="form-control" id="pwd-stnd" name="Mot de passe" placeholder="Mot de passe" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="nom-stnd">Nom(s)<span class="required">*</span></label>
+                                <input type="text" class="form-control" id="nom-stnd" name="Nom" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="prenom-stnd">Prénom(s)</label>
+                                <input type="text" class="form-control" id="prenom-stnd" name="Prénom" >
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label" for="sexe-stnd">Sexe</label>
+                                        <div class="select-field">
+                                            <select class="form-select" id="sexe-stnd">
+                                                <option selected>N/A</option>
+                                                <option value="Masculin1">Masculin</option>
+                                                <option value="Féminin">Féminin</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label" for="etatCivil-stnd">Etat civil</label>
+                                        <input type="password" class="form-control" id="etatCivil-stnd" name="Etat civil" placeholder="Prénom" autofocus>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label" for="langue-stnd">Langue</label>
+                                        <div class="select-field">
+                                            <select class="form-select" id="langue-stnd">
+                                                <option selected value="Français">Français</option>
+                                                <option value="Malagasy">Malagasy</option>
+                                                <option value="Anglais">Anglais</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label" for="nationalite-stnd">Nationalité</label>
+                                        <input type="text" class="form-control" id="nationalite-stnd" name="Nationalité" placeholder="Nationalité">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="dateNaissance-stnd">Date de naissance</label>
+                                <input type="text" class="form-control" id="dateNaissance-stnd" name="Date de naissance" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="lieuNaissance-stnd">Lieu de naissance</label>
+                                <input type="text" class="form-control" id="lieuNaissance-stnd" name="Lieu de naissance">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="control-label" for="numcin-stnd">Num CIN</label>
+                                <input type="text" class="form-control" id="numcin-stnd" name="Num CIN">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="control-label" for="livreDate-stnd">Livré le</label>
+                                <input type="date" class="form-control" id="livreDate-stnd" name="Livré le">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="control-label" for="livreLieu-stnd">à</label>
+                                <input type="text" class="form-control" id="livreLieu-stnd" name="à">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="adresse-stnd">Adresse exacte</label>
+                                <input type="text" class="form-control" id="adresse-stnd" name="Adresse exacte">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="email-stnd">Adresse email</label>
+                                <input type="email" class="form-control" id="email-stnd" name="Adresse email">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="phone-stnd">Téléphone</label>
+                                <input type="tel" class="form-control" id="phone-stnd" name="Téléphone">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="phone2-stnd">Téléphone 2</label>
+                                <input type="tel" class="form-control" id="phone2-stnd" name="Téléphone 2">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="phone3-stnd">Téléphone 3</label>
+                                <input type="tel" class="form-control" id="phone3-stnd" name="Téléphone 3">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="religion-stnd">Réligion</label>
+                                <input type="text" class="form-control" id="religion-stnd" name="Réligion">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="control-label" for="fonction-stnd">Fonction</label>
+                                <input type="text" class="form-control" id="fonction-stnd" name="Fonction">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="control-label" for="plusInfos-stnd">Plus d'infos</label>
+                                <input type="text" class="form-control" id="plusInfos-stnd" name="Plus d'infos">
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <label class="control-label" for="plusInfos-stnd">Ajouter CV ou Parcours</label>
+                                <input type="text" class="form-control" id="plusInfos-stnd" name="Ajouter CV ou Parcours">
+                            </div>
+                            <div class="btns-group col-md-12">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="rememberMe">
+                                    <label class="custom-control-label" for="rememberMe">Se souvenir de moi</label>
+                                </div>
+                                <button class="btn btn-connexion" type="button" name="Enregsitrer">Enregsitrer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- main Bloc -->
+        </div>
+    </div>
+
+   
+{% endblock %}

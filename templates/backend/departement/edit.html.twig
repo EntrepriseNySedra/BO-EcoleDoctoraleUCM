@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% block title %}Department::Modification{% endblock %}
+
+{% set menuFormation = true %}
+{% set menuFormationDepartAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Département
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/departement/_form.html.twig') }}
+     <a href="{{ path('admin_rf_depatement_liste') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

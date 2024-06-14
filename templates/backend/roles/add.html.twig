@@ -1,0 +1,18 @@
+{% extends layout_backend %}
+{% block title %}Actions::Ajout{% endblock %}
+
+{% set menuSetting = true %}
+{% set menuSettingRoleAdd = true %}
+
+{% block pageicon %}
+    pe-7s-switch
+{% endblock %}
+{% block pagetitle %}
+    Nouvelle action
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/roles/_form.html.twig') }}
+    <a href="{{ path('admin_roles_list') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

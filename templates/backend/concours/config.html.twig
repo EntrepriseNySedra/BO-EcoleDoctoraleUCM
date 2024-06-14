@@ -1,0 +1,90 @@
+{% extends layout_backend %}
+{% set menuConcours = true %}
+{% set menuConcoursConfig = true %}
+{% block pageicon %}
+    pe-7s-cup
+{% endblock %}
+{% block title %}{{ parent() }}
+    Configuration du concours
+{% endblock %}
+{% block pagetitle %}
+Configuration du concours
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+   
+
+    <style>
+        .form-group legend {
+            font-size: 15px;
+        }
+        .invalid-feedback {
+            display: block;
+            color: white;
+            background-color: #E5343D;
+            border-color: #BD000A;
+        }
+    </style>
+    <form id="concours-config" method="POST" class="page-form-edit-new form-validation" role="form" action="{{ path('admin_concours_configs') }}">
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Configuration</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_label(form.libelle, 'Titre') }}
+                            {{ form_widget(form.libelle) }}
+                        </div>
+                        <div class="form-group row">
+                            <label for="concours_startDate" class="col-sm-3 col-form-label">Date de début</label>
+                            <div class="col-sm-12">
+                                <input type="text" id="concours_startDate" name="concours_configs[start_date]" required="required" class="form-control" {% if concours.startDate %} value="{{ concours.getFormatedStartDate }}" {% endif %}>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="concours_endDate" class="col-sm-3 col-form-label">Date de fin</label>
+                            <div class="col-sm-12">
+                                <input type="text" id="concours_endDate" name="concours_configs[end_date]" required="required" class="form-control" {% if concours.endDate %} value="{{ concours.getFormatedEndDate }}" {% endif %}>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.annee_universitaire, 'Année universitaire *') }}
+                            {{ form_widget(form.annee_universitaire) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <a href="{{ path('admin_concours_list') }}">Retour vers la liste</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $( "#concours_startDate" ).mask('00/00/0000');
+            $( "#concours_endDate" ).mask('00/00/0000');
+
+            $.datepicker.regional['fr'];
+            $( "#concours_startDate" ).datepicker();
+            $( "#concours_endDate" ).datepicker({ minDate: 0 });
+        });
+    </script>
+{% endblock %}

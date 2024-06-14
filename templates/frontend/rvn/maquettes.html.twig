@@ -1,0 +1,107 @@
+{% extends layout_frontend %}
+{% block title %}Gestion absences{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Gestion absence</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace RVN</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace rvn</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Gestion absences</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/rvn/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">RVN</p>
+                    <h2 class="title-bloc">Absences</h2>
+                    <h3 class="title-bloc">{{ mention.nom }} {{ niveau.libelle }}</h3>
+                </div>
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <!-- filter block -->
+                    
+                
+                            {% set initUe = '' %}
+                            {% for abs in maquettes %}
+                                {% if abs.ue != initUe %}
+                                    <p class="mb-3 pl-2" style="margin-left: 40px"><strong><u> {{ abs.ue }} </u></strong></p>
+                                {% endif %}
+                                
+                                <div class="mb-2 pl-2 d-flex justify-content-between align-items-center">
+                                    <div style="margin-left: 40px">{{ abs.matiere }} {% if abs.nbr_absence > 0 %} <a href="{{ path('front_rvn_absence_matiere', {id: abs.matiere_id }) }}" class="text-danger">{{ abs.nbr_absence }} Absence(s)</a> {% endif %}</div>
+                                </div>            
+
+                                {% set initUe = abs.ue %}
+                            {% endfor %}
+             
+
+
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/library/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DT_bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/library/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/library/buttons.print.min.js') }}"></script>
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () { 
+                var oTable = $('#list-validated').dataTable({
+                "aLengthMenu":    [[100, 250, 500, -1], [100, 250, 500, "Tout"]],
+                    "iDisplayLength": 1000,
+                    "aoColumnDefs":   [{
+                        "bSortable": false,
+                        "aTargets":  [4]
+                    }],
+                    "paging":         false,
+                    "ordering":       false,
+                    "searching":      false,
+                    "info":           false
+                });
+
+                $('#semestre, #niveau, #mention, #parcours').bind('change', function(){
+                    _parcousId  = $('#parcours').val();
+                    _niveauId   = $('#niveau').val();
+                    _mentionId  = $('#mention').val();
+                    location.href = '{{ path('front_rvn_absence_index')}}' + "?m=" + _mentionId + "&p=" + _parcousId + "&n=" + _niveauId;
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}

@@ -1,0 +1,431 @@
+
+.banner-espaceEtudiant {
+    .bigImg {
+        img {
+            object-position: center 33%;
+        }
+    }
+}
+.authentication-container {
+    > .container {
+        flex-direction: row;
+        @include max(1359px) {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+    .authentication-bg {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        img {
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            max-width: 100%;
+            width: 100%;
+        }
+    }
+    .mainBloc-authentication {
+        background-color: #F3F3F3;
+        padding: 25px;
+        width: 100%;
+    }
+    .authentication-bloc {
+        margin: 0 auto 100px;
+        max-width: 710px;
+        padding: 15px 25px;
+        width: 100%;
+        @include min(1024px) {
+            //padding: 25px 60px;
+        }
+        @include min(1360px) {
+            padding: 50px 25px;
+        }
+    }
+}
+.mainBloc-authentication {
+    h2 {
+        color: $red;
+        font-size: 40px;
+        font-weight: 600;
+        line-height: 1.35em;
+        margin: 0 0 1.875rem;
+        text-align: center;
+        text-transform: uppercase;
+    }
+    .intro-text {
+        margin-bottom: 1.5rem;
+        p {
+            color: #5A5453;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.55em;
+            margin: 0;
+            word-break: break-word;
+            text-align: center;
+            @include min(1440px) {
+                font-size: 1.375rem;
+            }
+            &:empty {
+                display: none;
+            }
+        }
+    }
+    .form-bloc {
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+    }
+    .mdp-oublie {
+        font-size: 13px;
+        font-weight: 300;
+        line-height: 1.25;
+        margin: -10px 0 0;
+        text-align: right;
+        a {
+            color: #222;
+            &:hover {
+                color: $red;
+                text-decoration: underline; 
+            }
+        }
+    }
+    .groups-btn {
+        margin-bottom: 50px;
+    }
+    .helpLink {
+        font-size: 13px;
+        font-weight: 300;
+        line-height: 1.5;
+        margin: 0;
+        a {
+            color: #222;
+        }
+    }
+}
+.authentication-bloc {
+    background-color: #F3F3F3;
+}
+
+.profil-container, .candidature-container {
+    margin: 1rem 0 0;
+    //margin: 1rem 1rem 0;
+    .ficheRenseignement-bloc, .candidature-bloc {
+        background-color: #F3F3F3;
+        border: none;
+        border-radius: 0;
+        margin: 0 auto;
+        max-width: 768px;
+        .card-body {
+            padding: 20px 25px;
+        }
+    }
+    h2 {
+        // color: $red;
+        // font-size: 40px;
+        // font-weight: 600;
+        // line-height: 1.25em;
+        // margin: 0 0 2rem;
+        // text-align: center;
+        // text-transform: uppercase;
+    }
+    .groups-btn {
+        justify-content: flex-end;
+    }
+}
+
+.campus-container {
+    .map-photo-bloc {
+        figure {
+            height: 768px;   
+            margin: 0;
+            max-width: 100%;
+            img {
+                display: block;
+                object-fit: cover;
+                object-position: center top;
+                height: 100%;
+                width: 100%;
+                
+            }
+        }
+    }
+}
+
+.candidature-container {
+    .candidature-bloc {
+        .titre-itemBloc {
+            color: $red;
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 20px;
+            text-transform: uppercase;
+        }
+    }
+}
+
+.main-contentPage {
+    .mainBloc-etudiants {
+        width: 100%;
+        @include min(768px) {
+            flex: 1 1 100%;
+            max-width: calc(100% - 200px);
+            padding-right: 0;
+            padding-left: 15px;
+        }
+        @include min(1024px) {
+            padding-left: 30px;
+            max-width: calc(100% - 250px);
+        }
+    }
+    .btn-wrap {
+        margin-bottom: 15px;
+    }
+    .btn-primary {
+        background-color: #C50026;
+        border: none;
+        border-radius: 0;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        text-transform: uppercase;
+        text-align: center;
+        min-width: 120px;
+        &:hover {
+            background-color: #92001C;
+        }
+        &:focus {
+            background-color: #92001C;
+            box-shadow: 0 0 .125rem 0.25rem rgba(189,11,29, .25);
+            outline: none;
+        }
+        & + .btn-primary {
+            margin-left: 5px;
+        }
+    }
+    .btn-secondary {
+        background-color: rgba(51, 51, 51, 0.3);
+        border: none;
+        border-radius: 0;
+        height: 40px;
+        &:hover {
+            background-color: rgba(51, 51, 51, 0.6);
+        }
+    }
+    .panel-title, h4, .title {
+        color: #212529;
+        font-weight: 700;
+    }
+    .list-matiere {
+        color: #333;
+        font-size: 14px;
+        font-weight: 400;
+    }
+}
+
+.menu_etudiant, .menu_teacher, .menu_assistant, .menu_scolarite {
+    background-color: #979797;
+    // flex: 1 0 250px;
+    // max-width: 250px;
+    // width: 250px;
+    .nav-Link {
+        background-color: #A09F9F;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        font-size: 0.75rem;
+        line-height: 1.4;
+        margin-bottom: 2px;
+        padding: .75rem 1rem;
+        position: relative;
+        text-decoration: none;
+        transition: all .2s ease;
+        width: 100%;
+        @include min(768px) {
+            font-size: 0.75rem;
+        }
+        @include min(1024px) {
+            font-size: 0.875rem;
+            padding: 1rem 1.125rem;
+        }
+        &:last-child {
+            margin-bottom: 0;
+        }
+        &:hover, &.active {
+            background-color: rgba(51, 51, 51, .39);
+            &:before {
+                width: 5px;
+            }
+        }
+        &:before {
+            background-color: rgba(189, 11, 29, 1);
+            content: "";
+            display: block;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: all .2s ease;
+            transform-origin: left center;
+            width: 0;
+            z-index: 1;
+            
+        }
+        .fa {
+            //color: rgba(189, 11, 29, 1);
+            font-size: 1.25rem;
+            margin-right: .5rem;
+            @include min(1024px) {
+                margin-right: .75rem;
+            }
+        }
+        .text {
+            font-size: .875rem;
+        }
+    }
+}
+
+.content-list {
+    .card {
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    .card-header {
+        color: #1e1e1e;
+        font-size: 20px;
+        font-weight: 700;
+        padding: .5rem 1rem;
+    }
+    .card-body {
+        
+    }
+}
+.list-infos-canditatures {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+        &:last-of-type {
+            border-width: 0;
+        }
+        &.bdb-0 {
+            p {
+                border-bottom: none;
+            }
+        }
+        p {
+            border-bottom: 1px solid #f1f1f3;
+            color: #333;
+            font-size: 14px;
+            font-weight: 400;
+            margin: 0 .5rem;
+            padding: .5rem .5rem;
+        }
+        .labeled {
+            font-weight: 400;
+            text-align: right;
+        }
+        .value {
+            text-align-last: left;
+        }
+    }
+}
+
+.filter-bloc {
+    margin-bottom: 20px;
+    .form-group {
+        align-items: center;
+        margin-bottom: 10px;
+        @include min(1024px) {
+            margin-bottom: 0;
+        }
+        .form-control {
+            border-color: #ced4da;
+            border-radius: .25rem;
+            font-size: 14px;
+            &:focus {
+                border-color: #bc0a1d;
+                box-shadow: 0 0 3px 0.25rem rgba(188, 10, 29, .25);
+            }
+            &.number {
+                text-align: right;
+            }
+        }
+        label {
+            font-weight: 700;
+            margin-bottom: 5px;
+            @include min(1024px) {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+.listNotes-content {
+    .listNotes-bloc {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 480px;
+        .form-group {
+            input {
+                min-width: 55px;
+                max-width: 55px;
+                &::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    appearance: none;
+                }
+            }
+            .coefficient {
+                color: #1E1E1E;
+                font-size: 1rem;
+            }
+        }
+        .groups-btn {
+            justify-content: center;
+            .btn {
+                margin-left: 10px;
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}
+
+.candidateList {
+    .form-bloc {
+        textarea {
+            border: 1px solid rgba(0,0,0,.125);
+        }
+        .form-control {
+
+        }
+    }
+}
+
+.info-aler-list {
+    .item {
+        display: flex;
+        align-items: center;
+        margin: 5px auto;
+        max-width: 480px;
+    }
+    strong {
+        width: 150px;
+    }
+}
+
+.cours-content {
+    padding-bottom: 30px;
+}
+
+.demandeDoc-content {
+    padding-bottom: 30px;
+    @include min(1024px) {
+        padding-bottom: 0;
+    }
+}

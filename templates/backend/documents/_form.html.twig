@@ -1,0 +1,69 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_documents_add') %}
+{% if document.id %}
+    {% set action = path('admin_documents_edit', { id: document.id }) %}
+{% endif %}
+<section class="content">
+    <form id="document-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+        {% if(actualites|length == 0 and articles|length == 0) %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="alert alert-warning">
+                        Renseigner les champs actualité et article
+                    </div>
+                </div>
+            </div>
+        {%  endif %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Document</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_label(form.name, 'Nom') }}
+                            {{ form_widget(form.name) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.ordre, 'Ordre') }}
+                            {{ form_widget(form.ordre) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.actualite, 'Actualite') }}
+                            {{ form_widget(form.actualite) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.article, 'Article') }}
+                            {{ form_widget(form.article) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if(actualites|length > 0 and articles|length > 0) %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-bd">
+                        <div class="panel-body">
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {%  endif %}
+    </form>
+</section>

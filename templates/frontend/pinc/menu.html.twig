@@ -1,0 +1,18 @@
+<!-- Chercher les classes actives -->
+<!-- Titre  breadcrumb-->
+{% set breadcrumbTitre = "" %}
+{% if (app.request.get('_route') == 'index') %}
+    {% set breadcrumbTitre = "Liste Activité" %}
+{% endif %}
+<!-- breadcrumb -->
+
+<nav class="menu_list menu_pinc">
+   <a class="nav-Link " href="{{ path('index') }}" title="Activité professeur">
+            <span class="fa fa-file"></span>
+            <span>Activité professeur </span>
+    </a>
+</nav>
+
+
+
+  

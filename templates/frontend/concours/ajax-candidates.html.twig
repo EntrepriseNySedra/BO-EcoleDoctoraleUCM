@@ -1,0 +1,41 @@
+{% if candidates|length > 0 %}
+    <table class="table table-bordered table-hover table-advance">
+        <thead>
+        <tr>
+            <th>Matricule</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th class="dt-action">Date de naissance</th>
+            <th class="dt-action">Diplôme</th>
+            <th class="action_col w-15">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in candidates %}
+            <tr class="middle-align">
+                <td>{{ item.immatricule }}</td>
+                <td>{{ item.first_name }}</td>
+                <td>{{ item.last_name }}</td>
+                <td>{{ item.email }}</td>
+                <td class="dt-action">{{ item.date_of_birth | date('d/m/Y') }}</td>
+                <td class="dt-action">{{ item.diplome }}</td>
+                <td class="action_col w-15">
+                    <div class="wrap-btn">
+                        <a class="btn btn-primary"
+                           href="{{ path('front_concours_candidate_notes', { 'id': item.id }) }}?m={{ m }}&p={{ p }}&c={{ c }}">
+                           {% if selectedConcours.resultStatut == constant('\\App\\Entity\\Concours::STATUS_CREATED') %}
+                                <span>Gérer notes</span>
+                            {% else %}
+                                <span>Voir les notes</span>
+                            {% endif %}
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="alert alert-secondary text-center" role="alert"><strong>Aucun résultat</strong></p>
+{% endif %}

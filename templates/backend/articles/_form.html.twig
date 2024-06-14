@@ -1,0 +1,287 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_articles_add') %}
+{% if article.id %}
+    {% set action = path('admin_articles_edit', { id: article.id }) %}
+{% endif %}
+<section class="content">
+    <form id="article-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Classification</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_label(form.ressourceType, 'Type') }}
+                            <select id="actualite_ressourceType" name="article[ressourceType]" class="form-control">
+                                <option> --Selectionnez-- </option>
+                                {% for key, ressource in ressourceTypeList %}
+                                    {% set state ="" %}
+                                    {% if(ressource == article.ressourceType) %}
+                                        {% set state ="selected='selected'" %}
+                                    {% endif %}
+                                    <option {{ state }} value="{{ ressource }}">{{ key }}</option>
+                                {% endfor %}                                
+                            </select>
+                        </div>
+
+                        {% set rubriqueGroupStyle = "display:none;" %}
+                        {% if article.ressourceType == "RUBRIQUE" %}
+                            {% set rubriqueGroupStyle = "display:block;" %}
+                        {% endif %}
+                        <div class="form-group rubrique-group" style="{{ rubriqueGroupStyle }}">
+                            <label class="required" for="rubrique">Rubrique</label>
+                            <select id="rubrique_ressourceType" name="article[resourceUuid]" class="form-control">
+                                <option> --Selectionnez-- </option>
+                                {% for parentId, rubriqueChild in rubriques %}
+
+                                    {% set stateParent = "" %}
+                                    {% if(article.resourceUuid == rubriqueChild[1]) %}
+                                        {% set stateParent ="selected='selected'" %}
+                                    {% endif %}
+
+                                    <option {{ stateParent }} value="{{ rubriqueChild[1] }}">{{ rubriqueChild[0] }}</option>
+                                    {% for key, item in rubriqueChild %}
+                                        {% if key > 1 %}
+                                            <option value="{{ item.uuid }}">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            {{ item.title }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        {% set depGroupStyle = "display:none;" %}
+                        {% if article.ressourceType == "DEPARTEMENT" %}
+                            {% set depGroupStyle = "display:block;" %}
+                        {% endif %}
+                        <div class="form-group departement-group" style="{{ depGroupStyle }}">
+                            <label class="required" for="rubrique">Département</label>
+                            <select id="departement_ressourceType" name="article[ressourceUuid]" class="form-control">
+                                <option> --Selectionnez-- </option>
+                                {% for departement in departements %}
+                                    {% set state ="" %}
+                                    {% if(article.resourceUuid == departement.uuid) %}
+                                        {% set state ="selected='selected'" %}
+                                    {% endif %}
+                                <option {{ state }} value="{{ departement.uuid }}">{{ departement.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        {% set mentionGroupStyle = "display:none;" %}
+                        {% if article.ressourceType == "MENTION" %}
+                            {% set mentionGroupStyle = "display:block;" %}
+                        {% endif %}
+                        <div class="form-group mention-group" style="{{ mentionGroupStyle }}">
+                            <label class="required" for="mention">Mention</label>
+                            <select id="mention_ressourceType" name="article[ressourceUuid]" class="form-control">
+                                <option> --Selectionnez-- </option>
+                                {% for mention in mentions %}
+                                    {% set state ="" %}
+                                    {% if(article.resourceUuid == mention.uuid) %}
+                                        {% set state ="selected='selected'" %}
+                                    {% endif %}
+                                <option {{ state }} value="{{ mention.uuid }}">{{ mention.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        {% set niveauGroupStyle = "display:none;" %}
+                        {% if article.ressourceType == "NIVEAU" %}
+                            {% set niveauGroupStyle = "display:block;" %}
+                        {% endif %}
+                        <div class="form-group niveau-group" style="{{ niveauGroupStyle }}">
+                            <label class="required" for="mention">Niveau</label>
+                            <select id="niveau_ressourceType" name="article[ressourceUuid]" class="form-control">
+                                <option> --Selectionnez-- </option>
+                                {% for niveau in niveaux %}
+                                    {% set state ="" %}
+                                    {% if(article.resourceUuid == niveau.uuid) %}
+                                        {% set state ="selected='selected'" %}
+                                    {% endif %}
+                                <option {{ state }} value="{{ niveau.uuid }}">{{ niveau.libelle }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Article: informations principales</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            {{ form_label(form.title, 'Titre *') }}
+                            {{ form_widget(form.title) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.mot_cle, 'Mot clé') }}
+                            {{ form_widget(form.mot_cle) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.description, 'Description') }}
+                            {{ form_widget(form.description) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.emplacement, 'Emplacement') }}
+                            {{ form_widget(form.emplacement) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.url, 'Url') }}
+                            {{ form_widget(form.url) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.detail, 'Detail') }}
+                            {{ form_widget(form.detail) }}
+                        </div>
+
+                        <div class="form-group">
+                            <div class="panel panel-bd">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <h4>{{ form_label(form.content_header, 'En tête de page *') }}</h4>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    {{ form_widget(form.content_header) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="panel panel-bd">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <h4>{{ form_label(form.content_left, 'Contenu à gauche *') }}</h4>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    {{ form_widget(form.content_left) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="panel panel-bd">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <h4>{{ form_label(form.content_right, 'Contenu à droite *') }}</h4>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    {{ form_widget(form.content_right) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="panel panel-bd">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <h4>{{ form_label(form.content_footer, 'Bas de page *') }}</h4>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    {{ form_widget(form.content_footer) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_widget(form.resourceUuid) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.active, 'Active') }}
+                            {{ form_widget(form.active) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% if article.id %}
+                {% set col = 6 %}
+            {% else %}
+                {% set col = 12 %}
+            {% endif %}
+            <div class="col-sm-{{col}}">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Upload photo</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="custom-file-container" data-upload-id="myupload">
+                            <label class="custom-file-container__custom-file">
+                                {{ form_row(form.file,{'attr':{
+                                    'class':"custom-file-container__custom-file__custom-file-input",
+                                    "aria-label":"Multiple select files"
+                                }})}}
+                                <input type="hidden" name="MAX_FILE_SIZE" value="10485764">
+                                <span class="custom-file-container__custom-file__custom-file-control"></span>
+                            </label>
+                            <hr>
+                            <label>Effacer<a href="javascript:void(0);" class="custom-file-container__image-clear">
+                                    &times;
+                                </a>
+                            </label>
+                            <div class="custom-file-container__image-preview" style="overflow: hidden;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if article.id %}
+            <div class="col-sm-6">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Aperçu photo</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <img alt = '{{ article.path }}' style='width: 100%; height:100%;' src='{{asset("uploads/article/")~ article.uuid~"/"~ article.path}}'>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {%  if(rubriques | length > 0 ) %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-article-form">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </form>
+</section>

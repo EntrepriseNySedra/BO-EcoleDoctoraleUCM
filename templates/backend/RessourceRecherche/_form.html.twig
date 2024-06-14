@@ -1,0 +1,69 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+{% set action = path('admin_Ressource_add') %}
+{% if RessourceRecherche.id %}
+    {% set action = path('RessourceRecherche_edit', { id: RessourceRecherche.id }) %}
+{% endif %}
+<section class="content">
+    <form id="actualite-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>Ajouter des RessourceRecherches</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>RessourceRecherches: informations principales</h4>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                            
+                        <div class="form-group">
+                            {{ form_label(form.name, 'Nom') }}
+                            {{ form_widget(form.name) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.description, 'Description') }}
+                            {{ form_widget(form.description) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.image, 'images') }}
+                            {{ form_widget(form.image) }}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-actualite-form">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+</section>

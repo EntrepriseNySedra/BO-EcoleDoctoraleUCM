@@ -1,0 +1,30 @@
+<option value="" selected="selected">-- Séléctionnez --</option>
+<!-- semestre -->
+{% if semestres is defined and semestres | length > 0 %}
+    {% for semestre in semestres %}
+        <option value="{{ semestre.id }}">{{ semestre.libelle }} </option>
+    {% endfor %}
+{% endif %}
+
+<!-- parcours -->
+{% if parcours is defined and parcours | length > 0 %}
+    {% for parc in parcours %}
+        <option value="{{ parc.id }}">{{ parc.nom }} </option>
+    {% endfor %}
+{% endif %}
+
+<!-- ue -->
+{% if uniteEnseignements is defined and uniteEnseignements | length > 0 %}
+    {% for ue in uniteEnseignements %}
+        <option value="{{ ue.id }}">{{ ue.libelle }} </option>
+    {% endfor %}
+{% endif %}
+
+<!-- matiere -->
+{% if matieres is defined and matieres | length > 0 %}
+    {% for mat in matieres %}
+        <option value="{{ mat.id }}">{{ mat.nom }} </option>
+    {% endfor %}
+{% endif %}
+
+

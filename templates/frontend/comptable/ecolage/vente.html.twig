@@ -1,0 +1,222 @@
+{% extends layout_frontend %}
+{% block title %}Ecolage{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Vente</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace {% if is_granted('ROLE_COMPTABLE') %}
+                            Comptable
+                        {% elseif is_granted('ROLE_RF') %}
+                            Responsable financier
+                        {% endif %}</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace {% if is_granted('ROLE_COMPTABLE') %}
+                            Comptable
+                        {% elseif is_granted('ROLE_RF') %}
+                            Responsable financier
+                        {% endif %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Vente</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/comptable/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+               
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">{% if is_granted('ROLE_COMPTABLE') %}
+                            Comptable
+                        {% elseif is_granted('ROLE_RF') %}
+                            Responsable financier
+                        {% endif %}</p>
+                    <h2 class="title-bloc">Vente</h2>
+                </div>
+                <div class="form-bloc filter-bloc">
+                    <p>Année universitaire : {{ anneeUniversitaire.libelle }}</p>
+
+                    <div class="groups-btn justify-content-start my-1">
+                        
+                    </div>
+
+
+
+
+                    <div class="groups-btn justify-content-start my-1">
+                        <form id="num_piece_form" method="GET" class="page-form-edit-new form-validation" role="form">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="first_inscription_form_civility">Index numéro de pièce</label>
+                                    <input type="text" name="num_piece" id="num_piece" value="">
+                                    <a class="btn btn-primary" id="btn-submit-edt-form" onclick="exportEtatVente()">Etat VENTE</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+
+
+
+                    <div class="card">
+                            <div class="card-body">
+                                <form id="filter-form" autocomplete="off">
+                                    <div class="form-group row">
+                                        <label class="col-xl-3">Mention :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="mention" id="mention">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for men in mentions %}
+                                                    <option value="{{ men.id }}" {% if m is defined and men.id == m %}selected{% endif %}>{{ men.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <label class="col-xl-3">Niveau :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="niveau" id="niveau">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for niv in niveaux %}
+                                                    <option value="{{ niv.id }}" {% if n is defined and niv.id == n %}selected{% endif %}>{{ niv.libelle }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <label class="col-xl-3">Parcours :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="parcours" id="parcours">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for parc in parcours %}
+                                                    <option value="{{ parc.id }}" {% if p is defined and parc.id == p %}selected{% endif %}>{{ parc.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            
+                        </div>
+                    </div> <!-- /filter block -->
+                </div> <!-- /filter block -->
+                <!-- content  -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="table-responsive table-wrapper">
+                        {% if list is defined and list | length > 0 %}
+                            <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" role="form" >
+                            <table class="table table-bordered table-striped table-hover list-data">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center  w-20">Etudiant</th>
+                                        <th class="text-center w-15">Mention</th>
+                                        <th class="text-center w-10">Niveau</th>
+                                        <th class="text-center w-20">Parcours</th>
+                                        <th class="text-center w-25">Ecolage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set total = 0 %}
+                                    {% set initStudent = 0 %}
+                                    {% for fraisScol in list %}
+                                        {% if fraisScol.etudiantId != initStudent %}
+                                            <tr class="middle-align">
+                                                <td class="text-center">{{ fraisScol.etudiant }}</td>
+                                                <td class="text-center">{{ fraisScol.mention }}</td>
+                                                <td class="text-center">{{ fraisScol.niveau }}</td>
+                                                <td class="text-center">{{ fraisScol.parcours }}</td>
+                                                <td class="text-center">{{ fraisScol.ecolage }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        {% set total = total + fraisScol.ecolage %}
+                                        {% set initStudent = fraisScol.etudiantId %}
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="4" align="center">Total</td>
+                                        <td align="center">{{ total | number_format(2, '.', ' ') }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                        {% endif %}
+                    </div>
+                    <div class="groups-btn justify-content-start my-1">
+                        <a href="{{ path('front_finance_ecolage_index') }}" class="btn btn-primary" id="btn-submit-edt-form">RETOUR</a>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        function exportEtatVente() {
+                let m = $('#mention :selected').val();
+                let n = $('#niveau :selected').val();
+                let p = $('#parcours :selected').val();
+                indexNumPiece = $("#num_piece").val();
+                window.location.href = "{{ path('front_finance_vente_index') }}?m=" + m + "&n=" + n + "&p=" + p + "&np=" + indexNumPiece + "&export=1"
+            }
+        ( function( $ ) {
+            $(document).ready(function () {
+                let m = $('#mention :selected').val();
+                let n = $('#niveau :selected').val();
+                let p = $('#parcours :selected').val();
+                $('#mention').on('change', function () {
+                    window.location.href = "{{ path('front_finance_vente_index') }}" + "?m=" + $(this).val() + "&n=" + n + "&p=" + p;
+                })
+                $('#niveau').on('change', function () {
+                    window.location.href = "{{ path('front_finance_vente_index') }}" + "?m=" + m + "&n=" + $(this).val() + "&p=" + p;
+                });
+                $('#parcours').on('change', function () {
+                    window.location.href = "{{ path('front_finance_vente_index') }}" + "?m=" + m + "&n=" + n + "&p=" + $(this).val();
+                });
+                $('.list-data').DataTable({
+                    "articleLength": 2,
+                    "order": [[ 4, "asc" ]],
+                    "bProcessing": true,
+                    "bFilter": true,
+                    "oLanguage": {
+                        "sProcessing": "traitement...",
+                        "oPaginate": {
+                            "sPrevious": "Précédente", // This is the link to the previous article
+                            "sNext": "Suivante", // This is the link to the next article
+                        },
+                        "sSearch": "Filtrer: ",
+                        "sLengthMenu": "Afficher _MENU_ enregistrement par article",
+                        "sInfo": "Voir _TOTAL_ de _PAGE_ pour _PAGES_ entrées",
+                        "sInfoEmpty": "Voir 0 de 0 pour 0 entrées",
+                        "sEmptyTable": "Aucune article trouvée",
+                    },
+                    "footerCallback": function ( row, data, start, end, display ) {
+                        $('.title-count').html(display.length);
+                    }
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}

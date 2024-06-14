@@ -1,0 +1,133 @@
+{% extends layout_backend %}
+{% block title %}Rubriques::Liste{% endblock %}
+
+{% set menuCMS = true %}
+{% set menuRubriques = true %}
+{% set menuRubriquesList = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Liste des rubriques
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-bd lobidrag">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <div class="list-count">
+                            <span class="title-count-text"> TOTAL: </span><span class="title-count"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="add-btn-top-list">
+                    <a href="{{ path('admin_rubriques_add') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Créer une rubrique</button></a>
+                </div>
+                {% for message in app.flashes('error') %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {%  endfor %}
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {%  endfor %}
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover list-data">
+                            <thead>
+                            <tr>
+                                <th width="10%">Titre</th>
+                                <th width="10%">Parent</th>
+                                <th width="30%">Description</th>
+                                <th width="10%">Statut</th>
+                                <th width="10%" class="text-center">Date de création</th>
+                                <th width="10%" class="text-center">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            
+                            {% for rubrique in rubriques %}
+                                <tr>
+                                    <td>{{ rubrique.title }}</td>
+                                    <td>{{ rubrique.parent_title }}</td>
+                                    <td>{{ rubrique.description| striptags | u.truncate(100, '...') }}</td>
+                                    <td>
+                                        {% if rubrique.active == 0 %}
+                                            Brouillon
+                                        {% else %}
+                                            Publié
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">{{ rubrique.created_at | date('d/m/Y') }}</td>
+                                    <td style="text-align: center;">
+                                        {% if rubrique.id == 1 %}
+                                            <a href="">
+                                                <i class="glyphicon glyphicon-eye-close"></i>
+                                            </a>
+                                            
+                                        {% else %}
+                                            <a href="{{ path('admin_rubriques_edit', { id: rubrique.id }) }}" title="Modifier">
+                                                <i class="glyphicon glyphicon-pencil"></i>
+                                            </a>
+                                                &nbsp;
+                                            <form id="delete-form-{{rubrique.id}}" method="POST" action="{{ path('admin_rubriques_delete', { id: rubrique.id }) }}" style="display:inline-block">
+                                                <input type="hidden" name="method" value="DELETE" />
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ rubrique.id) }}" />
+                                                <a class="" onclick="javascript:deleteElement('{{ rubrique.id }}');" href="javascript:;" title="Supprimer">
+                                                    <i class="glyphicon glyphicon-remove color-red"></i>
+                                                </a>
+                                            </form>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/jquery.mask.min.js') }}"></script>
+    <script>
+        function deleteElement(id) {
+            if (confirm('Etes-vous sûr de vouloir supprimer cet element ?')) {
+                $("#delete-form-"+id).submit();
+            }
+        }
+        $(document).ready(function () {
+
+            $('.list-data').DataTable({
+                "rubriqueLength": 10,
+                "order": [[ 1, "asc" ]],
+                "bProcessing": true,
+                "bFilter": true,
+                "oLanguage": {
+                    "sProcessing": "traitement...",
+                    "oPaginate": {
+                        "sPrevious": "Précédente", // This is the link to the previous rubrique
+                        "sNext": "Suivante", // This is the link to the next rubrique
+                    },
+                    "sSearch": "Filtrer: ",
+                    "sLengthMenu": "Afficher _MENU_ enregistrement par rubrique",
+                    "sInfo": "Voir _TOTAL_ de _PAGE_ pour _PAGES_ entrées",
+                    "sInfoEmpty": "Voir 0 de 0 pour 0 entrées",
+                    "sEmptyTable": "Aucune rubrique trouvée",
+                },
+                "footerCallback": function ( row, data, start, end, display ) {
+                    $('.title-count').html(display.length);
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,480 @@
+.widget {
+    background-color: #fff;
+    //margin-bottom: 25px;
+    &:only-child, &:last-child {
+        //margin-bottom: 0;
+    }
+    h2, h3 {
+        line-height: unset;
+        margin: unset;
+    }
+    * {
+        font-family: "open_sans", arial, sans-serif;
+    }
+}
+// evenement
+.events-widget {
+    padding: 0 15px 20px;
+    h2 {
+        border-bottom: 1px solid #e2e2e2;
+        color: $grey333;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.35;
+        margin: 0 0 20px;
+        padding-bottom: 12px;
+        text-transform: uppercase;
+        @include min(1024px) {
+            font-size: 18px;
+        }
+        .showAll {
+            color: $grey333;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: none;
+            @include min(1360px) {
+                font-size: 14px;
+            }
+            &:hover {
+                color: $red;
+            }
+            i {
+                color: inherit;
+                font-size: 10px;
+                padding-left: 10px;
+            }
+        }
+    }
+    .list-events {
+        .item-event {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            text-decoration: none;
+            &:hover {
+                text-decoration: none;
+            }
+            &:last-child {
+                margin-bottom: 0;
+            }
+            &:nth-child(even) {
+                .date-event {
+                    background-color: $red;
+                }
+            }
+            h3 {
+                color: $grey333;
+                font-size: 14px;
+                font-weight: 700;
+                line-height: 1.4;
+                margin: 0 0 5px;
+                text-decoration: none;
+                text-transform: uppercase;
+                @include min(1024px) {
+                    font-size: 16px;
+                }
+            }
+            .full-date {
+                color: $red;
+                font-size: 14px;
+                font-weight: 700;
+                line-height: 1.4;
+                margin: 0;
+                @include min(1024px) {
+                    font-size: 16px;
+                }
+            }
+            .text {
+                color: $grey333;
+                font-size: 11px;
+                font-weight: 400;
+                line-height: 1.4;
+                margin: 0;
+                @include min(1024px) {
+                    font-size: 13px;
+                }
+            }
+        }
+        .date-event {
+            background-color: $grey333;
+            border-radius: 3px;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            height: 50px;
+            min-width: 50px;
+            width: 50px;
+            .nbr {
+                font-size: 20px;
+                font-weight: 800;
+                line-height: 100%;
+                @include min(1024px) {
+                    font-size: 25px;
+                }
+            }
+            .month {
+                font-size: 12px;
+                font-weight: 700;
+                line-height: 1.4;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+            }
+        }
+        .desc-event {
+            padding-left: 10px;
+        }
+    }
+}
+
+.pacte-widget {
+    background-color: #f3f3f3;
+    padding: 20px 14px;
+    width: 100%;
+    h2 {
+        color: #000;
+        font-size: 25px;
+        font-weight: 400;
+        line-height: 1.35;
+        letter-spacing: -.5px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        @include min(1024px) {
+            font-size: 35px;
+            margin-bottom: 20px;
+        }
+    }
+    .wrap-btn {
+        line-height: 1.4;
+        margin: 0 0 20px;
+        text-align: center;
+    }
+    .btn-decouvrir {
+        background-color: $red;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 400;
+        padding: 14px 24px;
+        text-transform: uppercase;
+        text-decoration: none;
+        &:hover {
+            background-color: #92001C;
+        }
+    }
+    .desc-text {
+        p {
+            color: $grey1e;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            word-break: break-word;
+            @include min(1024px) {
+                font-size: 16px;
+            }
+            &:only-child, &:last-child {
+                margin: 0;
+            }
+        }
+    }
+}
+.mostConstulted-widget {
+    background-color: #fff;
+    overflow: hidden;
+    padding: 20px 15px;
+    h2 {
+        border-bottom: 1px solid #E2E2E2;
+        color: #333;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        text-transform: uppercase;
+        width: 100%;
+        @include min(1024px) {
+            font-size: 18px;
+        }
+    }
+    .list-tag {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin: -2.5px;
+        a {
+            border-color: #E2E2E2;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 4px;
+            color: #8E8E8E;
+            font-size: 12px;
+            margin: 2.5px;
+            padding: 4px 8px;
+            text-decoration: none;
+            transition: all .3s ease-in;
+            &:hover, &:focus {
+                background-color: #DFDFDF;
+                color: #333333;
+                text-decoration: none;
+            }
+            &.most {
+                font-size: 18px;
+            }
+            &.enough {
+                font-size: 16px;
+            }
+            &.many {
+                font-size: 14px;
+            }
+            &.few {
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+.lastActu-widget {
+    padding: 20px 15px;
+    h2 {
+        color: #333333;
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0 0 20px;
+        text-transform: uppercase;
+        @include min(1024px) {
+            font-size: 18px;
+        }
+    }
+    .list-actus {
+        .item-actu {
+            margin-bottom: 15px;
+            > a {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                text-decoration: none;
+                @include min(768px) {
+                    justify-content: flex-start;
+                }
+                @include min(1024px) {
+                    flex-wrap: nowrap;
+                }
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+            figure {
+                border-radius: 5px;
+                margin: 0 0 15px;
+                @include min(1024px) {
+                    margin: 0 15px 0 0;
+                }
+                img {
+                    aspect-ration: 105/97;
+                    border-radius: inherit;
+                    width: 105px;
+                    &[src=""] {
+                        display: none;
+                    }
+                }
+            }
+            h3 {
+                color: #333333;
+                font-size: 14px;
+                font-weight: 700;
+                line-height: 1.5;
+                margin: 0;
+                text-transform: uppercase;
+                @include min(1024px) {
+                    font-size: 16px;
+                }
+                &:hover {
+                    color: $red;
+                }
+            }
+            .text {
+                margin-bottom: 5px;
+                p {
+                    color: #333;
+                    font-size: 13px;
+                    font-weight: 400;
+                    line-height: 1.4;
+                    word-break: break-word;
+                    &:only-child, &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+            .wrap-linkInfos {
+                margin: 0;
+            }
+            .moreInfoslink {
+                color: #6D6D6D;
+                font-size: 12px;
+                font-weight: 400;
+                text-decoration: underline;
+                &:hover {
+                    color: $red;
+                }
+            }
+        }
+    }
+    .wrap-linkShowAll {
+        color: #333;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.4;
+        margin: 0;
+        text-align: right;
+    }
+    .showAll {
+        color: #333;
+        text-decoration: none;
+        &:hover {
+            color: $red;
+        }
+        i {
+            color: inherit;
+            font-size: 10px;
+            padding-left: 10px;
+        }
+    }
+}
+
+.adresse-widget {
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .15);
+    padding: 15px 0 0;
+    h2 {
+        font-size: 20px;
+        font-weight: 300;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+    }
+    .adresse-content {
+        padding-left: 15px;
+        padding-right: 15px;
+        h2 {
+            color: $red;
+        }
+        .adresse-item {
+            border-bottom: 1px solid #EBEBEB;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            h3, p {
+                color: #000;
+                font-size: 13px;
+                line-height: 1.4;
+                margin: 0;
+            }
+            h3 {
+                font-weight: 600;
+            }
+            p {
+                font-weight: 300;
+                
+            }
+        }
+    }
+    .reso-content {
+        padding: 0 15px 20px;
+        h2 {
+            color: #000;
+        }
+        .reso-list {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            margin-left: -10px;
+            margin-right: -10px;
+            > a {
+                border: 1px solid $red;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 10px;
+                height: 35px;
+                width: 35px;
+                transition: all .3s ease-in;
+                text-decoration: none;
+                &:hover {
+                    background-color: $red;
+                    i {
+                        color: #fff;
+                    }
+                }
+                i {
+                    font-size: 18px;
+                    color: $red;
+                }
+            }
+        }
+
+    }
+    .hotline-content {
+        background-color: $red;
+        padding: 20px 15px 15px;
+        h2 {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .phoneNumber {
+            background-color: #fff;
+            color: #000;
+            font-size: 20px;
+            font-weight: 300;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            padding: 10px 30px;
+            width: fit-content;
+            i {
+                color: inherit;
+                font-size: 20px;
+                margin-right: 8px;
+                text-align: center;
+                vertical-align: middle;
+            }
+        }
+    }
+
+}
+.rechercheFormation-widget {
+    background-color: #F3F3F3;
+    padding: 20px 15px;
+    h2 {
+        color: #000;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.4;
+        margin: 0 0 20px;
+        text-transform: uppercase;
+        @include min(768px) {
+        }
+        @include min(1360px) {
+            font-size: 25px;
+        }
+    }
+    .form-bloc {
+
+    }
+    .form-bloc {
+        .form-field {
+            margin-bottom: 15px;
+        }
+        .groups-btn {
+            justify-content: flex-end;
+        }
+    }
+}

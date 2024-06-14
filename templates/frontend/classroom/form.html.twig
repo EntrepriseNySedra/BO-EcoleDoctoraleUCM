@@ -1,0 +1,74 @@
+{% extends layout_frontend %}
+{% block title %}Gestion salles{% endblock %}
+{% block content %}
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Gestion salles</h1>
+
+    <!-- big slider banner formation -->
+    <section class="banner banner-training">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/training/banner-training.png') }}" alt="Gestion salles">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Gestion salles</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- big slider banner home -->
+    <div class="main-container">
+        <div class="container">
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-training" id="mainBloc" style="width: 100%">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+                <div class="main-bloc">
+                    <!-- content -->
+                    <div class="title-group">
+                        <p class="sup-title">Scolarité</p>
+                        <h2 class="title-bloc">{{ title }}</h2>
+                    </div>
+
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-body">
+                                {{ form_start(form, {'attr': {'class': 'row'}}) }}
+                                {{ form_row(form._token) }}
+                                <div class="form-bloc">
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label" for="firstName">Nom de la salle <span class="required">*</span></label>
+                                            {{ form_widget(form.libelle) }}
+                                            <span class="error">{{ form_errors(form.libelle) }}</span>
+                                        </div>
+                                        <div class="btns-group col-md-12">
+                                            <button type="submit" class="btn btn-lg btn-secondary btn-connexion" type="button" name="Enregsitrer">ENREGISTRER</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                {{ form_end(form, {'render_rest': false}) }}
+                            </div>
+                            <!-- main Bloc -->
+                        </div>
+                    </div>
+                </div>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        function updateElement(id, value) {
+            $("#action").val(value);
+            $("#validate-form-" + id).submit();
+        }
+    </script>
+{% endblock %}
+

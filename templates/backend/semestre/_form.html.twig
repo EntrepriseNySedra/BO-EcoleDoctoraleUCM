@@ -1,0 +1,79 @@
+<style>
+    .form-group legend {
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .invalid-feedback {
+        color: red;
+    }
+    .form-error-icon {
+        background-color: red;
+    }
+</style>
+
+{% set action = path('admin_rf_semestre_new') %}
+{% if semestre.id %}
+    {% set action = path('admin_rf_semestre_edit', { id: semestre.id }) %}
+{% endif %}
+<section class="content">
+    <form id="semestre-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" action="{{action}}">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                        {% if semestre.id %}
+                            <h4>Modification semestre</h4>
+                        {% else %}
+                            <h4>Nouveau semestre</h4>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                         <div class="form-group">
+                            {{ form_errors(formSemestre) }}
+                            {{ form_row(formSemestre._token) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formSemestre.libelle, 'Libelle *') }}
+                            {{ form_widget(formSemestre.libelle, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formSemestre.niveau, 'Niveau *') }}
+                            {{ form_widget(formSemestre.niveau, {'attr':{'required':'required'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formSemestre.startDate, 'Date de debut') }}
+                            {{ form_widget(formSemestre.startDate) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formSemestre.endDate, 'Date de fin') }}
+                            {{ form_widget(formSemestre.endDate) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formSemestre.ecolage, 'Montant Ecolage') }}
+                            {{ form_widget(formSemestre.ecolage) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(formSemestre.credit, 'Crédits') }}
+                            {{ form_widget(formSemestre.credit) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-bd">
+                    <div class="panel-body">
+                        {% if semestre.id %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Modifier</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

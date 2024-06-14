@@ -1,0 +1,21 @@
+{% extends layout_backend %}
+{% block title %}Actualité::Ajout{% endblock %}
+
+{% set menuCMS = true %}
+{% set menuActualites = true %}
+{% set menuActualitesAdd = true %}
+
+{% block pageicon %}
+    pe-7s-browser
+{% endblock %}
+
+{% block pagetitle %}
+    Nouvelle actualité
+{% endblock %}
+
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/actualites/_form.html.twig') }}
+    <a href="{{ path('admin_actualites_list') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

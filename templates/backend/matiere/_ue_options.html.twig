@@ -1,0 +1,4 @@
+<option> -- Selectionnez -- </option>
+{% for ue in unite_enseignements %}
+    <option value="{{ ue.id }}">{{ ue.libelle }}</option>
+{% endfor %}

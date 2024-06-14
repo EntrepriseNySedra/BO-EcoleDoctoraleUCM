@@ -1,0 +1,131 @@
+<div class="tab-pane fade" id="validated" role="tabpanel" aria-labelledby="validated-tab">
+    <div class="table-responsive table-wrapper">
+        <table class="table table-bordered table-hover table-advance" id="list-validated">
+            <thead>
+                <tr>
+                    <th class="action_col w-5">Actions</th>
+                    <th>Matricule</th>
+                    <th>Nom</th>
+                    <th>Centre</th>
+                    <th>Parcours</th>
+                    <th>Mention</th>
+                    <th>Niveau</th>
+                    <th>Email</th>
+                    <th>Date de naissance</th>
+                    <th>Lieu de naissance</th>
+                    <th>Diplôme</th>
+                    <th>Nationalité</th>
+                    <th>CIN</th>
+                    <th>Délivré le</th>
+                    <th>Adresse</th>
+                    <th>Téléphone</th>
+                    <th>Réligion</th>
+                    <th>Profession</th>
+                    <th>Réf paiement</th>
+                    <th>Date paiement</th>
+                    <th>Nom conjoint</th>
+                    <th>Adresse conjoint</th>
+                    <th>Contact conjoint</th>
+                    <th>Profession conjoint</th>
+                    <th>Nom père</th>
+                    <th>Adresse père</th>
+                    <th>Contact père</th>
+                    <th>Profession père</th>
+                    <th>Nom mère</th>
+                    <th>Adresse mère</th>
+                    <th>Contact mère</th>
+                    <th>Profession mère</th>
+                    <th>Tuteur</th>
+                    <th>Tuteur adresse</th>
+                    <th>Tuteur phone</th>                    
+                    <th>Profil religieuse</th>
+                    <th>Congrégation religieuse</th>
+                    <th>Responsable foyer religieuse</th>
+                    <th>Contact responsable religieuse</th>
+                    <th>email responsable religieuse</th>
+                    <td>Série bacc</td>
+                    <td>Annéee bacc</td>
+                    <td>Num inscription bacc</td>
+                    <td>Autre nom bacc</td>
+                    <td>Autre série bacc</td>
+                    <td>Mention bacc</td>                   
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in validated %}
+                    <tr class="middle-align">
+                        <td class="action_col w-5">
+                            <div class="wrap-btn">
+                                <a class="btn btn-primary" href="{{ path('front_scolarite_detail_candidature', { id: item.id}) }}"
+                                title="Valider">
+                                    <span>Afficher</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>{{ item.immatricule }}</td>
+                        <td>{{ item.civility }} {{ item.firstName }} {{ item.lastName }}</td>
+                        <td>{% if item.centre %}{{ item.centre.name }}{% endif %}</td>
+                        <td>{% if item.parcours %}{{ item.parcours.nom }}{% endif %}</td>
+                        <td>{{ item.mention.nom }}</td>
+                        <td>{{ item.niveau.libelle }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.dateOfBirth | date('d/m/Y') }}</td>
+                        <td>{{ item.birthPlace }}</td>
+                        <td>{{ item.diplome }}</td>
+                        <td>{{ item.nationality }}</td>
+                        <td>{{ item.cinNum }}</td>
+                        <td>{{ item.cinDeliverDate | date('d/m/Y') }}</td>
+                        <td>{{ item.address }}</td>
+                        <td>{{ item.phone1 }}</td>
+                        <td>{{ item.confessionReligieuse }}</td>
+                        <td>{{ item.job }}</td>
+                        <td>{{ item.payementRef }}</td>
+                        <td>{{ item.payementRefDate | date('d/m/Y')}}</td>
+                        <td>{{ item.conjointFirstName }} {{ item.conjointLastName }}</td>
+                        <td>{{ item.conjointAddress }}</td>
+                        <td>{{ item.conjointPhone }}</td>
+                        <td>{{ item.conjointJob }}</td>
+                        <td>{{ item.fatherFirstName }} {{ item.fatherLastName }}</td>
+                        <td>{{ item.fatherAddress }}</td>
+                        <td>{{ item.fatherPhone }}</td>
+                        <td>{{ item.fatherJob }}</td>
+                        <td>{{ item.motherFirstName }} {{ item.motherLastName }}</td>
+                        <td>{{ item.motherAddress }}</td>
+                        <td>{{ item.motherPhone }}</td>
+                        <td>{{ item.motherJob }}</td>
+                        <td>{{ item.tuteurCivility }} {{ item.tuteurFirstName }} {{ item.tuteurLastName }}</td>
+                        <td>{{ item.tuteurAddress }}</td>
+                        <td>{{ item.tuteurPhone }}</td>
+                        <td>{{ item.tuteurJob }}</td>
+
+                        <td>{{ item.religiousProfil }}</td>
+                        <td>{{ item.religiousCongregationName }}</td>
+                        <td>{{ item.religiousPhone }}</td>
+                        <td>{{ item.religiousEmail }}</td>
+
+                        <td>{{ item.baccSerie }}</td>
+                        <td>{{ item.baccAnnee }}</td>
+                        <td>{{ item.baccNumInscription }}</td>
+                        <td>{{ item.baccAutreName }}</td>
+                        <td>{{ item.baccAutreSerie }}</td>
+                        <td>{{ item.baccMention }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="row my-3">
+            <span class="col-1 offset-9">Total : </span>
+            <span class="col-2">{{ validated | length }}</span>
+        </div>
+    </div>
+
+    <div class="pagination">
+        {{ knp_pagination_render(validated) }}
+    </div>
+
+    {% if is_granted('ROLE_SSRS') and validated|length > 0 %}
+        <div class="groups-btn justify-content-start my-1">
+            <a href="{{ path('front_concours_candidature_export') }}?m={{m}}&n={{n}}&p={{p}}&s={{constant('\\App\\Entity\\ConcoursCandidature::STATUS_SU_VALIDATED')}}" class="btn btn-primary" id="btn-submit-edt-form">EXPORTER</a>
+        </div>
+    {% endif %}
+</div>

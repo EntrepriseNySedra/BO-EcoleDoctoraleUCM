@@ -1,0 +1,171 @@
+{% extends layout_frontend %}
+{% block title %}Fiche présence enseignants{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Fiche absence</h1>
+
+    <!-- big slider banner scolarité -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Fiche absence</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+           
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <!-- content -->
+                <section class="ficheAbsence-content content">
+                    <div class="title-group">
+                        <p class="sup-title">Scolarité</p>
+                        <h2 class="title-bloc">Fiche absence</h2>
+                    </div>
+
+                    <!-- filter block -->
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="filter-form" autocomplete="off">
+                                    <div class="form-group row">
+                                        <label class="col-xl-1">Mention :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="mention" id="mention">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for men in mentions %}
+                                                    <option value="{{ men.id }}" {% if m is defined and men.id == m %}selected{% endif %}>{{ men.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <label class="col-xl-1">Niveau :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="niveau" id="niveau">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for niv in niveaux %}
+                                                    <option value="{{ niv.id }}" {% if n is defined and niv.id == n %}selected{% endif %}>{{ niv.libelle }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <label class="col-xl-1">Parcours :</label>
+                                        <div class="form-field select-field col-xl-3">
+                                            <select class="form-control" name="parcours" id="parcours">
+                                                <option value="">--- Sélectionner ---</option>
+                                                {% for parc in parcours %}
+                                                    <option value="{{ parc.id }}" {% if p is defined and parc.id == p %}selected{% endif %}>{{ parc.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> <!-- /filter block -->
+
+                    
+                    <div class="groups-btn text-right m-b-20">
+                        <a href="{{ path('front_scolarite_absence_add') }}" class="btn btn-primary" id="btn-submit-product-form" >Ajouter</a>
+                        <a href="{{ path('front_scol_absence_etat') }}" class="btn btn-primary" id="btn-submit-product-form" >Etat Absence</a>
+                    </div>
+
+                    {% if absences is defined and absences | length > 0 %}
+                        <div class="table-responsive table-wrapper">
+                            <table class="table table-bordered table-hover list-data">
+                                <thead>
+                                    <tr>
+                                        <th>Mention</th>
+                                        <th class="text-center">Niveau</th>
+                                        <th class="text-center">Parcours</th>
+                                        <th>Matiere</th>
+                                        <th>Nom</th>
+                                        <th class="text-center">Date</th>
+                                        <th class="text-center">Heure de début </th>
+                                        <th class="text-center">Heure de fin </th>
+                                        <th class="action_col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% set processed_ids = [] %}
+                                {% for abs in absences %}
+                                    {% if abs.id not in processed_ids %}
+                                        <tr class="middle-align">
+                                            <td>{{ abs.mention_nom }}</td>
+                                            <td class="text-center">{{ abs.niveau_libelle }}</td>
+                                            <td class="text-center">{% if abs.parcours_name and abs.parcours_name is defined %} {{ abs.parcours_name }} {% endif %}</td>
+                                            <td>{{ abs.matiere_nom }}</td>
+                                            <td>{{ abs.nom }} {{ abs.prenom }}</td>
+                                            <td class="text-center">{{ abs.date | format_datetime('short', 'none', locale='fr') }}</td>
+                                            <td class="text-center">{{ abs.start_time | format_time(timeFormat='short', locale='fr') }}</td>
+                                            <td class="text-center">{{ abs.end_time | format_time(timeFormat='short', locale='fr') }}</td>
+                                            <td>
+                                                <a class="btn btn-danger" href="{{ path('front_scolarite_absence_edit', { id: abs.id}) }}" class="btn btn-secondary" title="Modifier">
+                                                    <i class="far fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% set processed_ids = processed_ids|merge([abs.id]) %}
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                    <div class="text-center">
+                                    <div class="pagination">
+                                        {{ knp_pagination_render(absences) }}
+                                    </div> </br>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+         ( function( $ ) {
+            $(document).ready(function () { 
+                $('#semestre, #niveau, #mention, #parcours').bind('change', function(){
+                    _parcousId  = $('#parcours').val();
+                    _niveauId   = $('#niveau').val();
+                    _mentionId  = $('#mention').val();
+                    location.href = '{{ path('front_scolarite_absence_index')}}' + "?m=" + _mentionId + "&p=" + _parcousId + "&n=" + _niveauId;
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

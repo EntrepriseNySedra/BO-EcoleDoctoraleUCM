@@ -1,0 +1,97 @@
+{% extends layout_teacher %}
+{% block title %}Espace assistant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Modifier enseignant</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Modifier enseignant</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <!-- content modifier enseignant -->
+                <section class="modif-enseignant-2-content content">
+                    <div class="title-group">
+                        <p class="sup-title">Modification Enseignant</p>
+                        <h2 class="title-bloc">Etape 2</h2>
+                    </div>
+                    <div class="form-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+                                    <div class="form-group row">
+                                        <label for="enseignant_email" class="col-xl-3">Parcours * :</label>
+                                        {% if(parcours | length > 0) %}
+                                        <div class="form-field select-field col-xl-9">
+                                            <select id="parcours" name="parcours[]" required="required" class="form-control" multiple style="min-height: 100px">
+                                                {% for item in parcours %}
+                                                <option 
+                                                    {% if item.parcoursId %}
+                                                    selected 
+                                                    {% endif %}
+                                                value="{{ item.id }}">{{ item.nom }} </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        {{ form_errors(form) }}
+                                        {{ form_row(form._token) }}
+                                    </div>
+                                    <div class="groups-btn justify-content-end mt-0">
+                                        <button type="button" class="btn btn-secondary" id="btn-cancel">Annuler</button>
+                                        <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Valider</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article><!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

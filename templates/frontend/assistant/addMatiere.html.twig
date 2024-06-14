@@ -1,0 +1,241 @@
+{% extends layout_teacher %}
+{% block title %}Espace assistant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Espace assistant</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Ajout matière</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Assistant</p>
+                    <h2 class="title-bloc">Ajout matière</h2>
+                </div>
+                <!-- content ajout matiere -->
+                <section class="content ajout-matiere-content">
+                    <div class="form-bloc form-inline">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <label for="matiere_niveaux" class="col-xl-5">Niveaux : </label>
+                                                <div class="form-field select-field col-xl-7">
+                                                    <select id="matiere_niveaux" name="matiere[niveau]" required="required" class="form-control">
+                                                        <option> -- Séléctionner -- </option>
+                                                        {% for niveau in niveaux %}
+                                                            <option value="{{ niveau.id }}">{{ niveau.libelle }} {{ niveau.systeme }} {{ niveau.diplome }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <label for="matiere_parcours" class="col-xl-5">Parcours : </label>
+                                                <div class="form-field select-field col-xl-7">
+                                                    <select id="matiere_parcours" name="matiere[parcours]" class="form-control">
+                                                        <option value=""> -- Séléctionner -- </option>
+                                                        {% for parc in parcours %}
+                                                            <option value="{{ parc.id }}">{{ parc.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <label for="matiere_enseignant" class="col-xl-5">Enseignant : </label>
+                                                <div class="form-field select-field col-xl-7">
+                                                    <select id="matiere_enseignant" name="matiere[enseignantId]" required="required" class="form-control">
+                                                        <option> -- Séléctionner -- </option>
+                                                        {% for enseignant in enseignants %}
+                                                            <option value="{{ enseignant.id }}">{{ enseignant.first_name }} {{ enseignant.last_name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <label for="matiere_ue" class="col-xl-5">Unité d'enseignement : </label>
+                                                <div class="form-field select-field col-xl-7">
+                                                    <select id="matiere_ue" name="matiere[ue]" class="form-control">
+                                                        <option> -- Séléctionner -- </option>
+                                                        {% for ue in uniteEnseignements %}
+                                                        <option value="{{ ue.id }}">{{ ue.libelle }} </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group row">
+                                                <label for="matiere_matiere" class="col-xl-2">Matiere : </label>
+                                                <div class="form-field select-field col-xl-10">
+                                                    <select id="matiere_matiere" name="matiere[matiere][]" class="form-control" multiple>
+                                                        <option> -- Séléctionner -- </option>
+                                                        {% for matiere in matieres %}
+                                                            <option value="{{ matiere.id }}">{{ matiere.nom }} </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-12 m-0">
+                                            {{ form_errors(form) }}
+                                            {{ form_row(form._token) }}
+                                        </div>
+                                    </div>
+                                    <div class="groups-btn text-right  justify-content-end">
+                                        <a href="/assistant/matiere" style="margin-right:10px;"><button type="button" class="btn btn-secondary" id="btn-cancel">Annuler</button></a>
+                                        <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Valider</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article><!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        function getUe(ensId, parcoursId, niveauId) {
+            $.ajax({
+                method: "GET",
+                url: "/assistant/enseignant/ue",
+                data: { 
+                    id: enseignantId,
+                    niveau_id: niveauId,
+                    parcours_id: parcoursId
+                }
+            }).done(
+                function(html){
+                    $('#matiere_ue').html(html);
+                    $('#matiere_matiere').html("");  
+                } 
+            )
+        }
+        (function ($) {
+            $(document).ready(function () {
+                niveauId    = $('#matiere_niveaux').val();
+                parcoursId    = $('#matiere_parcours').val();
+                enseignantId    = $('#matiere_enseignant').val();
+                $('#matiere_niveaux').bind('change', function(){
+                    niveauId = $(this).val();
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('front_enseignant_matiere_ajax_options') }}",
+                        data: {
+                            parent_name : 'niveau',
+                            parent_id   : niveauId,
+                            child_target: 'parcours'
+                        }
+                    }).done(
+                        function(html){
+                            $('#matiere_parcours').html(html);  
+                        } 
+                    )    
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('front_enseignant_matiere_ajax_options') }}",
+                        data: {
+                            parent_name : 'niveau',
+                            parent_id   : niveauId,
+                            child_target: 'enseignant'
+                        }
+                    }).done(
+                        function(html){
+                            $('#matiere_enseignant').html(html);  
+                        } 
+                    )
+                    $('#matiere_ue').html("");
+                    $('#matiere_matiere').html("");  
+                    getUe(enseignantId, parcoursId, niveauId);
+
+                });
+
+                $('#matiere_enseignant').bind('change', function(){
+                    enseignantId = $(this).val();
+                    niveauId    = $('#matiere_niveaux').val();
+                    getUe($(this).val(), parcoursId, niveauId);
+                });
+
+                $('#matiere_parcours').bind('change', function(){
+                    parcoursId  = $(this).val();
+                    niveauId    = $('#matiere_niveaux').val();
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('front_enseignant_matiere_ajax_options') }}",
+                        data: {
+                            parent_name : 'parcours',
+                            parent_id   : parcoursId,
+                            niveau_id   : niveauId
+                        }
+                    }).done(
+                        function(html){
+                            $('#matiere_enseignant').html(html);  
+                        } 
+                    )
+                    getUe(enseignantId, $(this).val(), niveauId);
+                });
+
+                $('#matiere_ue').bind('change', function(){
+                    ueId  = $(this).val();
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ path('front_enseignant_matiere_ajax_options') }}",
+                        data: {
+                            parent_name : 'uniteEnseignements',
+                            parent_id   : ueId
+                        }
+                    }).done(
+                        function(html){
+                            $('#matiere_matiere').html(html);  
+                        } 
+                    )
+                });
+
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

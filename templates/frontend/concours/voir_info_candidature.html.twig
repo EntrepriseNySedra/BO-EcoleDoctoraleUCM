@@ -1,0 +1,76 @@
+{% extends layout_frontend %}
+{% block title %}candidature{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Liste étudiante</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant">
+            </figure>
+        </div>
+    </section><!-- /Big slider -->
+    
+ 
+
+    <div class="container text-center">
+        <!-- aside Left -->
+        <aside class="asideLeft asideSticky">
+            <!-- Votre contenu de la barre latérale ici -->
+        </aside>
+        <article>
+            <!-- main Bloc -->
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="card-title"><strong>Vérifier votre inscription</strong></h1>
+                            <br>
+                            <form action="{{ path('search_candidates') }}" method="post">
+                                <div class="form-group">
+                                    <label for="numeroInscription">Insérer votre numéro d'inscription Baccalauréat:</label>
+                                    <input type="text" name="numeroInscription" class="form-control" id="numeroInscription" placeholder="Numéro d'inscription" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block mt-3">Confirmer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /main Bloc -->
+        </article>
+    </div>
+</div>
+
+</div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                
+
+                
+                $('#mention').on('change', function(){
+                    window.location.href = "{{ path('front_recteur_student_index') }}" + "?n=" + $("#niveau").val() + "&m=" + $(this).val() + "&p=" + $("#parcours").val();
+                });
+                $('#niveau').on('change', function(){
+                    window.location.href = "{{ path('front_recteur_student_index') }}" + "?n=" + $(this).val() + "&m=" + $("#mention").val() + "&p=" + $("#parcours").val();
+                });
+                $('#parcours').on('change', function(){
+                    window.location.href = "{{ path('front_recteur_student_index') }}" + "?n=" + $("#niveau").val() + "&m=" + $("#mention").val() + "&p=" + $(this).val();
+                })
+
+
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

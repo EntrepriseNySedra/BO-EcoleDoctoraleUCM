@@ -1,0 +1,184 @@
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Empoloi du temps</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="{{ path('front_student_emploi_du_temps') }}" title="Formation">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Emploi du temps</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container">
+        <div class="container container_row">
+           <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/etudiant/_menu.html.twig') }}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <!-- content emploi du temps -->
+                <section class="emploiTemps-content">
+                    <div class="groups-btn justify-content-end text-left mb-3">
+                        <button class="btn btn-primary edt-filter" data-lib="day">JOUR  </button>
+                        <button class="btn btn-primary edt-filter" data-lib="week">SEMAINE  </button>
+                    </div>
+                    <div class="form-bloc filter-bloc">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="filter-form" autocomplete="off">
+                                    <div class="row">                                   
+                                        <div class="form-group row">
+                                            <label class="col-lg-2">Date :</label>
+                                            <div class="form-field select-field col-lg-4">
+                                                <input type="date" id="date_schedule" name="date_schedule" class="form-control" value="{{ d }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> <!-- /filter block -->
+
+                    <div class="table-responsive table-wrapper">
+                        <table class="table table-item table-bordered table-hover emploiDuTemps-day">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Heure</th>
+                                    <th>Matière</th>
+                                    <th>Bâtiment</th>
+                                    <th>Parcours</th>
+                                    <th>Salles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% set initStartDate = "" %}
+                            {% if edtDay | length > 0 %}
+                            {% for edt in edtDay %}
+                                <tr class="middle-align">
+                                    {% if edt.date_schedule | date('Ymd') != initStartDate %}
+                                        <td>{{ edt.date_schedule | format_datetime('short', 'none', locale='fr')  }}</td>
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}                                                
+                                    <td>{{ edt.start_time | format_time(timeFormat='short', locale='fr') }} <span class="fa fa-minus"></span>{{ edt.end_time | format_time(timeFormat='short', locale='fr') }}</td>
+                                    <td>{{ edt.nom }}</td>
+                                    <td>{{ edt.batiment }}</td>
+                                    <td>{{ edt.parcoursNom }}</td>
+                                    <td>{{ edt.libelle }}</td>
+                                </tr>
+                                {% set initStartDate = edt.date_schedule | date('Ymd') %}
+                            {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="5">
+                                        <p class="alert alert-secondary text-center m-0" role="alert"><strong>Aucune information</strong></p>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                        <table class="table table-item table-bordered table-hover emploiDuTemps-week" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Heure</th>
+                                    <th>Matière</th>
+                                    <th>Bâtiment</th>
+                                    <th>Parcours</th>
+                                    <th>Salles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set initStartDate = "" %}
+                                {% if currentWeek|length > 0 %}
+                                {% for edt in currentWeek %}
+                                    <tr class="middle-align">
+                                        {% if edt.date_schedule|date('Ymd') != initStartDate %}
+                                            <td>{{ edt.date_schedule | date('d/m/Y') }}</td>
+                                        {% else %}
+                                            <td></td>
+                                        {% endif %}                                                
+                                        <td>{{ edt.start_time | format_time(timeFormat='short', locale='fr') }} <span class="fa fa-minus"></span>{{ edt.end_time | format_time(timeFormat='short', locale='fr') }}</td>
+                                        <td>{{ edt.nom }}</td>
+                                        <td>{{ edt.batiment }}</td>
+                                        <td>{{ edt.parcoursNom }}</td>
+                                        <td>{{ edt.libelle }}</td>
+                                    </tr>
+                                    {% set initStartDate = edt.start_date|date('Ymd') %}
+                                {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5">
+                                            <p class="alert alert-secondary text-center m-0" role="alert"><strong>Aucune information</strong></p>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                let matiere = $('#matiere :selected').val();
+                $('#matiere').on('change', function () {
+                    window.location.href = "{{ path('front_student_classes') }}" + "?m=" + $(this).val();
+                })
+
+                $('#cours').on('change', function () {
+                    window.location.href = "{{ path('front_student_classes') }}" + "?m=" + matiere + "&c=" + $(this).val();
+                })
+                
+                $('.edt-filter').on('click', function () {
+                    var $this       = $(this);
+                    $(".table-item").each(function() {
+                        $(this).hide();
+                    });
+                    $(".emploiDuTemps-"+$this.data('lib')).show();
+                })
+
+                $('#date_schedule').bind('change', function(){
+                    window.location.href = "{{ path('front_student_emploi_du_temps') }}?d=" + $(this).val();
+                });
+
+            });
+
+        } )( jQuery );
+    </script>
+{% endblock %}
+

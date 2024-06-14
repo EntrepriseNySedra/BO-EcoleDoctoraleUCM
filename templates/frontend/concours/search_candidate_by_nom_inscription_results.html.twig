@@ -1,0 +1,33 @@
+{% extends layout_frontend %}
+{% block title %}Résultats de la recherche{% endblock %}
+{% block content %}
+    {% if result %}
+        {% if result.status == 3 %}
+        <h1>Résultats de la recherche</h1>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Matricule</th>
+                    <th>Nom</th>
+                    <th>Mention</th>
+                    <th>Centre</th>
+                    <th>email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ result.immatricule }}</td>
+                    <td>{{ result.getFirstName() }} {{ result.getLastName() }}</td>
+                     <td>{{ result.mention.nom }}</td>
+                    <td>{{ result.centre.name }}</td>
+                    <td>{{ result.email }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% else %}
+            <h1>En attente de validation</h1>
+        {% endif %}
+    {% else %}
+        <h1>Aucun résultat trouvé pour le numéro d'inscription saisi.</h1>
+    {% endif %}
+{% endblock %}

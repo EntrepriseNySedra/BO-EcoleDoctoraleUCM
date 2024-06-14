@@ -1,0 +1,89 @@
+{% extends layout_teacher %}
+{% block title %}Espace assistant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Modifier matière</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Modifier matière</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <!-- content ajout matière -->
+                <section class="content ajout-matiere-content">
+                    <form id="matiere-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" >
+                        <div class="panel panel-bd">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <h4 class="text-dark">Modification matière</h4>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    {{ form_label(form.Enseignant, 'Enseignant *') }}
+                                    {{ form_widget(form.Enseignant) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.Matiere, 'Matière *') }}
+                                    {{ form_widget(form.Matiere) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_errors(form) }}
+                                    {{ form_row(form._token) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-bd">
+                            <div class="panel-body">
+                                <button type="submit" class="btn btn-secondary my-3" id="btn-submit-product-form">Valider</button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

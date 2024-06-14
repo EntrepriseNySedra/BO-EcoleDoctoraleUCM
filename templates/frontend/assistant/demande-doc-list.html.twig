@@ -1,0 +1,144 @@
+{% extends layout_frontend %}
+{% block title %}Fiche présence enseignants{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Demande de document</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace assistant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Assistant">Espace assistant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Demande de document</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/assistant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Assistant</p>
+                    <h2 class="title-bloc">Demande de document</h2>
+                </div>
+                <!-- content demande document -->
+                <section class="demande-doc-content content richText">
+                    {% if demandesDoc is defined and demandesDoc | length > 0 %}
+                    <div class="table-responsive table-wrapper">
+                        <table class="table table-bordered table-hover list-data">
+                            <thead>
+                                <tr>
+                                    <th>Matricule</th>
+                                    <th>Civilité</th>
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                    <th>Description</th>
+                                    <th>Quantité</th>
+                                    <th>Type</th>
+                                    <th>Statut</th>
+                                    <th class="action_col w-5">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for demandeDoc in demandesDoc %}
+                                <tr class="middle-align">
+                                    <td>{{ demandeDoc["matricule"] }}</td>
+                                    <td>{{ demandeDoc["civility"] }}</td>
+                                    <td>{{ demandeDoc["last_name"] }}</td>
+                                    <td>{{ demandeDoc["first_name"] }}</td>
+                                    <td>{{ demandeDoc["description"] }}</td>
+                                    <td>{{ demandeDoc["quantity"] }}</td>
+                                    <td>{{ demandeDoc["libelle"]}}</td>
+                                    <td>
+                                        {%  set libelleStatut = "" %}
+                                        {% if demandeDoc["statut"] == "CREATED" %}
+                                            {%  set libelleStatut = "Crée" %}
+                                        {% elseif demandeDoc["statut"] == "VERIFIED" %}
+                                            {%  set libelleStatut = "Vérifié" %}
+                                        {% elseif demandeDoc["statut"] == "VALIDATED" %}
+                                            {%  set libelleStatut = "Validé" %}
+                                        {% elseif demandeDoc["statut"] == "REJECTED" %}
+                                            {%  set libelleStatut = "Rejeté" %}
+                                        {% else %}
+                                            {%  set libelleStatut = "Archivé" %}
+                                        {% endif %}
+                                        {{ libelleStatut }}
+                                    </td>
+                                    <td class="action_col w-5">
+                                        <div class="wrap-btn">
+                                            {% if demandeDoc["statut"] == "CREATED" or demandeDoc["statut"] == "REJECTED"  or demandeDoc["statut"] == "VERIFIED"  %}
+                                                <a href="{{ path('front_assistant_demande_doc_edit', { id: demandeDoc.id}) }}" title="Modifier" class="btn btn-secondary">
+                                                    <i class="far fa-edit"></i>
+                                                </a>
+                                            {% endif %}
+                                            {% if demandeDoc["statut"] == "VALIDATED"  %}
+                                                <a href="{{asset("uploads/demande/demande-")~demandeDoc["id"]~"-"~demandeDoc["matricule"]~".pdf"}}" title="download" target="_blank" class="btn btn-secondary"><i class="fa fa-file-pdf" data-id="{{ demandeDoc["id"] }}"></i>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                        <p class="alert alert-secondary text-center" role="alert"><strong>Vous n'avez pas de demande(s) de document en cours</strong></p>
+                    {% endif %}
+                </section>
+            </article><!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {
+                $('.downloadDoc').bind('click', function(){
+                    docId       = $(this).data("id");
+                    status      = "ARCHIVED";
+                    $.ajax({
+                        method: "POST",
+                        url: "{{ path('front_assistant_demande_doc_status')}}",
+                        data: {
+                            docId   :docId,
+                            status  :status,
+                        }
+                    }).done(
+                        function(html){
+                           location.href = '{{ path('front_assistant_demande_doc_list') }}';
+                        }
+                    )
+                });
+            });
+        } )( jQuery );
+    </script>
+{% endblock %}
+

@@ -1,0 +1,443 @@
+{% extends layout_frontend %}
+{% block title %}Identification étudiant{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+    <!-- jquery-ui css -->
+    <link href="{{ asset('bo/assets/plugins/jquery-ui-1.12.1/jquery-ui.min.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% if app.request.get('_route') == 'front_assistant_demande_doc_edit' %}
+    {% set action           = path('front_assistant_demande_doc_edit', { id: demandeDoc.id }) %}
+    {% set demandeEtudiant  = demandeDoc.id %}
+    {% set demandeMentionNom = demandeDoc.mention.nom %}
+    {% set demandeMentionId = demandeDoc.mention.id %}
+    {% set demandeMentionLibelle = demandeDoc.mention.nom %}
+    {% set demandeNiveauId = demandeDoc.niveau.id %}
+{% else %}
+    {% set action           = path('admin_actualites_add') %}
+    {% set demandeEtudiant  = etudiant.id %}
+    {% set demandeMentionNom = etudiant.mention.nom %}
+    {% set demandeMentionId = etudiant.mention.id %}
+    {% set demandeMentionLibelle = etudiant.mention.nom %}
+    {% set demandeNiveauId = etudiant.niveau.id %}
+{% endif %}
+
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Demande de document</h1>
+
+    <!-- big slider banner espace etudiant -->
+    <section class="banner banner-espaceEtudiant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="{{ path('front_student_emploi_du_temps') }}" title="Formation">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Demande de document</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceStudent-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {% if app.request.get('_route') == 'front_assistant_demande_doc_edit' %}
+                    {{ include('frontend/assistant/_menu.html.twig') }}
+                {% else %}
+                    {{ include('frontend/etudiant/_menu.html.twig') }}
+                {% endif %}
+            </aside>
+            <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Espace étudiant</p>
+                    <h2 class="title-bloc">Demande de document</h2>
+                </div>
+                <!-- demande de document -->
+                <section class="content demandeDoc-content">
+                    {% for message in app.flashes('infos') %}
+                        <p class="alert alert-success" role="alert">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close" style="color:#fff; opacity:0.9;">&times;</a>
+                            <strong>{{ message }}</strong>
+                        </p>
+                    {% endfor %}
+
+
+                    <div class="form-bloc">
+                        {% if app.request.get('_route') == 'front_assistant_demande_doc_edit' %}
+                        <form id="request-doc" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form" 
+                                action="{{  path('front_assistant_demande_doc_edit', { id: demandeDoc.id }) }}" >
+                        {% else %}
+                        <form id="request-doc" method="POST" class="page-form-edit-new form-validation"
+                            enctype="multipart/form-data" role="form">
+                        {% endif %}
+                            {{ form_errors(form) }}
+                            {{ form_row(form._token) }}
+                            <input type="hidden" name="demande[etudiant]" class="form-control" value="{{ demandeEtudiant }}">
+                            
+                            <div class="row">
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group row">
+                                        <label for="demande_etudiant_mention" class="col-xl-4">Filière* :</label>
+                                        <div class="col-xl-8">
+                                            <input type="text" id="demande_etudiant_mention" name="etudiant_mention" class="form-control" value="{{ demandeMentionNom }}" readonly>
+                                            <input type="hidden" name="demande[mention]" class="form-control" value="{{ demandeMentionId }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group row">
+                                        <label for="demande_etudiant_mention" class="col-xl-4 required">Niveau* : </label>
+                                        <div class="col-xl-8">
+                                            <input type="text" id="demande_etudiant_niveau" name="etudiant_niveau" class="form-control" value="{{ demandeMentionLibelle }}" readonly>
+                                            <input type="hidden" name="demande[niveau]" class="form-control" value="{{ demandeNiveauId }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group row">
+                                        <label for="demande_etudiant_parcours" class="col-xl-4 required">Parcours* :</label>
+                                        <div class="col-xl-8">
+                                            <input type="text" id="demande_etudiant_parcours" name="demande[parcours]" class="form-control" 
+                                            {% if etudiant.parcours.nom is defined %}
+                                                value="{{ etudiant.parcours.nom }}"
+                                            {% endif %} readonly>
+                                            <input type="hidden" name="demande[parcours]" class="form-control" 
+                                                {% if etudiant.parcours.id is defined %}
+                                                    value="{{ etudiant.parcours.id }}"
+                                                {% endif %}
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group row">
+                                        <div class="col-xl-4 label-content">{{ form_label(form.type, 'Type : ') }}</div>
+                                        <div class="form-field select-field col-xl-8">
+                                            {% if app.request.get('_route') == 'front_assistant_demande_doc_edit' %}
+                                            <select id="demande_type" name="demande[type]" required="required" class="form-control">
+                                                <option value="{{ demandeDoc.type.id }}" selected="selected">{{ demandeDoc.type.libelle }}</option>
+                                            </select>
+                                            {% else %}
+                                            <div class="form-field text-field">
+                                                {{ form_widget(form.type) }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group row">
+                                        <div class="col-xl-4 label-content">{{ form_label(form.quantity, 'Nombre :') }}</div>
+                                        <div class="col-xl-8">
+                                            {{ form_widget(form.quantity) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group row">
+                                        <div class="col-xl-4 label-content">
+                                            {{ form_label(form.matricule, 'Matricule :') }}
+                                        </div>
+                                        <div class="col-xl-8">
+                                            {{ form_widget(form.matricule) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-2">
+                                    <div class="form-group row">
+                                        <div class="col-xl-5 label-content">
+                                            {{ form_label(form.civility, 'Civilité :') }}
+                                        </div>
+                                        <div class="form-field select-field  col-xl-7">
+                                            {{ form_widget(form.civility) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="form-group row">
+                                        <div class="col-xl-3 label-content">
+                                            {{ form_label(form.lastName, 'Nom(s) :') }}
+                                        </div>
+                                        <div class="col-xl-9">
+                                            {{ form_widget(form.lastName) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="form-group row">
+                                        <div class="col-xl-3 label-content">
+                                            {{ form_label(form.firstName, 'Prénom(s) :') }}
+                                        </div>
+                                        <div class="col-xl-9">
+                                            {{ form_widget(form.firstName, { 'attr': { 'required': 'true' } }) }}
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <div class="col-xl-4 label-content">
+                                            {{ form_label(form.birthDate, 'Date de naissance :') }}
+                                        </div>
+                                        <div class="col-xl-8">
+                                            {% if app.request.get('_route') == 'front_assistant_demande_doc_edit' %}
+                                                <input type="text" id="demande_birthDate" name="demande[birthDate]" required="required" class="form-control hasDatepicker" maxlength="10" {% if demandeDoc.birthDate %} value="{{ demandeDoc.getFormatedBirthDate }}" {% endif %} ">
+                                            {% else %}
+                                                {{ form_widget(form.birthDate) }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <div class="col-xl-4 label-content">
+                                            {{ form_label(form.birthPlace, 'Lieu de naissance :') }}
+                                        </div>
+                                        <div class="col-xl-8">
+                                            {{ form_widget(form.birthPlace) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if app.request.get('_route') == 'front_assistant_demande_doc_edit' %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="control-label col-xl-4" for="demande_type">Statut* : </label>
+                                        {% if demandeDoc is defined %}
+                                        <div class="col-xl-8">
+                                            <!-- status -->
+                                            <div class="form-field select-field">
+                                                <select id="status-doc" name="demande[status]" required="required" class="form-control">
+                                                    <option value="" selected="selected">-- Séléctionnez --</option>
+                                                    {% if demandeDoc.statut != constant('App\\Entity\\DemandeDoc::STATUS_VALIDATED')  %}
+                                                        <option value="{{ constant('App\\Entity\\DemandeDoc::STATUS_VERIFIED') }}"    {% if demandeDoc.statut == constant('App\\Entity\\DemandeDoc::STATUS_VERIFIED')  %} selected="selected" {% endif %}>Vérifié</option>
+                                                        <option value="{{ constant('App\\Entity\\DemandeDoc::STATUS_REJECTED') }}"    {% if demandeDoc.statut == constant('App\\Entity\\DemandeDoc::STATUS_REJECTED')  %} selected="selected" {% endif %}>Rejeté</option>
+                                                    {% endif %}
+
+                                                    {% if demandeDoc.statut == constant('App\\Entity\\DemandeDoc::STATUS_ARCHIVED')  %}
+                                                        <option value="{{ constant('App\\Entity\\DemandeDoc::STATUS_ARCHIVED') }}"    {% if demandeDoc.statut == constant('App\\Entity\\DemandeDoc::STATUS_ARCHIVED')  %} selected="selected" {% endif %}>Archivé</option>
+                                                    {% endif %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                                
+                            <div class="diplome_bloc_contentForm" id="diplome_bloc" style="display: none;">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="form-group row">
+                                            <div class="col-xl-5 label-content">
+                                                {{ form_label(form.address, 'Adresse :') }}
+                                            </div>
+                                            <div class="col-xl-7">
+                                                {{ form_widget(form.address) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="form-group row">
+                                            <div class="col-xl-5 label-content">
+                                                {{ form_label(form.postalCode, 'Code postal :') }}
+                                            </div>
+                                            <div class="col-xl-7">
+                                                {{ form_widget(form.postalCode) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="form-group row">
+                                            <div class="col-xl-3 label-content">
+                                                {{ form_label(form.city, 'Ville :') }}
+                                            </div>
+                                            <div class="col-xl-9">
+                                                {{ form_widget(form.city) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3">
+                                        <div class="form-group row">
+                                            <div class="col-xl-3 label-content">
+                                                {{ form_label(form.country, 'Pays :') }}
+                                            </div>
+                                            <div class="col-xl-9">
+                                                {{ form_widget(form.country) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group row">
+                                            <div class="col-xl-6 label-content">
+                                                {{ form_label(form.phone, 'Téléphone fixe :') }}
+                                            </div>
+                                            <div class="col-xl-6">
+                                                {{ form_widget(form.phone) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group row">
+                                            <div class="col-xl-6 label-content">
+                                                {{ form_label(form.portable, 'Téléphone portable :') }}
+                                            </div>
+                                            <div class="col-xl-6">
+                                                {{ form_widget(form.portable) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group row">
+                                            <div class="col-xl-4 label-content">
+                                                {{ form_label(form.email, 'Email :') }}
+                                            </div>
+                                            <div class="col-xl-8">
+                                                {{ form_widget(form.email) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group row">
+                                            <div class="col-xl-6 label-content">
+                                                {{ form_label(form.addressPro, 'Adresse professionnelle :') }}
+                                            </div>
+                                            <div class="col-xl-6">
+                                                {{ form_widget(form.addressPro) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group row">
+                                            <div class="col-xl-6 label-content">
+                                                {{ form_label(form.job, 'Fonction :') }}
+                                            </div>
+                                            <div class="col-xl-6">
+                                                {{ form_widget(form.job) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group row">
+                                            <label class="col-xl-6" for="demande_diplome_name">Diplôme* :</label>
+                                            <div class="form-field select-field col-xl-6">
+                                                <select id="demande_diplome_name" name="demande[diplomeName]" class="form-control">
+                                                    <option value=""> -- Séléctionner -- </option>
+                                                    <option value="DUEP">DUEP</option>
+                                                    <option value="LICENCE">LICENCE</option>
+                                                    <option value="MASTER 1">MASTER 1</option>
+                                                    <option value="MASTER 2">MASTER 2</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group row">
+                                            <label class="col-xl-6" for="demande_diplome_libelle">Intitulé du diplôme* :</label>
+                                            <div class="col-xl-6">
+                                                <input type="text" id="demande_lastName" name="demande[diplomeLibelle]" maxlength="255" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group row">
+                                            <label class="col-xl-6" for="demande_diplome_year">Année du diplôme* :</label>
+                                            <div class="col-xl-6">
+                                                <input type="text" id="demande_diplome_year" name="demande[diplomeYear]" maxlength="255" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-group row">
+                                            <label class="col-xl-6" for="demande_diplome_mention">Mention du diplôme* :</label>
+                                            <div class="col-xl-6">
+                                                <input type="text" id="demande_diplome_mention" name="demande[diplomeMention]" maxlength="255" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12">
+                                        <div class="form-group row">
+                                            <label class="col-xl-6" for="demande_diplome_year">La photocipie de votre pièce d'identité* :</label>
+                                            <div class="col-xl-6">
+                                                {{ form_widget(form.identityPiece) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-6">
+                                        <div class="form-group row">
+                                            <label class="col-xl-6" for="demande_diplome_year">Attestation de depôt du livre de mémoire ou de rapport de stage* :</label>
+                                            <div class="col-xl-6">
+                                                {{ form_widget(form.depotAttestation) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="groups-btn justify-content-end mt-0">
+                                <button type="button" class="btn btn-secondary" id="btn-cancel">Annuler</button>
+                                <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Enregistrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('bo/assets/js/jquery.mask.min.js') }}" type="text/javascript"></script>
+    <!-- jquery-ui -->
+    <script src="{{ asset('bo/assets/plugins/jquery-ui-1.12.1/jquery-ui.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bo/assets/plugins/jquery-ui-1.12.1/datepicker-fr.js') }}" type="text/javascript"></script>
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $( "#demande_birthDate" ).mask('00/00/0000');
+
+                $.datepicker.regional['fr'];
+                $( "#demande_birthDate" ).datepicker();
+
+
+                $('#demande_type').bind('change', function(){
+                    type = $(this).val();
+                    if(type == 2) {
+                        $('#diplome_bloc').show()
+                    } else {
+                        $('#diplome_bloc').hide()
+                    }
+                });
+
+                
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}
+

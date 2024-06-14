@@ -1,0 +1,624 @@
+{% extends layout_frontend %}
+{% block title %}Fiche présence enseignants{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Fiche de renseignements</h1>
+
+    <!-- big slider banner espace assistant -->
+    <section class="banner banner-espaceEtudiant banner-espaceAssistant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace étudiant</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ path(workspacePath) }}" title="Assistant">Espace étudiant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Mon compte</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceAssistant-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/etudiant/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+           
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-assistant" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">étudiant</p>
+                    <h2 class="title-bloc">Mon compte</h2>
+                </div>
+                <!-- content actualites -->
+                <section class="content presenceEnseignant-content richText">
+                    <div class="form-bloc">
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="user_edit" method="POST" class="page-form-edit-new form-validation" role="form" action="{{ path('front_student_me') }}">
+                                    <!-- <input type="text" id="etudiant_info_form_mention" name="etudiant_info_form[mention]" class="form-control" value="{{ student.mention }}"> -->
+                                    {{ form_errors(form) }}
+                                    {{ form_row(form._token) }}
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label" for="first_inscription_form_civility">Login</label>
+                                            {{ form_widget(form.login) }}
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label" for="first_inscription_form_civility">Mot de passe</label>
+                                            {{ form_widget(form.password) }}
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <label class="control-label" for="first_inscription_form_civility">Civilité</label>
+                                            {{ form_widget(form.civility) }}
+                                            <span class="error">{{ form_errors(form.civility) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-5">
+                                            <label class="control-label" for="first_inscription_form_lastName">Nom(s) <span class="required">*</span></label>
+                                            {{ form_widget(form.lastName) }}
+                                            <span class="error">{{ form_errors(form.lastName) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-5">
+                                            <label class="control-label" for="first_inscription_form_firstName">Prénom(s)</label>
+                                            {{ form_widget(form.firstName) }}
+                                            <span class="error">{{ form_errors(form.firstName) }}</span>
+                                        </div>
+                                       
+                                         <div class="form-group col-md-2">
+                                            <label class="control-label" for="dateOfBirth">Date de naissance <span class="required">*</span></label>
+                                            {{ form_widget(form.birthDate) }}
+                                            <span class="error">{{ form_errors(form.birthDate) }}</span>
+                                        </div>
+
+                                        <div class="form-group col-md-5">
+                                            <label class="control-label" for="first_inscription_form_birthPlace">Lieu de naissance</label>
+                                            {{ form_widget(form.birthPlace) }}
+                                            <span class="error">{{ form_errors(form.birthPlace) }}</span>
+                                        </div>
+
+                                        <div class="form-group col-md-5">
+                                            <label class="control-label" for="first_inscription_form_nationality">Nationalité</label>
+                                            {{ form_widget(form.nationality) }}
+                                        </div>
+
+                                        <!-- Pièces fournies -->
+                                        <h4 class="text-left text-dark">Documents</h4>
+                                        <div class="form-group col-md-4">
+                                            <label class="control-label" for="first_inscription_form_photo1">Photo d'identité</label>
+                                            {{ form_widget(form.photo1) }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form_label(form.acteNaissance, 'Copie d\'acte de naissance', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.acteNaissance) }}
+                                        </div>
+
+                                        <div class="form-group col-md-4">
+                                            <label class="control-label" for="first_inscription_form_baccFile">Diplôme ou attestation ou relevé des notes du baccalauréat</label>
+                                            {{ form_widget(form.baccFile) }}
+                                            <span class="error">{{ form_errors(form.baccFile) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label class="control-label" for="first_inscription_form_bacc_annee">Année</label>
+                                            {{ form_widget(form.bacc_annee) }}
+                                            <span class="error">{{ form_errors(form.bacc_annee) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label class="control-label" for="bacc_serie">Série (Baccalaureat Malagasy) &nbsp;</label>
+                                            {{ form_widget(form.baccSerie, {'attr': {'class': 'form-check-inline'}}) }}
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label class="control-label" for="first_inscription_form_baccAnnee">Numero d'inscription</label>
+                                            {{ form_widget(form.baccNuminscription) }}
+                                            <span class="error">{{ form_errors(form.baccNuminscription) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label class="control-label" for="first_inscription_form_baccAnnee">Mention</label>
+                                            {{ form_widget(form.baccMention) }}
+                                            <span class="error">{{ form_errors(form.baccMention) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label class="control-label" for="first_inscription_form_cinFile">Photocopie CIN</label>
+                                            {{ form_widget(form.cinFile) }}
+                                        </div>
+                                        <!-- END pièces fournies infos -->
+
+                                         <div class="form-group col-md-3">
+                                            <label class="control-label" for="first_inscription_form_cinNum">Numéro CIN</label>
+                                            {{ form_widget(form.cinNum) }}
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label class="control-label" for="first_inscription_form_cinDeliveryDate">Delivré le</label>
+                                            {{ form_widget(form.cinDeliveryDate) }}
+                                            <span class="error">{{ form_errors(form.cinDeliveryDate) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label class="control-label" for="first_inscription_form_cinDeliveryLocation">à</label>
+                                            {{ form_widget(form.cinDeliveryLocation) }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label class="control-label" for="first_inscription_form_address">Adresse de l'étudiant </label>
+                                            {{ form_widget(form.address) }}
+                                            <span class="error">{{ form_errors(form.address) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label class="control-label" for="first_inscription_form_phone">Téléphone de l'étudiant </label>
+                                            {{ form_widget(form.phone) }}
+                                            <span class="error">{{ form_errors(form.phone) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label class="control-label" for="first_inscription_form_email">Email <span class="required">*</span></label>
+                                            {{ form_widget(form.email) }}
+                                            <span class="error">{{ form_errors(form.email) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label class="control-label" for="first_inscription_form_religion">Religion <span class="required">*</span></label>
+                                            {{ form_widget(form.religion) }}
+                                            <span class="error">{{ form_errors(form.religion) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label class="control-label" for="first_inscription_form_sport">Sport pratiqué</label>
+                                            {{ form_widget(form.sport) }}
+                                            <span class="error">{{ form_errors(form.sport) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            {{ form_label(form.situationMatrimoniale, 'Situation matrimoniale', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.situationMatrimoniale) }}
+                                        </div>
+
+                                        <div class="form-group col-md-8">
+                                            {{ form_label(form.autreDocLibelle, 'Autres documents (Titres)', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.autreDocLibelle) }}
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            {{ form_label(form.autreDocFichier, 'Autres documents (Fichiers)', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.autreDocFichier) }}
+                                        </div>
+
+                                        <!-- Filiation -->
+                                        <h4 class="text-left text-dark">Filiation</h4>
+                                        <div class="form-group col-md-4">
+                                            {{ form_label(form.fatherName, 'Nom du père', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.fatherName) }}
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            {{ form_label(form.fatherAddressContact, 'Adresse et contact', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.fatherAddressContact) }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form_label(form.fatherJob, 'Profession du père', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.fatherJob) }}
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            {{ form_label(form.fatherJobAddressContact, 'Adresse et contact', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.fatherJobAddressContact) }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form_label(form.motherName, 'Nom de la mère', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.motherName) }}
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            {{ form_label(form.motherAddressContact, 'Adresse et contact', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.motherAddressContact) }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form_label(form.motherJob, 'Profession du mère', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.motherJob) }}
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            {{ form_label(form.motherJobAddressContact, 'Adresse et contact', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.motherJobAddressContact) }}
+                                        </div>
+
+                                        <!-- END Filiation -->
+
+                                        <!-- Tuteur -->
+                                        <h4 class="text-left text-dark">Tuteur</h4>
+                                        <div class="form-group col-md-2">
+                                            <label class="control-label" for="first_inscription_form_civility">Civilité</label>
+                                            {{ form_widget(form.tutorCivility) }}
+                                            <span class="error">{{ form_errors(form.tutorCivility) }}</span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label class="control-label" for="first_inscription_form_tutorLastName">Nom(s)</label>
+                                            {{ form_widget(form.tutorLastName) }}
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label class="control-label" for="first_inscription_form_tutorFirstName">Prénom(s)</label>
+                                            {{ form_widget(form.tutorFirstName) }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form_label(form.tutorAddressContact, 'Adresse et contact', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.tutorAddressContact) }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form_label(form.tutorJob, 'Profession', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.tutorJob) }}
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            {{ form_label(form.tutorJobAddressContact, 'Adresse et contact', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.tutorJobAddressContact) }}
+                                        </div>
+
+                                        <!-- END Tuteur -->
+
+                                        <!-- Conjoint(e) -->
+                                        <h4 class="text-left text-dark">Pour les mariés (es)</h4>
+                                        <div class="form-group col-md-3">
+                                            {{ form_label(form.jointLastName, 'Nom du conjoint(e)', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.jointLastName) }}
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            {{ form_label(form.jointFirstName, 'Prénom du conjoint(e)', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.jointFirstName) }}
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            {{ form_label(form.jointAddressContact, 'Adresse et contact', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.jointAddressContact) }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form_label(form.jointJob, 'Profession', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.jointJob) }}
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            {{ form_label(form.jointJobAddressContact, 'Adresse et contact', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.jointJobAddressContact) }}
+                                        </div>
+
+                                        <!-- END Conjoint(e) -->
+
+                                        <!-- Religieuse info -->
+                                        <h4 class="text-left text-dark">Pour les religieux</h4>
+                                        <div class="form-group col-md-12">
+                                            {{ form_label(form.religiousCongregationName, 'Nom de la congregation', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.religiousCongregationName) }}
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            {{ form_label(form.religiousAddress, 'Adresse', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.religiousAddress) }}
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            {{ form_label(form.religiousResponsibleName, 'Nom du responsable du foyer', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.religiousResponsibleName) }}
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            {{ form_label(form.religiousPhone, 'Téléphone', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.religiousPhone) }}
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            {{ form_label(form.religiousEmail, 'Email', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.religiousEmail) }}
+                                        </div>
+                                        <div class="form-group col-md-12 text-center">
+                                            {{ form_widget(form.religiousProfil, {'attr': {'class': 'form-check-inline'}}) }}
+                                        </div>
+
+                                        <!-- Etudiant etranger -->
+                                        <h4 class="text-left text-dark">Pour les étudiants étrangers</h4>
+                                        <div class="form-group col-md-4">
+                                            {{ form_label(form.passeportNum, 'Passeport N°', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.passeportNum) }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form_label(form.passportDeliveryDate, 'Delivré le', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.passportDeliveryDate) }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form_label(form.passportDeliveryPlace, 'A', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.passportDeliveryPlace) }}
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            {{ form_label(form.residenceTitle, 'Titre de séjour', { 'label_attr': { 'class': 'control-label' } }) }}
+                                            {{ form_widget(form.residenceTitle) }}
+                                        </div>
+
+                                        <!-- END Etudiant etranger info -->
+
+                                        <!-- Renseignements complementaires -->
+                                        <h4 class="text-left text-dark text-center">RENSEIGNEMENTS COMPLEMENTAIRES</h4>
+                                        <div class="table-responsive">
+                                            <h4 class="text-left text-dark">Etudes secondaires 1<sup>er</sup> cycle</h4>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Etablissement</th>
+                                                        <th>Diplôme</th>
+                                                        <th>Année</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                           <div class="form-group col-md-12">
+                                                           {{ form_widget(form.firstCycleEtablissement) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12">
+                                                           {{ form_widget(form.firstCycleDiplome) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12">
+                                                           {{ form_widget(form.firstCycleYear) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <h4 class="text-left text-dark">Etudes secondaires 2<sup>nd</sup> cycle</h4>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Etablissement</th>
+                                                        <th>Diplôme</th>
+                                                        <th>Année</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.secondCycleEtablissement1) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.secondCycleDiplome1) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.secondCycleYear1) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.secondCycleEtablissement2) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.secondCycleDiplome2) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.secondCycleYear2) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        <div class="table-responsive">
+                                            <h4 class="text-left text-dark">Autres</h4>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Niveau</th>
+                                                        <th>Etablissement</th>
+                                                        <th>Diplôme</th>
+                                                        <th>Année</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td rowspan="3" align="center" style="vertical-align: middle">
+                                                            Etude(s) universitaire(s)
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherLevelEtab1) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherLevelDiplome1) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherLevelYear1) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherLevelEtab2) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherLevelDiplome2) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherLevelYear2) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherLevelEtab3) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherLevelDiplome3) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherLevelYear3) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td rowspan="3" align="center" style="vertical-align: middle">
+                                                            Stage(s)
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherStageEtab1) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherStageDiplome1) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherStageYear1) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherStageEtab2) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherStageDiplome2) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherStageYear2) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherStageEtab3) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherStageDiplome3) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherStageYear3) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td rowspan="3" align="center" style="vertical-align: middle">
+                                                            Formation
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherFormationEtab1) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherFormationDiplome1) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherFormationYear1) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherFormationEtab2) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherFormationDiplome2) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherFormationYear2) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherFormationEtab3) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherFormationDiplome3) }}
+                                                           </div>
+                                                        </td>
+                                                        <td>
+                                                           <div class="form-group col-md-12 mb-0">
+                                                           {{ form_widget(form.otherFormationYear3) }}
+                                                           </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="groups-btn justify-content-end mt-0">
+                                        <button type="button" class="btn btn-secondary" id="btn-cancel">Annuler</button>
+                                        <button type="submit" class="btn btn-primary" id="btn-submit-product-form">Valider</button>
+                                    </div>
+                                </form>
+
+
+
+                            </div>
+                        </div>
+
+
+                        
+                    </div>
+
+                </section>
+
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        ( function( $ ) {
+            $(document).ready(function () {});
+        } )( jQuery );
+    </script>
+{% endblock %}
+

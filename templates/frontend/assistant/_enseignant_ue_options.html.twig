@@ -1,0 +1,5 @@
+
+<option> -- Séléctionner -- </option>
+{% for ue in uniteEnseignements %}
+    <option value="{{ ue.ueId }}">{{ ue.libelle }} </option>
+{% endfor %}

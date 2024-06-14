@@ -1,0 +1,122 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Espace enseignant</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>    
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+    
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Espace enseignant</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+                <!-- content enseignant -->
+                <section class="enseignant-content richText">
+
+                    <div class="px-4">
+
+                    <div class="table-wrapper">
+                        <!--Table-->
+                        <table class="table table-hover mb-0">
+
+                            <!--Table head-->
+                            <thead>
+                                <tr>
+                                    <th class="th-lg">Mention</th>
+                                    <th class="th-lg">Niveau</th>
+                                    <th class="th-lg">Parcours</th>
+                                    <th class="th-lg">Matière</th>
+                                    <th class="th text-center">volume horaire total</th>
+                                    <th class="th-lg text-center">volume horaire consommé</th>
+                              </tr>
+                            </thead>
+                            <!--Table head-->
+
+                            <!--Table body-->
+                            <tbody>
+                                {% set initMention = '' %}
+                                {% set initNiveau = '' %}
+                                {% set totalVHT = 0 %}
+                                {% set totalVHC = 0 %}
+                                {% for item in data %}
+                                    <tr>
+                                        {% if item.mention != initMention %}
+                                            <td rowspan="{{ list[item.mention]['size'] }}" style="vertical-align: middle;">{{ item.mention }}</td>
+                                        {% endif %}
+                                        {% if item.niveau != initNiveau %}
+                                            <td rowspan="{{ list[item.mention][item.niveau]['size'] }}" style="vertical-align: middle;">{{ item.niveau }}</td>
+                                        {% endif %}
+                                        <td>{{ item.parcours }}</td>
+                                        <td>{{ item.matiere }}</td>
+                                        <td align="center">{{ item.volume_horaire_total }}</td>
+                                        <td align="center">{{ item.totalHeureMatiere }}</td>
+                                    </tr>
+                                    {% set initMention = item.mention %}
+                                    {% set initNiveau = item.niveau %}
+                                    {% set totalVHT = totalVHT + item.volume_horaire_total %}
+                                    {% set totalVHC = totalVHC + item.totalHeureMatiere %}
+                                {% endfor %}
+                                <tr>                                    
+                                    <td colspan="4" align="center">TOTAL</td>
+                                    <td align="center">{{ totalVHT }}</td>
+                                    <td align="center">{{ totalVHC }}</td>
+                                </tr>
+                            </tbody>
+                            <!--Table body-->
+                        </table>
+                        <!--Table-->
+                    </div>
+
+                    </div>
+
+                    </div>
+                    <!-- Table with panel -->
+
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}

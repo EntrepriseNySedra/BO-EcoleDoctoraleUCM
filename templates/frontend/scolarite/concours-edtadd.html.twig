@@ -1,0 +1,237 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Emploi du temps - concours</h1>
+
+    <!-- big slider banner scollarité -->
+    <section class="banner banner-scolarite">
+        <div class="banner-container">
+            <div class="container">
+                <div class="row">
+                    <figure class="col-12 bigImg-back">
+                        <img src="{{ asset('/assets/images/data/banner-training.png') }}" alt="Espace étudiant" width="100%">
+                    </figure>
+                </div>
+            </div>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace Scolarité</h2>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Big slider -->
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="" title="Espace scolarité">Espace scolarité</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Emploi du temps - concours</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceScolarity-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/scolarite/_menu.html.twig') }}
+            </aside><!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-scolarity" id="mainBloc">
+                <!-- content -->
+                <div class="title-group">
+                    <p class="sup-title">Scolarité</p>
+                    <h2 class="title-bloc">Ajouter/Modifier emploi du temps</h2>
+                </div>
+
+                <section class="edit-emploiTemps-content content">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-bloc form-inline">
+                                <form id="emploi_du_temps-new" method="POST" class="page-form-edit-new form-validation" enctype="multipart/form-data" role="form">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <label for="concours_emploi_du_temps_mentions" class="col-xl-3">Mentions * :</label>
+                                                <div class="col-xl-9">
+                                                    <select id="concours_emploi_du_temps_mentions" name="concours_emploi_du_temps[mentions]" required class="form-control">
+                                                        <option value=""> -- Mentions --</option>
+                                                        {% for mention in mentions %}
+                                                            <option value="{{ mention.id }}">{{ mention.nom }} </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <label for="concours_emploi_du_temps_mentions" class="col-xl-3">Parcours :</label>
+                                                <div class="col-xl-9">
+                                                    <select id="concours_emploi_du_temps_parcours" name="concours_emploi_du_temps[parcours]" class="form-control">
+                                                        <option value=""> -- Parcours --</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">{{ form_label(form.concours, 'Concours * :') }}</div>
+                                                <div class="col-xl-9">
+                                                    {{ form_widget(form.concours) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">{{ form_label(form.concoursMatiere, 'Matière * :') }}</div>
+                                                <div class="col-xl-9">
+                                                    <select id="concours_emploi_du_temps_concoursMatiere"
+                                                        name="concours_emploi_du_temps[concoursMatiere]"
+                                                        required="required" class="form-control">
+                                                        <option value="" selected="selected">-- Matière --</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">{{ form_label(form.salle, 'Salle * :') }}</div>
+                                                <div class="col-xl-9">{{ form_widget(form.salle) }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                    <div class="col-xl-3">
+                                                        {{ form_label(form.startDate, 'Début * :') }}
+                                                    </div>
+                                                    <div class="col-xl-9">
+                                                        {{ form_widget(form.startDate) }}
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group row">
+                                                <div class="col-xl-3">
+                                                    {{ form_label(form.endDate, 'Fin * :') }}
+                                                </div>
+                                                <div class="col-xl-9">
+                                                    {{ form_widget(form.endDate) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="emploi_du_temps_salle_ue"></div>
+                                    <div>
+                                        {{ form_errors(form) }}
+                                        {{ form_row(form._token) }}
+                                    </div>
+                                    <div class="groups-btn justify-content-end mt-0">
+                                        <button type="submit" class="btn btn-primary" id="btn-submit-edt-form">Valider</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('#concours_emploi_du_temps_mentions').bind('change', function () {
+                    // const mentionId = $(this).val(),
+                    //     concoursId = $('#concours_emploi_du_temps_concours').val();
+
+                    const mentionId = $(this).val(),
+                        parcoursId = $('#concours_emploi_du_temps_parcours').val();
+                    $('#edt-list').html("");
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path('front_scolarite_concours_edt_ajax_concours') }}",
+                        data:   {
+                            mentionId:  mentionId,
+                            parcoursId: parcoursId,
+                        }
+                    }).done(
+                        function (html) {
+                            $('#concours_emploi_du_temps_concours').html(html);
+                        }
+                    )
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path('front_scolarite_concours_edt_ajax_parcours') }}",
+                        data:   {
+                            mentionId:  mentionId
+                        }
+                    }).done(
+                        function (html) {
+                            $('#concours_emploi_du_temps_parcours').html(html);
+                        }
+                    )
+
+                    /*$.ajax({
+                        method: "GET",
+                        url:    "{*{ path('front_scolarite_concours_edt_ajax_matiere') }*}",
+                        data:   {
+                            mentionId:  mentionId,
+                            concoursId: concoursId,
+                        }
+                    }).done(
+                        function (html) {
+                            $('#concours_emploi_du_temps_concoursMatiere').html(html);
+                        }
+                    )*/
+                });
+
+                $('#concours_emploi_du_temps_parcours').on('change', function () {
+                    const mentionId = $('#concours_emploi_du_temps_mentions').val(),
+                        parcoursId = $(this).val();
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path('front_scolarite_concours_edt_ajax_concours') }}",
+                        data:   {
+                            mentionId:  mentionId,
+                            parcoursId: parcoursId,
+                        }
+                    }).done(
+                        function (html) {
+                            $('#concours_emploi_du_temps_concours').html(html);
+                            $('#concours_emploi_du_temps_concoursMatiere').html('<option value="" selected="selected">-- Matière --</option>');
+                        }
+                    )
+                })
+
+                $('#concours_emploi_du_temps_concours').bind('change', function () {
+                    const mentionId = $('#concours_emploi_du_temps_mentions').val(),
+                        concoursId = $(this).val(),
+                        parcoursId = $('#concours_emploi_du_temps_parcours').val()
+                    ;
+                    $.ajax({
+                        method: "GET",
+                        url:    "{{ path('front_scolarite_concours_edt_ajax_matiere') }}",
+                        data:   {
+                            mentionId:  mentionId,
+                            concoursId: concoursId,
+                            parcoursId: parcoursId
+                        }
+                    }).done(
+                        function (html) {
+                            $('#concours_emploi_du_temps_concoursMatiere').html(html);
+                        }
+                    )
+                });
+
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}

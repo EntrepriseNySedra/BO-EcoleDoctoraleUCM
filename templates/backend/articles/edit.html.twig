@@ -1,0 +1,19 @@
+{% extends layout_backend %}
+{% block title %}Article::Edit{% endblock %}
+
+{% set menuCMS = true %}
+{% set menuArticles = true %}
+{% set menuArticlesAdd = true %}
+
+{% block pageicon %}
+    pe-7s-switch
+{% endblock %}
+{% block pagetitle %}
+    Modification article
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/articles/_form.html.twig') }}
+    <a href="{{ path('admin_articles_list') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

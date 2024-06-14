@@ -1,0 +1,46 @@
+<!-- Chercher les classes actives -->
+{% set menuCoursActive    = app.request.get('_route') == 'front_teacher_cours' ? "active" : "" %}
+{% set menuNotesActive    = app.request.get('_route') == 'front_teacher_notes' ? "active" : "" %}
+{% set menuEdtActive    = app.request.get('_route') == 'front_teacher_edt'   ? "active" : "" %}
+{% set menuVolumeHoraireActive    = app.request.get('_route') == 'frontend_teacher_index'   ? "active" : "" %}
+
+<!-- Titre  breadcrumb-->
+{% set breadcrumbTitre = "" %}
+
+<!-- breadcrumb -->
+<!-- <nav aria-label="breadcrumb" class="breadcrumb-bloc">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="/formation" title="Formation">Espace enseignant</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><span>{{ breadcrumbTitre }}</span></li>
+    </ol>
+</nav> -->
+<!-- breadcrumb -->
+
+<!-- Menu enseignant -->
+<nav class="menu_list menu_teacher">
+    <a class="nav-Link {{ menuVolumeHoraireActive }}" href="{{ path('frontend_teacher_index') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Volume horaire</span>
+    </a>
+    <a class="nav-Link {{ menuCoursActive }}" href="{{ path('front_teacher_matieres') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Cours</span>
+    </a>
+    <a class="nav-Link {{ menuNotesActive }}" href="{{ path('front_teacher_notes') }}" title="{{ breadcrumbTitre }}">
+        <span class="fa fa-file"></span>
+        <span>Notes</span>
+    </a>
+    <a class="nav-Link {{ menuEdtActive }}" href="{{ path('front_teacher_edt') }}" title="Emploi du temps">
+        <span class="fa fa-calendar-alt"></span>
+        <span class="text">Emploi du temps</span>
+    </a>
+    <a class="nav-Link {{ menuEdtActive }}" href="{{ path('front_teacher_vacation') }}" title="Emploi du temps">
+        <span class="fa fa-calendar-alt"></span>
+        <span class="text">Vacations</span>
+    </a>
+    <a class="nav-Link {{ menuEdtActive }}" href="{{ path('frontend_discussion_index') }}" title="Forum">
+        <span class="fa fa-list"></span>
+        <span class="text">Forum</span>
+    </a>
+</nav>

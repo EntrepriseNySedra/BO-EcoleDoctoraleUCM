@@ -1,0 +1,144 @@
+{% extends layout_teacher %}
+{% block title %}Espace enseignant{% endblock %}
+{% block content %}
+    <style>
+        .bg-red {
+            background: #E5343D !important;
+        }
+    </style>
+<div class="main-container">
+    <!-- hidden Title H1 -->
+    <h1 class="hide">Cours</h1>
+
+    <!-- big slider banner espace Enseignant -->
+    <section class="banner banner-espaceEtudiant banner-espaceEnseignant">
+        <div class="banner-container">
+            <figure class="bigImg">
+                <img src="{{ asset('/assets/images/data/banner-authentication.png') }}" alt="Espace enseignant">
+            </figure>
+            <div class="desc">
+                <div class="container">
+                    <h2 class="main-title">Espace enseignant</h2>
+                </div>
+            </div>
+        </div>
+    </section> <!-- /Big slider --> 
+
+    <!-- breadcrumb -->
+    <nav aria-label="breadcrumb" class="breadcrumb-bloc container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="iconucm-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/" title="Enseignant">Espace enseignant</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Cours</span></li>
+        </ol>
+    </nav><!-- /breadcrumb -->
+
+    <div class="main-contentPage spaceTeacher-container">
+        <div class="container container_row">
+            <!-- aside Left -->
+            <aside class="asideLeft asideSticky">
+                {{ include('frontend/teacher/_menu.html.twig') }}
+            </aside> <!-- /aside Left -->
+
+            <!-- main Bloc -->
+            <article class="mainBloc mainBloc-etudiants mainBloc-enseignants" id="mainBloc">
+                <div class="title-group">
+                    <p class="sup-title">Enseignant</p>
+                    <h2>{{ matiere.uniteEnseignements.mention.nom }}/{{ matiere.uniteEnseignements.niveau.libelle }}/{{ matiere.uniteEnseignements.libelle }}/{{ matiere.nom }}</h2>
+                </div>
+                
+                <!-- content cours -->
+                <section class="cours-content richText">
+                    <div class="list-group">
+                        {% for mention, niveaux in enseignantData %}
+                            <div class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h3 class="mb-1"><strong>{{ mention }}</strong></h3>
+                                </div>
+
+                                {% for niveau, ues in niveaux %}
+                                    <p class="mb-2 p-1 bg-primary text-white"><strong>{{ niveau }}</strong></p>
+                                    {% for ue, matieres in ues %}
+                                        <div class="mb-1 pl-2">Unité d'enseignement : {{ ue }}</div>
+
+                                        {% for matiere, coursList in matieres %}
+                                            {% set matiereData = matiere|split('-') %}
+                                            {% set cournNum = 1 %}
+                                            <div class="item" style="padding: 5px 0 5px 30px;">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-8">{{ matiereData[1] }} : </div>
+                                                    <div class="col-md-4 wrap-btn text-right">
+                                                        <a href="{{ path('front_teacher_add_cours', {id: matiereData[0] })}}" class="btn btn-sm btn-primary">AJOUTER</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {% for cours, mediaList in coursList %}
+                                                {% set coursData = cours|split('-') %}
+                                                <div class="col-12 p-2 d-flex" style="margin-left: 70px;">
+                                                    <div class="col-10">
+                                                        {{ cournNum }}) {{ coursData[1] }}
+                                                        {% for media in mediaList %}
+                                                            {% if media.coursMediaId %}
+                                                                <a href="{{ path('teacher_download_classes', { id: media.coursMediaId }) }}">
+                                                                    {% if media.coursMediaType == 'pdf' %}
+                                                                        <span class="fa fa-file-pdf text-danger"></span>
+                                                                    {% elseif media.coursMediaType == 'doc' or media.coursMediaType == 'vnd.openxmlformats-officedocument.wordprocessingml.document' %}
+                                                                        <span class="fa fa-file-word text-info"></span>
+                                                                    {% elseif media.coursMediaType == 'audio' %}
+                                                                        <span class="fa fa-file-audio text-warning"></span>
+                                                                    {% else %}
+                                                                        <span class="fa fa-file text-danger"></span>
+                                                                    {% endif %}
+                                                                </a>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                    <a href="{{ path('front_teacher_show_cours', {id: coursData[0] })}}" class="btn btn-sm bg-dark text-white" title="Afficher"><span class="fa fa-eye"></span></a>
+                                                    &nbsp;<a href="{{ path('front_teacher_edit_cours', {matiere_id: matiereData[0], cours_id: coursData[0] })}}" class="btn btn-sm bg-dark text-white" title="Modifier"><span class="fa fa-edit"></span></a>
+                                                    &nbsp;
+                                                        <form id="delete-form-{{coursData[0]}}" method="POST" action="{{ path('front_teacher_delete_cours', { id: coursData[0] }) }}" style="display:inline-block">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ coursData[0]) }}" />
+                                                            <a class="btn btn-sm bg-red text-white" onclick="javascript:deleteElement('{{ coursData[0] }}');" href="javascript:;" title="Supprimer">
+                                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                                            </a>
+                                                        </form>
+                                                </div>
+                                                {% set cournNum = cournNum + 1 %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% endfor %}                                    
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+            </article> <!-- /main Bloc -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+
+        function deleteElement(id) {
+            if (confirm('Etes-vous sûr de vouloir supprimer cet element ?')) {
+                $("#delete-form-"+id).submit();
+            }
+        }
+
+        (function ($) {
+            $(document).ready(function () {
+                $('#anneeUniv').change((e) => {
+                    const anneeUnivId = e.target.value;
+
+                    window.location.href = "{{ path('front_teacher_cours', {id: matiere.id}) }}?au=" + anneeUnivId
+                });
+            });
+
+        })(jQuery);
+    </script>
+{% endblock %}
+

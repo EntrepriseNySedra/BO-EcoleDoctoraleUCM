@@ -1,0 +1,21 @@
+{% extends layout_backend %}
+{% block title %}Document::Ajout{% endblock %}
+
+{% set menuCMS = true %}
+{% set menuDocuments = true %}
+{% set menuDocumentsAdd = true %}
+
+{% block pageicon %}
+    pe-7s-browser
+{% endblock %}
+
+{% block pagetitle %}
+    Nouvel document
+{% endblock %}
+
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+    {{ include('backend/documents/_form.html.twig') }}
+    <a href="{{ path('admin_documents_list') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}

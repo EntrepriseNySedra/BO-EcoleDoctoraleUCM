@@ -1,0 +1,52 @@
+{% extends layout_backend %}
+{% block title %}UE::Ajout{% endblock %}
+
+{% set menuFormation = true %}
+{% set menuFormationUEAdd = true %}
+
+{% block pageicon %}
+    pe-7s-box1
+{% endblock %}
+{% block pagetitle %}
+    Unités Enseignement
+{% endblock %}
+{% block pagetitlesmall %}{% endblock %}
+
+{% block content %}
+     {{ include('backend/unite_enseignement/_form.html.twig') }}
+     <a href="{{ path('admin_rf_unite_enseignements_liste') }}" onclick=";"><button class="btn btn-mini btn-mini-rectif">Retour vers la liste</button></a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('#unite_enseignement_niveau').bind('change', function(){
+                niveauId = $(this).val();
+                $.ajax({
+                    method: "GET",
+                    url: "/admin/formation/unite_enseignement/niveau/" + niveauId + "/semestres",
+                    data: { niveau_id: niveauId }
+                }).done(
+                    function(html){
+                        $('#unite_enseignement_semestre').html(html);
+                    } 
+                )
+
+                mentionId = $('#unite_enseignement_mention').val();
+                $.ajax({
+                    method: "GET",
+                    url: "/admin/formation/unite_enseignements/mention/" + mentionId + "/parcours",
+                    data: { 
+                        mention_id: mentionId,
+                         niveau_id: niveauId
+                    }
+                }).done(
+                    function(html){
+                        $('#unite_enseignement_parcours').html(html);
+                    } 
+                )
+            });
+        });
+    </script>
+{% endblock %}
